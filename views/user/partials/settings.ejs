@@ -1,0 +1,16 @@
+<h1 class="title-context mb-3">Réglages du compte</h1>
+
+<div class="container mt-2">
+
+    <form action="/updateProfil" class="jumbotron" method="POST">
+        
+        <%- include('../forms/_forms_register') %>
+
+        <button class="btn btn-context" type="submit">Enregistrer</button>
+    </form>
+
+    <form action="/deleteAccount" method="POST">
+        <input type="text" hidden value="<%= userInfos._id %>">
+        <button class="btn btn-danger w-100 m-3" type="submit">Supprimer le compte</button>
+    </form>
+</div>

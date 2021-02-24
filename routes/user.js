@@ -14,13 +14,13 @@ router.get('/register', (req, res) => {
 
 router.post('/registerUser', (req, res) => {
     const newUser = new User({
-        name: 'skr',
-        mail: 'a@a',
-        password: 'adm',
-        group: '1',
-        tel: '069',
-        address: '42 av',
-        sex: 'M'
+        name: req.body.registerName,
+        mail: req.body.registerMail,
+        password: req.body.registerPassword,
+        group: req.body.registerGroup,
+        tel: req.body.registerTel,
+        address: req.body.registerAddress,
+        sex: req.body.registerSex
     })
     newUser.save().then(
         res.redirect('login')
