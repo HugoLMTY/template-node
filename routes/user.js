@@ -64,13 +64,9 @@ router.get('/profil', async (req, res) => {
 })
 
 router.get('/logout', (req, res) => {
-    clearCookies()
+    clearCookies(res)
     res.redirect('/user/login')
 })
-
-function setCookie(res, name, value) {
-    res.cookie(name, value, {expires: new Date(2069,0,1)})
-}
 
 function clearCookies(res) {
     res.clearCookie('uid')
