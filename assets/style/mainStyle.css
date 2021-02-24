@@ -1,0 +1,38 @@
+html {
+    margin: 0;
+    overflow-x: hidden;
+    font-family: bahnschrift;
+}
+
+body{
+    background: #121212;
+    color: white;
+}
+
+.btn-context {
+    background: linear-gradient(90deg, #80dfff, #33ccff) !important;
+}
+
+.title-context{
+    text-align: center;
+}
+
+.label-context{
+    color: black;
+}
+
+.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+    background: linear-gradient(90turn, #30c4fc, #66e0ff) !important;
+    border: 0px;
+}
+
+/* ---------------- NAV ------------------- */
+.text-context{
+    color: gray;
+    transition: 0.2s;
+}
+
+.text-context:hover{
+    color: white !important;
+
+}
