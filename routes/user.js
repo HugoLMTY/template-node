@@ -60,7 +60,7 @@ router.get('/profil', async (req, res) => {
         })
     }
     else
-        res.redirect('user/login')
+        res.redirect('/user/login')
 })
 
 router.get('/logout', (req, res) => {
