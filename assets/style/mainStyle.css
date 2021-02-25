@@ -11,7 +11,7 @@ body{
 
 input[type=number] {
     -moz-appearance: textfield;
-  }
+}
 
 .btn-context {
     background: linear-gradient(90deg, #80dfff, #33ccff) !important;
