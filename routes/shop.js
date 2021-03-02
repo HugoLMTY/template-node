@@ -33,4 +33,10 @@ router.post('/new', (req, res) => {
     )
 })
 
+router.get('/filters', (req, res) => {
+    const r = req.body
+
+    
+})
+
 module.exports = router 

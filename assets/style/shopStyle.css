@@ -61,5 +61,17 @@
 
 .form-check-input:checked {
     background-color: #30c4fc !important;
-  }
-  
+}
+
+.form-check-input {
+    background-color: lightgray !important;
+}
+
+.darkInput, .darkSwitch{
+    background: #1a1a1a;
+    border: gray;
+}
+
+.darkLabel{
+    color: white;
+}
