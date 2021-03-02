@@ -22,7 +22,7 @@ body{
 }
 
 .list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
-    background: linear-gradient(90turn, #30c4fc, #66e0ff) !important;
+    background: linear-gradient(90deg, #30c4fc, #66e0ff) !important;
     border: 0px;
 }
 

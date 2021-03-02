@@ -1,0 +1,29 @@
+<h1 class="title-context">La boutique</h1>
+
+<div class="row justify-content-center">
+    <form action="/shop/new" method="POST">
+        <button class="btn btn-context text-context" type="submit" >Ajouter un produit</button>
+    </form>
+    <div class="col-3 justify-content-center p-4">
+        <h4 class="title-context">Filtrer les résulats</h4>
+        <form action="/shop/filterProducts" class="container" method="GET">
+
+            <%- include('forms/_forms_filters') %>
+
+            <button class="btn btn-context w-100" style="color: black;" type="submit"> Chercher </button>
+        </form>
+    </div>
+
+    <div class="col-9 row">
+
+        <% productList.forEach(product => { %> 
+            <div class="col-3 productHolder mb-4">
+                <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+                <div class="productShadow">
+                    <p class="productTitle"> <%= product.name %> </p>
+                    <p class="productPrice btn-context"><%= product.price %>€</p>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
