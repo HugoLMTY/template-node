@@ -7,11 +7,53 @@ router.get('/', async (req, res) => {
     let searchOptions = {}
     let sortOption = {}
 
+    const r = req.query
+
+    // ------------  NAME  ------------------------------------
+    if (r.productFilterName)
+        searchOptions.name = r.productFilterName
+
+
+    // ------------  PRICE  ------------------------------------
+    if (r.productFilterMinPrice && r.productFilterMaxPrice)
+    {
+        searchOptions.price = {
+            $gte: r.productFilterMinPrice,
+            $lte: r.productFilterMaxPrice
+        }
+    } 
+    else if (r.productFilterMinPrice) 
+        searchOptions.price = { $gte: r.productFilterMinPrice }
+    else if (r.productFilterMaxPrice)
+        searchOptions.price = { $lte: r.productFilterMaxPrice }
+
+
+    // ------------  DIMENSIONS  ------------------------------------
+    if (r.productFilterWidth)
+        searchOptions.width = r.productFilterWidth
+
+    if (r.productFilterWidth)
+        searchOptions.height = r.productFilterHeight
+
+    if (r.productFilterLength)
+        searchOptions.lenght = r.productFilterLenght
+
+    // ------------  STOCK  ------------------------------------
+    if (r.productFilterIsStock)
+        searchOptions.qty > 0
+
+    
+    console.log(searchOptions)
+
     const productList = await Product.find(searchOptions).sort(sortOption)
 
     res.render('shop/index', {
         productList: productList
     })
+})
+
+router.get('/addProduct', (req, res) => {
+    res.render('shop/addProduct')
 })
 
 router.post('/new', (req, res) => {
@@ -33,10 +75,54 @@ router.post('/new', (req, res) => {
     )
 })
 
-router.get('/filters', (req, res) => {
+router.get('/products', async (req, res) => {
+    const searchOptions = {}
     const r = req.body
 
+    // ------------  NAME  ------------------------------------
+    if (r.productFilterName)
+        searchOptions.name = r.productFilterName
+
+
+    // ------------  PRICE  ------------------------------------
+    if (r.productFilterMinPrice && r.productFilterMaxPrice)
+    {
+        searchOptions.price = {
+            $gte: r.productFilterMinPrice,
+            $lte: r.productFilterMaxPrice
+        }
+    } 
+    else if (r.productFilterMinPrice) 
+        searchOptions.price = { $gte: r.productFilterMinPrice }
+    else if (r/productFilterMaxPrice)
+        searchOptions.price = { $lte: r.productFilterMaxPrice }
+
+
+    // ------------  DIMENSIONS  ------------------------------------
+    if (r.productFilterWidth)
+        searchOptions.width = r.productFilterWidth
+
+    if (r.productFilterWidth)
+        searchOptions.height = r.productFilterHeight
+
+    if (r.productFilterLength)
+        searchOptions.lenght = r.productFilterLenght
+
+    // ------------  STOCK  ------------------------------------
+    if (r.productFilterIsStock)
+        searchOptions.qty > 0
     
+    console.log(searchOptions)
+
+    try {
+        const productList = await Product.find(searchOptions)
+        res.render('/index', {
+            productList: productList
+        })
+    } catch(e) {
+        res.send('erreur: ', e)
+    }
 })
+
 
 module.exports = router 

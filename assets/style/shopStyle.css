@@ -75,3 +75,11 @@
 .darkLabel{
     color: white;
 }
+
+.newLabel{
+    color: black;
+}
+
+.newDimensions{
+    padding-top: 20px;
+}
