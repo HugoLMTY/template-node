@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Product = require('../models/Product')
+const User = require('../models/User')
 
 router.get('/', async (req, res) => {
 
@@ -81,7 +82,9 @@ router.get('/products', async (req, res) => {
 
     // ------------  NAME  ------------------------------------
     if (r.productFilterName)
-        searchOptions.name = r.productFilterName
+        searchOptions.name = {
+            $in: r.productFilterName
+        }
 
 
     // ------------  PRICE  ------------------------------------
@@ -94,7 +97,7 @@ router.get('/products', async (req, res) => {
     } 
     else if (r.productFilterMinPrice) 
         searchOptions.price = { $gte: r.productFilterMinPrice }
-    else if (r/productFilterMaxPrice)
+    else if (r.productFilterMaxPrice)
         searchOptions.price = { $lte: r.productFilterMaxPrice }
 
 
@@ -116,12 +119,37 @@ router.get('/products', async (req, res) => {
 
     try {
         const productList = await Product.find(searchOptions)
-        res.render('/index', {
-            productList: productList
-        })
+        res.send(productList).then(
+            res.render('/index', {
+                productList: productList
+            })
+        )
     } catch(e) {
         res.send('erreur: ', e)
     }
+})
+
+router.get('/product/:id', async (req, res) => {
+
+    let infos = []
+
+    const productID = req.params.id
+    console.log(productID)
+
+    const getInfos = Product.findOne({
+        _id: productID
+    }).then(
+        (productInfos) => {
+            infos.push(productInfos)
+            User.findOne({
+                _id: productInfos.creator
+            }).then(
+                (userInfos) => {
+                    infos.push(userInfos)    
+                    console.log(infos)
+                    res.send(infos)
+        })
+    })
 })
 
 
