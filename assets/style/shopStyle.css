@@ -10,6 +10,7 @@
     height: 250px;
     padding: 25px;
     transition: 0.2s;
+    text-decoration: none;
     /* overflow: hidden; */
 }
 /* 
@@ -25,16 +26,25 @@
     border: 3px solid #30c4fc;
 }
 
+.productTip{
+    color: white;
+    background-color: red;
+    top: -169%;
+}
+
 .productPrice{
+    color: black;
+    bottom: -21%;
+}
+
+.productPrice, .productTip{
     width: 100px;
     height: 35px;
     border-radius: 7px;
-    position: relative;
+    position: absolute;
     left: 69%;
-    bottom: -21%;
     text-align: center;
     font-weight: bold;
-    color: black;
     padding-top: 3px;
 }
 
@@ -67,19 +77,24 @@
     background-color: lightgray !important;
 }
 
-.darkInput, .darkSwitch{
+.darkInput, .darkSwitch, .darkSelect{
     background: #1a1a1a;
     border: gray;
 }
 
-.darkLabel{
+.darkLabel, .darkSelect, .darkInput{
     color: white;
 }
 
-.newLabel{
-    color: black;
+.darkInput:active ~ .darkLabel{
+    color: black !important;
 }
 
 .newDimensions{
     padding-top: 20px;
+}
+
+
+#productTable tr{
+    color: white;
 }

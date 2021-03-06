@@ -1,0 +1,167 @@
+<div class="container">
+    <div class="row" style="min-height: 200px;">
+
+        <div class="col-4" id="infosImgHolder">
+            <div class="cart">
+
+                    <figure>
+                        <img src="/img/<%= productInfos.pathImg %>" class="img-thumbnail" width=420 alt="<%= productInfos.name %>" />
+                        <!--<figcaption>Légende de l'image</figcaption>-->
+                    </figure>
+
+                    <!--<div id="thumbnails">
+                        <img src="image.png" alt="Product image 1" />
+                        <img src="image.png" alt="Product image 2" />
+                    </div>-->
+
+            </div>
+        </div>
+
+        <div class="col-5">
+            <hgroup>
+                <h1><%= productInfos.name %></h1>
+                <p>
+                    <%= productInfos.width %> x
+                    <%= productInfos.height %> x
+                    <%= productInfos.lenght %>
+                </p>
+            </hgroup>
+
+            <section id="info">
+                <p>
+                    <%= productInfos.desc %>
+                    <br>
+                    Description courte : Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
+                </p>
+
+                <div class="social">
+                    <!-- Boutons de partage-->
+                </div>
+
+                <article class="comment">
+                    <h6>Créateur: <%= userInfos.name %></h6>
+                    <p><%= productInfos.uploadDate %></p>
+                </article>
+
+            </section>
+        </div>
+
+        <div class="col-3">
+            <form action="/shop/addToCart" class="row" method="POST">
+                <div class="col m-2 input-group">                  
+                    <span class="input-group-text darkInput"><strong><%= productInfos.price %>&euro;</strong></span>
+                    <span class="input-group-text darkInput">x</span>
+                    <input type="number" class="form-control darkInput" placeholder="Qté" aria-label="Qté" aria-describedby="basic-addon1">
+                </div>
+                <button class="col-4 m-2 btn btn-context" type="submit">
+                    Ajouter au panier
+                </button>
+            </form>
+
+                    <!-- <div class="form-floating">
+                        <input type="number" class="form-control" placeholder="qty" name="addCartQty" id="floatingQty">
+                        <label for="floatingQty">Qté</label>
+                    </div>
+                    <label>Prix final: <p id="finalPrice"><%= productInfos.price %></p></label> -->
+            
+                <!-- Partager réseaux pouloulou-->
+                <div class="d-flex justify-content-center">
+                    <a class="m-2" target="blank" href="https://www.facebook.com/sharer.php?u=http://localhost:3000/shop/product/60369395a7d2d8552ce942e2" 
+                    onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;">
+                        <img src="/img/medias/fb.png" width="42px" alt="Facebook"/></a>
+
+                    <a class="m-2" target="_blank" title="Twitter" 
+                    href="https://twitter.com/share?url=#" rel="nofollow">
+                        <img src="/img/medias/twitter.png" width="42px" alt="Twitter"/></a>
+
+                    <a class="m-2" target="_blank" title="Google +" 
+                    href="https://plus.google.com/share?url=#" rel="nofollow" 
+                    onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;">
+                        <img src="/img/medias/g+.png" width="40px" alt="Google Plus" /></a>
+
+                    <a class="m-2" target="_blank" title="Linkedin" 
+                    href="https://www.linkedin.com/shareArticle?mini=true&amp;url=#" rel="nofollow" 
+                    onclick="javascript:window.open(this.href, '','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;">
+                        <img src="/img/medias/lkdn.svg" width="42px" alt="Linkedin" /></a>
+
+                    <a class="m-2" target="_blank" title="Envoyer par mail" 
+                    href="mailto:?Subject=Regarde ça c'est cool !&amp;Body=regarde%20cet%20article%20c'est%20super !%20 #" rel="nofollow">
+                        <img src="/img/medias/mail.png" width="42px" alt="email" /></a>
+
+                </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <section id="details">
+            <h2>Plus d'info</h2>
+            <p>Information détaillée du produit ici</p>
+        </section>
+
+        <section id="characteristics">
+            <h2>Caractéristiques</h2>
+
+
+            <table id="productTable" class="table">
+                <tr>
+                    <th scope="col"> Largeur </th>
+                    <th scope="col"> Hauteur </th>
+                    <th scope="col"> Longeur </th>
+                    <th scope="col"> Poids </th>
+                    <th scope="col"> Matière </th>
+                </tr>
+
+                <tr>
+                    <td><%= productInfos.width %>cm</td>
+                    <td><%= productInfos.height %>cm</td>
+                    <td><%= productInfos.lenght %>cm</td>
+                    <td> 420g </td>
+                    <td> PLA </td>
+                </tr>
+            </table>
+        </section>
+    </div>
+
+    <div class="row mt-5 mb-5">
+        <aside id="related">
+            <h2>Produits similaires</h2>
+
+            <div class="col-12 row">
+                <% similarProducts.forEach(product => { %> 
+                    <a href="/shop/product/<%= product._id %>" class="col-3 productHolder mb-4">
+                        <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+                        <div class="productShadow">
+                            <p class="productTitle"> <%= product.name %> </p>
+                            <p class="productPrice btn-context"><%= product.price %>€</p>
+                        </div>
+                    </a>
+                <% }) %>
+            </div>
+        </aside>
+    </div>
+
+    <!-- <div class="row mt-5 mb-5">
+        <section id="comments">
+
+            <article class="comment">
+                <h2>Pseudo</h2>
+                <time datetime="2012-4-27T14:42+01:00">Publié le 08 avril 14:42</time>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+            </article>
+
+            <article class="comment">
+                <h2>Pseudo</h2>
+                <time datetime="2012-4-27T15:42+01:00">Publié le 22 avril 15:42</time>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua.
+                </p> 
+            </article>
+
+        </section>
+    </div> -->
+</div>
