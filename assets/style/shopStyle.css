@@ -110,6 +110,8 @@
     height: 420px;
     background: transparent;
     overflow: hidden;
+    box-shadow: 0px 0px 10px #80dfff;
+    border-radius: 15px;
 }
 
 #productImgZoom {
@@ -128,20 +130,9 @@
     height: 100px;
     background: none;
     pointer-events: none;
-}
-#mouseX, #mouseY{
-    position: relative;
-    border: 2px solid #80dfff;
+    box-shadow: 0px 0px 30px black;
 }
 
-#mouseX{
-    left: -50px;
-    width: 100px;
-    height: 1px;
-}
-
-#mouseY{
-    top: -50px;
-    height: 100px;
-    width: 1px;
+#productImgjs{
+    cursor: none;
 }
