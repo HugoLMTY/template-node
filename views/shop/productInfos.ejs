@@ -38,8 +38,8 @@
 
         // posX = ((mouseX * ratioX) + offsetX) / 2
         // posY = (mouseY * ratioY) + offsetY
-        posX = ((mouseX - offsetX) * ratioX) - ((mouseW / 2) * ratioX)
-        posY = ((mouseY - offsetY) * ratioY) - ((mouseH / 2) * ratioY)
+        posX = ((mouseX - offsetX) * ratioX) - (mouseW/2 * ratioX)
+        posY = ((mouseY - offsetY) * ratioY) - (mouseH/2 * ratioY)
 
         console.log('posX: ',posX)
         console.log('posY: ',posY)
@@ -48,8 +48,8 @@
         targetImg.style.top = -posY 
 
         target.style.display = 'block'
-        target.style.left = pos.clientX - 50
-        target.style.top = pos.clientY - 50
+        target.style.left = mouseX - 50
+        target.style.top = mouseY - 50
         targetZoom.style.display = 'block'
     }
 
@@ -71,7 +71,7 @@
                     <figure>
                         <img src="/img/<%= productInfos.pathImg %>"
                         onmousemove="getState(event)" onmouseout="mouseOut()"
-                        class="img-thumbnail" id="productImgjs" width=420 alt="<%= productInfos.name %>" />
+                        class="img-thumbnail" id="productImgjs" alt="<%= productInfos.name %>" />
                         <!--<figcaption>Légende de l'image</figcaption>-->
                         <div id="mousePos">
                             <!-- <div id="mouseX"></div>
@@ -90,7 +90,7 @@
         <div class="col-5">
             <div id="zoomHolder">
                 <img src="/img/<%= productInfos.pathImg %>"
-                id="productImgZoom" width=420 alt="<%= productInfos.name %>" />
+                id="productImgZoom"/>
             </div>
             <hgroup>
                 <h1><%= productInfos.name %></h1>

@@ -106,8 +106,8 @@
 #zoomHolder{
     display: none;
     position: absolute;
-    width: 420px;
-    height: 420px;
+    width: 500px;
+    height: 500px;
     background: transparent;
     overflow: hidden;
     box-shadow: 0px 0px 10px #80dfff;
@@ -116,8 +116,8 @@
 
 #productImgZoom {
     display: block;
-    width: 950px;
-    height: 950px;
+    width: 2000px;
+    height: 2000px;
     border-radius: 15px;
     position: relative;
 }
@@ -134,5 +134,5 @@
 }
 
 #productImgjs{
-    cursor: none;
+    /* cursor: none; */
 }
