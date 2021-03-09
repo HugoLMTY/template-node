@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const bcrypt = require('bcrypt')
 const User = require('../models/User')
+const Product = require('../models/Product')
 
 router.get('/login', (req, res) => {
     clearCookies(res)
@@ -49,14 +50,17 @@ router.post('/loginUser', async (req, res) => {
 
 router.get('/profil', async (req, res) => {
     if (req.cookies['uid'] != undefined) {
+
         const _uid = req.cookies['uid']
+
+        const productList = await Product.find({ creator: _uid })
 
         userInfos = await User.findOne({
             _id: _uid
         })
-        console.log(userInfos)
         res.render('user/profil', {
-            userInfos: userInfos
+            userInfos: userInfos,
+            productList: productList
         })
     }
     else

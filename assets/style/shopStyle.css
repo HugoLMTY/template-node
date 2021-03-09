@@ -86,7 +86,7 @@
     color: white;
 }
 
-.darkInput:active ~ .darkLabel{
+.darkInput:active ~ .darkLabel, .darkInput:placeholder-shown ~ .darkLabel{
     color: black !important;
 }
 
@@ -95,6 +95,53 @@
 }
 
 
+
+
 #productTable tr{
     color: white;
+}
+
+
+
+#zoomHolder{
+    display: none;
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    background: transparent;
+    overflow: hidden;
+}
+
+#productImgZoom {
+    display: block;
+    width: 950px;
+    height: 950px;
+    border-radius: 15px;
+    position: relative;
+}
+
+#mousePos{
+    position: absolute;
+    display: none;
+    border: 2px solid #80dfff;
+    width: 100px;
+    height: 100px;
+    background: none;
+    pointer-events: none;
+}
+#mouseX, #mouseY{
+    position: relative;
+    border: 2px solid #80dfff;
+}
+
+#mouseX{
+    left: -50px;
+    width: 100px;
+    height: 1px;
+}
+
+#mouseY{
+    top: -50px;
+    height: 100px;
+    width: 1px;
 }

@@ -8,9 +8,9 @@ const shoppingCartSchema = new mongoose.Schema({
         type: String
     },
     cartDate: { 
-        type: Date
+        type: String
     },
-    status: {
+    state: {
         type: String
     }
 

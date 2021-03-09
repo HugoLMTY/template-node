@@ -1,12 +1,82 @@
+<script>
+
+    function getState(pos) {
+
+        target = document.getElementById('mousePos')
+        targetZoom = document.getElementById('zoomHolder')
+        targetImg = document.getElementById('productImgZoom')
+        targetProductImg = document.getElementById('productImgjs')
+
+        var posX
+        var posY
+
+        var mouseX = pos.clientX
+        var mouseY = pos.clientY
+        
+        // Hauteur / Largeur de l'img 
+        var imgW = targetProductImg.getBoundingClientRect().width
+        var imgH = targetProductImg.getBoundingClientRect().height
+        // console.log(imgW, imgH)
+
+        // Hauteur / Largeur de la zone de zoom
+        var zoomW = targetImg.getBoundingClientRect().width
+        var zoomH = targetImg.getBoundingClientRect().height
+        // console.log(zoomH, zoomW)
+        
+        var ratioX = zoomW / imgW
+        var ratioY = zoomH / imgH
+
+        // Décalage depuis la droite / le haut
+        var offsetX = targetProductImg.getBoundingClientRect().x //49
+        var offsetY = targetProductImg.getBoundingClientRect().y //138
+        // console.log('offsetX: ', offsetX, 'offsetY: ', offsetY)
+
+
+        // Hauteur / Largeur de la zone de survol de la souris
+        var mouseW = mousePos.getBoundingClientRect().width
+        var mouseH = mousePos.getBoundingClientRect().height
+
+        // posX = ((mouseX * ratioX) + offsetX) / 2
+        // posY = (mouseY * ratioY) + offsetY
+        posX = ((mouseX - offsetX) * ratioX) - ((mouseW / 2) * ratioX)
+        posY = ((mouseY - offsetY) * ratioY) - ((mouseH / 2) * ratioY)
+
+        console.log('posX: ',posX)
+        console.log('posY: ',posY)
+        
+        targetImg.style.right = posX
+        targetImg.style.top = -posY 
+
+        target.style.display = 'block'
+        target.style.left = pos.clientX - 50
+        target.style.top = pos.clientY - 50
+        targetZoom.style.display = 'block'
+    }
+
+    function mouseOut() {
+        target = document.getElementById('mousePos')
+        targetZoom = document.getElementById('zoomHolder')
+
+        target.style.display = 'none'
+        targetZoom.style.display = 'none'
+    }
+</script>
+
 <div class="container">
     <div class="row" style="min-height: 200px;">
 
-        <div class="col-4" id="infosImgHolder">
+        <div class="col-4">
             <div class="cart">
 
                     <figure>
-                        <img src="/img/<%= productInfos.pathImg %>" class="img-thumbnail" width=420 alt="<%= productInfos.name %>" />
+                        <img src="/img/<%= productInfos.pathImg %>"
+                        onmousemove="getState(event)" onmouseout="mouseOut()"
+                        class="img-thumbnail" id="productImgjs" width=420 alt="<%= productInfos.name %>" />
                         <!--<figcaption>Légende de l'image</figcaption>-->
+                        <div id="mousePos">
+                            <!-- <div id="mouseX"></div>
+                            <div id="mouseY"></div> -->
+                        </div>
                     </figure>
 
                     <!--<div id="thumbnails">
@@ -18,6 +88,10 @@
         </div>
 
         <div class="col-5">
+            <div id="zoomHolder">
+                <img src="/img/<%= productInfos.pathImg %>"
+                id="productImgZoom" width=420 alt="<%= productInfos.name %>" />
+            </div>
             <hgroup>
                 <h1><%= productInfos.name %></h1>
                 <p>
@@ -42,19 +116,20 @@
 
                 <article class="comment">
                     <h6>Créateur: <%= userInfos.name %></h6>
-                    <p><%= productInfos.uploadDate %></p>
+                    <p>Mise en ligne:   <%= productInfos.uploadDate %></p>
                 </article>
 
             </section>
         </div>
 
         <div class="col-3">
-            <form action="/shop/addToCart" class="row" method="POST">
-                <div class="col m-2 input-group">                  
+            <form action="/cart/addProduct" class="row" method="POST">
+                <div class="col m-2 input-group">
                     <span class="input-group-text darkInput"><strong><%= productInfos.price %>&euro;</strong></span>
                     <span class="input-group-text darkInput">x</span>
                     <input type="number" class="form-control darkInput" placeholder="Qté" aria-label="Qté" aria-describedby="basic-addon1">
                 </div>
+                <input type="text" hidden name="productID" value="<%= productInfos._id %>" >
                 <button class="col-4 m-2 btn btn-context" type="submit">
                     Ajouter au panier
                 </button>
@@ -65,28 +140,28 @@
                         <label for="floatingQty">Qté</label>
                     </div>
                     <label>Prix final: <p id="finalPrice"><%= productInfos.price %></p></label> -->
-            
+
                 <!-- Partager réseaux pouloulou-->
                 <div class="d-flex justify-content-center">
-                    <a class="m-2" target="blank" href="https://www.facebook.com/sharer.php?u=http://localhost:3000/shop/product/60369395a7d2d8552ce942e2" 
+                    <a class="m-2" target="blank" href="https://www.facebook.com/sharer.php?u=http://localhost:3000/shop/product/60369395a7d2d8552ce942e2"
                     onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;">
                         <img src="/img/medias/fb.png" width="42px" alt="Facebook"/></a>
 
-                    <a class="m-2" target="_blank" title="Twitter" 
+                    <a class="m-2" target="_blank" title="Twitter"
                     href="https://twitter.com/share?url=#" rel="nofollow">
                         <img src="/img/medias/twitter.png" width="42px" alt="Twitter"/></a>
 
-                    <a class="m-2" target="_blank" title="Google +" 
-                    href="https://plus.google.com/share?url=#" rel="nofollow" 
+                    <a class="m-2" target="_blank" title="Google +"
+                    href="https://plus.google.com/share?url=#" rel="nofollow"
                     onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;">
                         <img src="/img/medias/g+.png" width="40px" alt="Google Plus" /></a>
 
-                    <a class="m-2" target="_blank" title="Linkedin" 
-                    href="https://www.linkedin.com/shareArticle?mini=true&amp;url=#" rel="nofollow" 
+                    <a class="m-2" target="_blank" title="Linkedin"
+                    href="https://www.linkedin.com/shareArticle?mini=true&amp;url=#" rel="nofollow"
                     onclick="javascript:window.open(this.href, '','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;">
                         <img src="/img/medias/lkdn.svg" width="42px" alt="Linkedin" /></a>
 
-                    <a class="m-2" target="_blank" title="Envoyer par mail" 
+                    <a class="m-2" target="_blank" title="Envoyer par mail"
                     href="mailto:?Subject=Regarde ça c'est cool !&amp;Body=regarde%20cet%20article%20c'est%20super !%20 #" rel="nofollow">
                         <img src="/img/medias/mail.png" width="42px" alt="email" /></a>
 
@@ -130,7 +205,7 @@
             <h2>Produits similaires</h2>
 
             <div class="col-12 row">
-                <% similarProducts.forEach(product => { %> 
+                <% similarProducts.forEach(product => { %>
                     <a href="/shop/product/<%= product._id %>" class="col-3 productHolder mb-4">
                         <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
                         <div class="productShadow">
@@ -159,7 +234,7 @@
                 <time datetime="2012-4-27T15:42+01:00">Publié le 22 avril 15:42</time>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
                     tempor incididunt ut labore et dolore magna aliqua.
-                </p> 
+                </p>
             </article>
 
         </section>

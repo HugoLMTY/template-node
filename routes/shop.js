@@ -6,7 +6,7 @@ const User = require('../models/User')
 function getDate() {
 
     const date = new Date().toJSON().split('T')[0]
-    console.log(date)
+    
     let day = date.split('-')[2]
     let month = date.split('-')[1]
     let year = date.split('-')[0]
@@ -107,7 +107,19 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/addProduct', (req, res) => {
-    res.render('shop/addProduct')
+
+    const _uid = req.cookies['uid']
+    try {
+        User.findOne({'_id': _uid}).then(
+            (userInfos) => {
+                res.render('shop/newProduct', {
+                    userInfos: userInfos,
+                    date: getDate()
+                })
+        })
+    } catch {
+        res.redirect('/shop/')
+    }
 })
 
 router.post('/new', (req, res) => {
@@ -169,8 +181,6 @@ router.get('/products', async (req, res) => {
     // ------------  STOCK  ------------------------------------
     if (r.productFilterIsStock)
         searchOptions.qty > 0
-    
-    console.log(searchOptions)
 
     try {
         const productList = await Product.find(searchOptions)

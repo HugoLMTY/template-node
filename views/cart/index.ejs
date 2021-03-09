@@ -1,0 +1,60 @@
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            items
+        </div>
+        
+        <div class="col-4">   
+            total
+        </div>
+
+
+        <div class="col-8">
+            <% if (itemList.length > 0) { %>
+                <!-- <div class="row">
+                    <div class="col-3">
+                        img
+                    </div>
+
+                    <div class="col-6">
+                        <p>nom</p>
+                        <p>prix uni. / qté</p>
+                    </div>
+
+                    <div class="col-3">
+                        <p>prix total</p>
+                        <p>suprr</p>
+                    </div>
+                </div> -->
+                <% itemList.forEach(product => { %>
+                <div class="row cartProductHolder">
+                    <div class="col-3">
+                        <img height="90px" src="/img/<%= product.pathImg %>">
+                    </div>
+
+                    <div class="col-6">
+                        <p><%= product.name %></p>
+                        <p><%= product.price %>€ x qté</p>
+                    </div>
+
+                    <div class="col-3">
+                        <p>prix total</p>
+                        <p>suprr</p>
+                    </div>
+                </div>
+                <% }) %>
+            <% } else { %>
+                <p>Panier vide</p>
+            <% } %>
+        </div>
+
+        <div class="col-4">
+            <form class="container-fluid totalCart">
+                <p>Total: <%= cartInfos.price %> </p>
+
+                <button class="btn btn-context col-6">Payer</button>
+            </form>
+        </div>
+    
+    </div>
+</div>
