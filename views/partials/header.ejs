@@ -1,3 +1,24 @@
+<script>
+  var dark = '/style/dark.css'
+  var light = '/style/light.css'
+  target = document.getElementById('pathTheme')
+  function changeTheme() {
+    console.log(target.href)
+
+    switch(target.href) {
+      case dark:
+        target.href = light
+        console.log(target.href)
+        break
+      case light:
+        target.href = dark
+        console.log(target.href)
+        break
+    }
+    
+      
+  }
+</script>
 <nav class="mb-5 mt-2">
     <ul class="nav justify-content-center">
         <li class="nav-item">
@@ -8,7 +29,7 @@
           <a class="nav-link text-context" href="/shop/">Boutique</a>
         </li>
 
-        <img src="/img/logo.png" width="120px" alt="">
+        <img src="/img/logo.png" width="120px" onclick="changeTheme()" alt="">
 
         <li class="nav-item">
           <a class="nav-link text-context" href="/user/profil">Profil</a>

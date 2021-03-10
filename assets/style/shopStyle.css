@@ -10,6 +10,7 @@
     height: 250px;
     padding: 25px;
     transition: 0.2s;
+    text-decoration: none;
     /* overflow: hidden; */
 }
 /* 
@@ -72,14 +73,14 @@
     background-color: #30c4fc !important;
 }
 
-.form-check-input {
+/* .form-check-input {
     background-color: lightgray !important;
-}
+} */
 
-.darkInput, .darkSwitch, .darkSelect{
+ /* .darkInput, .darkSwitch, .darkSelect{
     background: #1a1a1a;
     border: gray;
-}
+} 
 
 .darkLabel, .darkSelect, .darkInput{
     color: white;
@@ -87,7 +88,7 @@
 
 .darkInput:active ~ .darkLabel, .darkInput:placeholder-shown ~ .darkLabel{
     color: black !important;
-}
+} */
 
 .newDimensions{
     padding-top: 20px;
@@ -96,9 +97,9 @@
 
 
 
-#productTable tr{
+/* #productTable tr{
     color: white;
-}
+} */
 
 
 

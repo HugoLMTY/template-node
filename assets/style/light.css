@@ -1,0 +1,35 @@
+body{
+    background: whitesmoke;
+    color: black;
+}
+
+.darkInput, .darkSwitch, .darkSelect{
+    background: #1a1a1a;
+    border: gray;
+}
+.text-context{
+    color: black;
+    transition: 0.2s;
+    font-size: 1.5em;
+}
+
+.darkInput, .darkSwitch, .darkSelect{
+    background: white;
+    border: gray;
+}
+
+.darkLabel, .darkSelect, .darkInput{
+    color: black;
+}
+
+.darkInput:active ~ .darkLabel, .darkInput:placeholder-shown ~ .darkLabel{
+    color: black !important;
+} 
+
+.form-check-input {
+    background-color: whitesmoke !important;
+}
+
+.label-context{
+    color: black;
+}
