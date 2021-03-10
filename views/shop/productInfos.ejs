@@ -127,7 +127,7 @@
                 <div class="col m-2 input-group">
                     <span class="input-group-text darkInput"><strong><%= productInfos.price %>&euro;</strong></span>
                     <span class="input-group-text darkInput">x</span>
-                    <input type="number" class="form-control darkInput" placeholder="Qté" aria-label="Qté" aria-describedby="basic-addon1">
+                    <input type="number" min="1" class="form-control darkInput" placeholder="Qté" aria-label="Qté" aria-describedby="basic-addon1">
                 </div>
                 <input type="text" hidden name="productID" value="<%= productInfos._id %>" >
                 <button class="col-4 m-2 btn btn-context" type="submit">
