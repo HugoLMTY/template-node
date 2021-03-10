@@ -1,1 +1,79 @@
-<p>index</p>
+<style>
+
+.carousel-item, .carousel-item img{
+    height: 500px;
+}
+    
+</style>
+
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner" class="carouselHolder">
+      <div class="carousel-item active">
+        <img src="/img/samplePrint_1.jpg" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="/img/samplePrint_2.jpg" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item">
+        <img src="/img/samplePrint_3.jpg" class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"  data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"  data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+<div class="indexLatestsProducts mb-4">
+  <h3>Les derniers produits sortis ></h3>
+  <div class="row">
+    <% latest.forEach(product => { %> 
+        <a href="/shop/product/<%= product._id %>" class="col-2 productHolder mb-4">
+            <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+            <div class="productShadow">
+              <p class="productTip">Nouveau</p>
+              <p class="productTitle"> <%= product.name %> </p>
+              <p class="productPrice btn-context"><%= product.price %>€</p>
+            </div>
+        </a>
+    <% }) %>
+  </div>
+</div>
+
+<div class="indexBestSellersProducts mb-4">
+  <h3>Les meilleures ventes ></h3>
+  <div class="row">
+    <% bestseller.forEach(product => { %> 
+        <a href="/shop/product/<%= product._id %>" class="col-2 productHolder mb-4">
+            <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+            <div class="productShadow">
+              <p class="productTip">Super cool</p>
+              <p class="productTitle"> <%= product.name %> </p>
+              <p class="productPrice btn-context"><%= product.price %>€</p>
+            </div>
+        </a>
+    <% }) %>
+  </div>
+</div>
+
+<div class="indexBestSellersProducts mb-4">
+  <h3>Bientôt plus en stock ></h3>
+  <div class="row">
+    <% lowstock.forEach(product => { %> 
+        <a href="/shop/product/<%= product._id %>" class="col-2 productHolder mb-4">
+            <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+            <div class="productShadow">
+              <p class="productTip">Plus que <%= product.qty %></p>
+              <p class="productTitle"> <%= product.name %> </p>
+              <p class="productPrice btn-context"><%= product.price %>€</p>
+            </div>
+        </a>
+    <% }) %>
+  </div>
+</div>
+

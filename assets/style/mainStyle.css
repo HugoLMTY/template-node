@@ -9,6 +9,10 @@ body{
     color: white;
 }
 
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 .btn-context {
     background: linear-gradient(90deg, #80dfff, #33ccff) !important;
 }
@@ -21,6 +25,11 @@ body{
     color: black;
 }
 
+.tooltip-context{
+    color: gray;
+    font-size: 0.8em;
+}
+
 .list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
     background: linear-gradient(90deg, #30c4fc, #66e0ff) !important;
     border: 0px;
@@ -30,6 +39,7 @@ body{
 .text-context{
     color: gray;
     transition: 0.2s;
+    font-size: 1.5em;
 }
 
 .text-context:hover{

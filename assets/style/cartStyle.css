@@ -1,0 +1,28 @@
+.cartProductHolder{
+    border: 1px solid transparent;
+
+    border-radius: 5px;
+
+    transition: 0.1s;
+
+    margin: 10px;
+}
+
+.cartProductHolder img{
+    height: 90px;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    margin-left: -12px;
+}
+
+.cartProductHolder:hover{
+    border: 1px solid #80dfff;
+}
+
+
+.totalCart{
+    border: 1px solid gray;
+    border-radius: 10px;
+
+    min-height: 210px;
+}

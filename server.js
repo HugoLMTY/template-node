@@ -13,6 +13,8 @@ db.once('open', () => console.log('Mongoose OK'))
 
 const indexRouter = require('./routes/index')
 const userRouter = require('./routes/user')
+const shopRouter = require('./routes/shop')
+const cartRouter = require('./routes/cart')
 
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
@@ -25,5 +27,7 @@ app.use(cookieParser())
 
 app.use('/', indexRouter)
 app.use('/user', userRouter)
+app.use('/shop', shopRouter)
+app.use('/cart', cartRouter)
 
-app.listen(3000)
+app.listen(3000, () => console.log('http://localhost:3000'))

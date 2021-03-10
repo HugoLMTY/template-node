@@ -2,28 +2,27 @@
 
 <div class="row justify-content-center">
     <form action="/shop/new" method="POST">
-        <button class="btn btn-context text-context" type="submit" >Ajouter un produit</button>
+        <a href="/shop/addProduct" class="btn btn-context" style="position: relative; left: 80%; transform: scale(1.2);" type="submit" >Ajouter un produit</a>
     </form>
     <div class="col-3 justify-content-center p-4">
         <h4 class="title-context">Filtrer les résulats</h4>
-        <form action="/shop/filterProducts" class="container" method="GET">
+        <form action="/shop/" class="container" method="GET">
 
             <%- include('forms/_forms_filters') %>
 
-            <button class="btn btn-context w-100" style="color: black;" type="submit"> Chercher </button>
+            <button class="btn btn-context w-100" type="submit"> Chercher </button>
         </form>
     </div>
 
     <div class="col-9 row">
-
         <% productList.forEach(product => { %> 
-            <div class="col-3 productHolder mb-4">
+            <a href="/shop/product/<%= product._id %>" class="col-3 productHolder mb-4">
                 <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
                 <div class="productShadow">
                     <p class="productTitle"> <%= product.name %> </p>
                     <p class="productPrice btn-context"><%= product.price %>€</p>
                 </div>
-            </div>
+            </a>
         <% }) %>
     </div>
 </div>
