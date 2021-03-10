@@ -33,6 +33,9 @@ const productSchema = new mongoose.Schema({
     },
     lenght: {
         type: Number
+    },
+    weight: {
+        type: Number
     }
 })
 

@@ -1,4 +1,4 @@
-<form action="shop/newProduct" method="POST" class="container">
+<form action="/shop/new" method="POST" class="container">
     <div class="row" style="min-height: 200px;">
 
         <div class="col-4">
@@ -7,7 +7,7 @@
                     <figure>
                         <div class="form-group">
                             <input class="form-control darkInput" type="file" 
-                            id="formFile" required>
+                            id="formFile" name="pathImgProduct" required>
                         </div>
                     </figure>
 
@@ -49,10 +49,11 @@
 
         <div class="col-3">
                 <div class="col m-2 input-group">                  
-                    <input type="text" class="form-control darkInput" 
+                    <input type="text" class="form-control darkInput" name="newProductPrice"
                     placeholder="Prix" aria-label="Prix">
                     <span class="input-group-text darkInput">x</span>
-                    <span class="input-group-text darkInput">Qté</span>
+                    <input type="text" class="form-control darkInput" name="newProductQty"
+                    placeholder="Qté" aria-label="Qty">
                 </div>
                 <button class="col-4 m-2 btn btn-context" type="submit">
                     Mettre en ligne
@@ -79,10 +80,22 @@
                 </tr>
 
                 <tr>
-                    <td><input type="text" class="form-control w-25 darkInput" placeholder="(cm)" required></td>
-                    <td><input type="text" class="form-control w-25 darkInput" placeholder="(cm)" required></td>
-                    <td><input type="text" class="form-control w-25 darkInput" placeholder="(cm)" required></td>
-                    <td><input type="number" class="form-control w-25 darkInput" placeholder="(g)" required></td>
+                    <td>
+                        <input type="number" class="form-control w-25 darkInput" 
+                        name="newProductWidth" placeholder="(cm)" required></td>
+                    <td>
+                        <input type="number" class="form-control w-25 darkInput" 
+                        name="newProductHeight" placeholder="(cm)" required>
+                    </td>
+                    <td>
+                        <input type="number" class="form-control w-25 darkInput" 
+                        name="newProducLength" placeholder="(cm)" required>
+                    </td>
+                    <td>
+                        <input type="number" class="form-control w-25 darkInput" 
+                        name="newProducWeight" placeholder="(g)" required>
+                    </td>
+
                     <td>
                         <select class="darkSelect" name="" id=""  required>
                             <option value="pla">PLA</option>

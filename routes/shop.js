@@ -124,18 +124,22 @@ router.get('/addProduct', (req, res) => {
 
 router.post('/new', (req, res) => {
 
+    const _uid = req.cookies['uid']
+    const r = req.body
+
     const newProduct = new Product({
-        name: 'prod1',
-        price: 39,
-        creator: '6036577f14b1bb7df44bfa0b',
+        name: r.newProductName,
+        price: r.newProductPrice,
+        creator: _uid,
         uploadDate: getDate(),
-        desc: 'product desc',
-        qty: 42, 
+        desc: r.newProductDesc,
+        qty: r.newProductQty,
         type: 'item',
-        pathImg: 'samplePrint_3.jpg',
-        height: '11',
-        width: '12',
-        lenght: '12',
+        pathImg: r.pathImgProduct,
+        width: r.newProductWidth,
+        height: r.newProductHeight,
+        lenght: r.newProducLength,
+        weight: r.newProducWeight
     })
     res.send(newProduct)
     // newProduct.save().then(
