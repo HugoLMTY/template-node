@@ -1,22 +1,26 @@
 <script>
-  var dark = '/style/dark.css'
-  var light = '/style/light.css'
-  target = document.getElementById('pathTheme')
   function changeTheme() {
-    console.log(target.href)
+    var dark = '/style/dark.css'
+    var light = '/style/light.css'
+    var target = document.getElementById('pathTheme')
 
-    switch(target.href) {
-      case dark:
-        target.href = light
-        console.log(target.href)
+   switch(target.getAttribute('href')) {
+    case dark:
+        target.setAttribute('href', light)
         break
       case light:
-        target.href = dark
-        console.log(target.href)
+        target.setAttribute('href', dark)
         break
-    }
-    
-      
+   } 
+
+    // switch(target.href) {
+    //   case url + '/style/dark.css':
+    //     target.setAttribute(href, light)
+    //     break
+    //   case url + '/style/light.css':
+    //     target.setAttribute(href, dark)
+    //     break
+    // }
   }
 </script>
 <nav class="mb-5 mt-2">

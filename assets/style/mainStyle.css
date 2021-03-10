@@ -2,6 +2,8 @@ html {
     margin: 0;
     overflow-x: hidden;
     font-family: bahnschrift;
+    background-image: '/img/background/bg_body.jpg';
+    background-repeat: no-repeat;
 }
 
 /* body{
