@@ -6,17 +6,17 @@ const User = require('../models/User')
 function getDate() {
 
     const date = new Date().toJSON().split('T')[0]
-    
+
     let day = date.split('-')[2]
     let month = date.split('-')[1]
     let year = date.split('-')[0]
 
-    return(day + '-' + month + '-' + year)
+    return (day + '-' + month + '-' + year)
 }
 
 router.get('/', async (req, res) => {
     const r = req.query
-    
+
     let currentOptions = {}
 
     let searchOptions = {}
@@ -31,46 +31,45 @@ router.get('/', async (req, res) => {
 
     switch (r.productFilterSort) {
         case 'by_name':
-            sortOption = {'name': -1}
+            sortOption = { 'name': -1 }
             break
-        
-        case 'by_name_': 
-            sortOption = {'name': 1}
+
+        case 'by_name_':
+            sortOption = { 'name': 1 }
             break
 
         case 'by_name':
-            sortOption = {'name': -1}
+            sortOption = { 'name': -1 }
             break
-        
-        case 'by_name_': 
-            sortOption = {'name': 1}
+
+        case 'by_name_':
+            sortOption = { 'name': 1 }
             break
 
         case 'by_name':
-            sortOption = {'name': -1}
+            sortOption = { 'name': -1 }
             break
-        
-        case 'by_name_': 
-            sortOption = {'name': 1}
+
+        case 'by_name_':
+            sortOption = { 'name': 1 }
             break
-    
+
     }
 
     // ------------  PRICE  ------------------------------------
-    if (r.productFilterMinPrice && r.productFilterMaxPrice)
-    {
+    if (r.productFilterMinPrice && r.productFilterMaxPrice) {
         searchOptions.price = {
             $gte: r.productFilterMinPrice,
             $lte: r.productFilterMaxPrice
         }
         currentOptions.minPrice = parseInt(r.productFilterMinPrice)
         currentOptions.maxPrice = parseInt(r.productFilterMaxPrice)
-    } 
+    }
     else if (r.productFilterMinPrice) {
-        searchOptions.price = { $gte: r.productFilterMinPrice }    
+        searchOptions.price = { $gte: r.productFilterMinPrice }
         currentOptions.minPrice = parseInt(r.productFilterMinPrice)
     }
-    else if (r.productFilterMaxPrice){
+    else if (r.productFilterMaxPrice) {
         searchOptions.price = { $lte: r.productFilterMaxPrice }
         currentOptions.maxPrice = parseInt(r.productFilterMaxPrice)
     }
@@ -90,7 +89,7 @@ router.get('/', async (req, res) => {
     if (r.productFilterIsStock)
         searchOptions.qty > 0
 
-    
+
     currentOptions = searchOptions
 
     // console.log(currentOptions)
@@ -110,13 +109,13 @@ router.get('/addProduct', (req, res) => {
 
     const _uid = req.cookies['uid']
     try {
-        User.findOne({'_id': _uid}).then(
+        User.findOne({ '_id': _uid }).then(
             (userInfos) => {
                 res.render('shop/newProduct', {
                     userInfos: userInfos,
                     date: getDate()
                 })
-        })
+            })
     } catch {
         res.redirect('/shop/')
     }
@@ -159,14 +158,13 @@ router.get('/products', async (req, res) => {
 
 
     // ------------  PRICE  ------------------------------------
-    if (r.productFilterMinPrice && r.productFilterMaxPrice)
-    {
+    if (r.productFilterMinPrice && r.productFilterMaxPrice) {
         searchOptions.price = {
             $gte: r.productFilterMinPrice,
             $lte: r.productFilterMaxPrice
         }
-    } 
-    else if (r.productFilterMinPrice) 
+    }
+    else if (r.productFilterMinPrice)
         searchOptions.price = { $gte: r.productFilterMinPrice }
     else if (r.productFilterMaxPrice)
         searchOptions.price = { $lte: r.productFilterMaxPrice }
@@ -191,7 +189,7 @@ router.get('/products', async (req, res) => {
         res.render('shop/index', {
             productList: productList
         })
-    } catch(e) {
+    } catch (e) {
         res.send('erreur: ', e)
     }
 })
@@ -212,21 +210,21 @@ router.get('/product/:id', async (req, res) => {
                 _id: productInfos.creator
             }).then(
                 (userInfos) => {
-                    infos.push(userInfos) 
-            }).then(
-                Product.find({ 'type': productType}).limit(4).then(
-                    (similarProducts) => {
-                        infos.push(similarProducts)
-                        res.render('shop/productInfos', {
-                            productInfos: infos[0],
-                            userInfos: infos[1],
-                            similarProducts: infos[2]
-                        })
-                    }
+                    infos.push(userInfos)
+                }).then(
+                    Product.find({ 'type': productType }).limit(4).then(
+                        (similarProducts) => {
+                            infos.push(similarProducts)
+                            res.render('shop/productInfos', {
+                                productInfos: infos[0],
+                                userInfos: infos[1],
+                                similarProducts: infos[2]
+                            })
+                        }
+                    )
                 )
-            )
-    })
+        })
 })
 
 
-module.exports = router 
+module.exports = router

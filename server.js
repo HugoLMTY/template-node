@@ -30,4 +30,4 @@ app.use('/user', userRouter)
 app.use('/shop', shopRouter)
 app.use('/cart', cartRouter)
 
-app.listen(3000, () => console.log('http://localhost:3000'))
+app.listen(6969, () => console.log('http://localhost:6969'))
