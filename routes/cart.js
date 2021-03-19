@@ -32,8 +32,6 @@ router.get('/', async (req, res) => {
 
     const productInfos = await Product.find({ _id: { $in: itemList } })
 
-
-
     const cartInfos = ({
         name: productInfos.name,
         priceU: productInfos.price,
@@ -46,6 +44,7 @@ router.get('/', async (req, res) => {
         cartInfos: shoppingCartInfos
     })
     
+    // Create shoppingcart is user doesnt have one //
     // const productInfos = await ShoppingCart.findOne({ user: _uid }).then(
     //     (result) => {
     //         if (result.length < 1) 
@@ -93,14 +92,21 @@ router.post('/addProduct', async (req, res) => {
         })
 })
 
-router.post('/deleteProduct', async (req, res) => {
-    ShoppingCart.find({ user: _uid  }).then(
-        (result) => {
+router.post('/cartAction', async (req, res) => {
+    const _uid = req.cookies['uid']
 
+    ShoppingCart.findOne({ user: _uid  }).then(
+        (result) => {
+            // res.send(result)
+            console.log('id: ', req.body.cartProductID)
+            CartItem.find({ idCart: result._id, _id: req.body.cartProductID }).then(
+                (result) => {
+                    res.redirect('/cart/')
+                }
+            )
         }
     )
 })
-
 
 async function getCartTotalPrice(_uid, toAdd) {
     const productList = await ShoppingCart.findOne({ user: _uid}).then(

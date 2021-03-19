@@ -1,3 +1,25 @@
+<script>
+    function affQtyValidation(qty) {
+        var targetHide = document.getElementById('cartUpdateQtyBtnPlaceHolder')
+        var targetAff = document.getElementById('cartUpdateQtyBtn')
+        var targetInput = document.getElementById('inputCartItemQty')
+
+        targetHide.style.display = 'none'
+        targetAff.style.display = 'block'
+        targetInput.value = qty
+    }
+
+    function setQtyValidation(qty) {
+        var targetHide = document.getElementById('cartUpdateQtyBtnPlaceHolder')
+        var targetAff = document.getElementById('cartUpdateQtyBtn')
+        var targetInput = document.getElementById('inputCartItemQty')
+
+        targetHide.style.display = 'block'
+        targetAff.style.display = 'none'
+        targetInput.value = qty
+    }
+</script>
+
 <div class="container">
     <div class="row">
         <div class="col-8">
@@ -27,21 +49,48 @@
                     </div>
                 </div> -->
                 <% itemList.forEach(product => { %>
-                <div class="row cartProductHolder">
+                <form action="/cart/cartAction" method="POST" class="row cartProductHolder">
+                    <input type="text" 
+                    hidden name="cartProductID" 
+                    value="<% product.name %> ">
                     <div class="col-3">
                         <img height="90px" src="/img/<%= product.pathImg %>">
                     </div>
 
                     <div class="col-6">
                         <p><%= product.name %></p>
-                        <p><%= product.price %>€ x qté</p>
+                        <div class="col-3 row input-group w-75">
+                            <span class="col input-group-text darkInput">
+                                <strong><%= product.price %>&euro;</strong>
+                            </span>
+                            <span class="col-1 input-group-text darkInput">x</span>
+
+                            <input type="number" min="1" 
+                            onchange="affQtyValidation(7)"
+                            class="col-1 form-control darkInput w-25" 
+                            placeholder="Qté" aria-label="Qté" id="inputCartItemQty"
+                            aria-describedby="basic-addon1">
+
+                            <div id="cartUpdateQtyBtnPlaceHolder" 
+                            class="col-5"></div>
+
+                            <button id="cartUpdateQtyBtn" 
+                            onclick="setQtyValidation(7)"
+                            class="col-5 btn btn-context" style="display: none;"
+                            type="submit" value="updateItemQty"> 
+                                Valider
+                            </button>
+                        </div>
                     </div>
 
                     <div class="col-3">
                         <p>prix total</p>
-                        <p>suprr</p>
+                        <button class="btn btn-danger" 
+                        type="submit" value="updateItemQty"> 
+                            Suppr
+                        </button>
                     </div>
-                </div>
+                </form>
                 <% }) %>
             <% } else { %>
                 <p>Panier vide</p>
