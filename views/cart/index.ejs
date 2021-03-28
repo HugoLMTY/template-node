@@ -1,95 +1,75 @@
 <script>
-    function affQtyValidation(qty) {
-        var targetHide = document.getElementById('cartUpdateQtyBtnPlaceHolder')
-        var targetAff = document.getElementById('cartUpdateQtyBtn')
-        var targetInput = document.getElementById('inputCartItemQty')
-
+    function affQtyValidation(id) {
+        console.log(id)
+        var targetHide = document.getElementById(id + '_holder')
+        var targetAff = document.getElementById(id + '_btn')
+        
         targetHide.style.display = 'none'
         targetAff.style.display = 'block'
-        targetInput.value = qty
     }
 
-    function setQtyValidation(qty) {
+    function setQtyValidation() {
         var targetHide = document.getElementById('cartUpdateQtyBtnPlaceHolder')
         var targetAff = document.getElementById('cartUpdateQtyBtn')
-        var targetInput = document.getElementById('inputCartItemQty')
 
         targetHide.style.display = 'block'
         targetAff.style.display = 'none'
-        targetInput.value = qty
     }
 </script>
 
 <div class="container">
     <div class="row">
-        <div class="col-8">
-            items
-        </div>
-        
-        <div class="col-4">   
-            total
-        </div>
 
 
         <div class="col-8">
-            <% if (itemList.length > 0) { %>
-                <!-- <div class="row">
-                    <div class="col-3">
-                        img
-                    </div>
+            <% if (cartList.length > 0) { %>
+                <% cartList.forEach(product => { %>
 
-                    <div class="col-6">
-                        <p>nom</p>
-                        <p>prix uni. / qté</p>
-                    </div>
-
-                    <div class="col-3">
-                        <p>prix total</p>
-                        <p>suprr</p>
-                    </div>
-                </div> -->
-                <% itemList.forEach(product => { %>
                 <form action="/cart/cartAction" method="POST" class="row cartProductHolder">
-                    <input type="text" 
-                    hidden name="cartProductID" 
-                    value="<% product.name %> ">
+                    <input type="text" hidden name="cartProductID" value="<%= product._id %>">
                     <div class="col-3">
-                        <img height="90px" src="/img/<%= product.pathImg %>">
+                        <img height="90px" src="/img/<%= product.product.pathImg %>">
                     </div>
 
                     <div class="col-6">
                         <p><%= product.name %></p>
                         <div class="col-3 row input-group w-75">
                             <span class="col input-group-text darkInput">
-                                <strong><%= product.price %>&euro;</strong>
+                                <strong><%= product.product.price %>&euro;</strong>
                             </span>
                             <span class="col-1 input-group-text darkInput">x</span>
 
                             <input type="number" min="1" 
-                            onchange="affQtyValidation(7)"
+                            onmouseup="affQtyValidation(cartProductID.value)"
                             class="col-1 form-control darkInput w-25" 
+                            value="<%= product.qty %>"
+                            name="newQty"
                             placeholder="Qté" aria-label="Qté" id="inputCartItemQty"
                             aria-describedby="basic-addon1">
 
-                            <div id="cartUpdateQtyBtnPlaceHolder" 
+                            <div id="<%= product._id %>_holder" 
                             class="col-5"></div>
 
-                            <button id="cartUpdateQtyBtn" 
-                            onclick="setQtyValidation(7)"
+                            <button id="<%= product._id %>_btn"
+                            name="cartActionSubmit"
+                            onclick="setQtyValidation(cartProductID.value)"
                             class="col-5 btn btn-context" style="display: none;"
-                            type="submit" value="updateItemQty"> 
+                            type="submit" value="update"> 
                                 Valider
                             </button>
                         </div>
                     </div>
 
-                    <div class="col-3">
-                        <p>prix total</p>
-                        <button class="btn btn-danger" 
-                        type="submit" value="updateItemQty"> 
+
+                    <div class="col-3" style="text-align: center;">
+                        <p> <%= product.product.price * product.qty %>€  </p>
+                        <button class="btn btn-danger"
+                        name="cartActionSubmit" type="submit" 
+                        value="delete"> 
                             Suppr
                         </button>
                     </div>
+
                 </form>
                 <% }) %>
             <% } else { %>
@@ -99,7 +79,11 @@
 
         <div class="col-4">
             <form class="container-fluid totalCart">
-                <p>Total: <%= cartInfos.price %> </p>
+                <p>Total: 
+                <% var totalPrice = 0 %>
+                <% cartList.forEach(element => { totalPrice = totalPrice + element.totalPrice }) %> 
+                <%= totalPrice %>
+                </p>
 
                 <button class="btn btn-context col-6">Payer</button>
             </form>

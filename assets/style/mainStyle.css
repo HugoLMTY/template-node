@@ -22,7 +22,7 @@ input[type=number] {
 }
 
 .label-context{
-    color: black;
+    color: white;
 }
 
 .tooltip-context{
@@ -30,9 +30,20 @@ input[type=number] {
     font-size: 0.8em;
 }
 
-.list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+
+.list-group-item.active, 
+.list-group-item.active:hover, 
+.list-group-item.active:focus {
     background: linear-gradient(90deg, #30c4fc, #66e0ff) !important;
     border: 0px;
+}
+
+.carousel-inner{
+    overflow: visible;
+}
+
+.carousel-item-context, .carousel-item-context img{
+    height: 250px !important;
 }
 
 /* ---------------- NAV ------------------- */

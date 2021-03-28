@@ -6,14 +6,39 @@ const Product = require('../models/Product')
 
 router.get('/', async (req, res) => { 
 
-    const latest = await Product.find({}).sort({'uploadDate': -1}).limit(6)
-    const bestseller = await Product.find({}).limit(6)
-    const lowstock = await Product.find({ qty: { $gte: 1 } }).sort('qty').limit(6)
+    const limit = 3
+
+    const latest = 
+        await Product.find({})
+            .sort({'uploadDate': -1})
+            .limit(limit)
+            
+    const latest_2 = 
+        await Product.find({})
+            .sort({'uploadDate': -1})
+            .limit(limit)
+            .skip(limit)
+    
+    const latest_3 = 
+        await Product.find({})
+            .sort({'uploadDate': -1})
+            .limit(limit)
+            .skip(limit * 2)
+
+    const bestseller = 
+        await Product.find({})
+            .limit(limit + 2)
+    const lowstock = 
+        await Product.find({ qty: { $gte: 1 } })
+            .sort('qty')
+            .limit(limit)
 
     res.render('index', {
-        latest: latest,
-        bestseller: bestseller,
-        lowstock: lowstock
+        latest,
+        latest_2,
+        latest_3,
+        bestseller,
+        lowstock
     })
 })
 

@@ -14,9 +14,9 @@
         </form>
     </div>
 
-    <div class="col-9 row">
+    <div class="col-9 row row-cols-4">
         <% productList.forEach(product => { %> 
-            <a href="/shop/product/<%= product._id %>" class="col-3 productHolder mb-4">
+            <a href="/shop/product/<%= product._id %>" class="col productHolder mb-4">
                 <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
                 <div class="productShadow">
                     <p class="productTitle"> <%= product.name %> </p>

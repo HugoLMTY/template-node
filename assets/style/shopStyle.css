@@ -85,7 +85,7 @@
     color: white;
 }
 
-.darkInput:active ~ .darkLabel, .darkInput:placeholder-shown ~ .darkLabel{
+.darkInput:active ~ .darkLabel{
     color: black !important;
 }
 
@@ -133,5 +133,5 @@
 }
 
 #productImgjs{
-    /* cursor: none; */
+    cursor: none;
 }

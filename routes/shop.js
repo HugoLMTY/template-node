@@ -17,7 +17,7 @@ function getDate() {
 router.get('/', async (req, res) => {
     const r = req.query
 
-    let currentOptions = {}
+    let currentOptions = r
 
     let searchOptions = {}
     let sortOption = {}
@@ -38,22 +38,29 @@ router.get('/', async (req, res) => {
             sortOption = { 'name': 1 }
             break
 
-        case 'by_name':
-            sortOption = { 'name': -1 }
+        case 'by_price':
+            sortOption = { 'price': -1 }
             break
 
-        case 'by_name_':
-            sortOption = { 'name': 1 }
+        case 'by_price_':
+            sortOption = { 'price': 1 }
             break
 
-        case 'by_name':
-            sortOption = { 'name': -1 }
+        case 'by_upload':
+            sortOption = { 'uploadDate': -1 }
             break
 
-        case 'by_name_':
-            sortOption = { 'name': 1 }
+        case 'by_upload_':
+            sortOption = { 'uploadDate': 1 }
+            break
+            
+        case 'by_qty':
+            sortOption = { 'qty': -1 }
             break
 
+        case 'by_qty_':
+            sortOption = { 'qty': 1 }
+            break
     }
 
     // ------------  PRICE  ------------------------------------
@@ -62,16 +69,12 @@ router.get('/', async (req, res) => {
             $gte: r.productFilterMinPrice,
             $lte: r.productFilterMaxPrice
         }
-        currentOptions.minPrice = parseInt(r.productFilterMinPrice)
-        currentOptions.maxPrice = parseInt(r.productFilterMaxPrice)
     }
     else if (r.productFilterMinPrice) {
         searchOptions.price = { $gte: r.productFilterMinPrice }
-        currentOptions.minPrice = parseInt(r.productFilterMinPrice)
     }
     else if (r.productFilterMaxPrice) {
         searchOptions.price = { $lte: r.productFilterMaxPrice }
-        currentOptions.maxPrice = parseInt(r.productFilterMaxPrice)
     }
 
 
@@ -90,16 +93,12 @@ router.get('/', async (req, res) => {
         searchOptions.qty > 0
 
 
-    currentOptions = searchOptions
-
-    // console.log(currentOptions)
-
 
     Product.find(searchOptions).sort(sortOption).then(
         (productList) => {
             res.render('shop/index', {
-                productList: productList,
-                currentOptions: currentOptions
+                productList,
+                currentOptions
             })
         })
 
@@ -112,7 +111,7 @@ router.get('/addProduct', (req, res) => {
         User.findOne({ '_id': _uid }).then(
             (userInfos) => {
                 res.render('shop/newProduct', {
-                    userInfos: userInfos,
+                    userInfos,
                     date: getDate()
                 })
             })
@@ -146,7 +145,7 @@ router.post('/new', (req, res) => {
     // )
 })
 
-router.get('/products', async (req, res) => {
+router.get('/', async (req, res) => {
     const searchOptions = {}
     const r = req.body
 
