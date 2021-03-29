@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const Product = require('../models/Product')
 const User = require('../models/User')
+const Review = require('../models/Review')
 
 function getDate() {
 
@@ -93,6 +94,8 @@ router.get('/', async (req, res) => {
         searchOptions.qty > 0
 
 
+    const reviewList = await Review.find({})
+
 
     Product.find(searchOptions).sort(sortOption).then(
         (productList) => {
@@ -145,85 +148,64 @@ router.post('/new', (req, res) => {
     // )
 })
 
-router.get('/', async (req, res) => {
-    const searchOptions = {}
+router.get('/product/:id', async (req, res) => {
+    const productID = req.params.id
+
+    const productInfos = await Product.findOne({ _id: productID })
+    const userInfos = await User.findOne({ _id: productInfos.creator })
+    const similarProducts = await Product.find({ type: productInfos.type }).limit(4)
+
+    const reviewList = await Review.find({ product: productInfos }).sort({ 'rating': -1 })
+
+    res.render('shop/productInfos', {
+        productInfos, 
+        userInfos,
+        similarProducts,
+        reviewList
+    })
+
+    // Product.findOne({
+    //     _id: productID
+    // }).then(
+    //     (productInfos) => {
+    //         productType = productInfos.type
+    //         infos.push(productInfos)
+    //         User.findOne({
+    //             _id: productInfos.creator
+    //         }).then(
+    //             (userInfos) => {
+    //                 infos.push(userInfos)
+    //             }).then(
+    //                 Product.find({ 'type': productType }).limit(4).then(
+    //                     (similarProducts) => {
+    //                         infos.push(similarProducts)
+    //                         res.render('shop/productInfos', {
+    //                             productInfos: infos[0],
+    //                             userInfos: infos[1],
+    //                             similarProducts: infos[2]
+    //                         })
+    //                     }
+    //                 )
+    //             )
+    //     })
+})
+
+router.post('/addReview', async (req, res) => {
+
+    const _uid = req.cookies['uid']
     const r = req.body
 
-    // ------------  NAME  ------------------------------------
-    if (r.productFilterName)
-        searchOptions.name = {
-            $in: r.productFilterName
-        }
+    const product = await Product.findOne({ _id: r.productID })
+    const user = await User.findOne({ _id: _uid })
 
+    new Review({
+        product,
+        user, 
+        rating: r.productRating,
+        comment: r.productComment,
+        date: getDate()
+    }).save()
 
-    // ------------  PRICE  ------------------------------------
-    if (r.productFilterMinPrice && r.productFilterMaxPrice) {
-        searchOptions.price = {
-            $gte: r.productFilterMinPrice,
-            $lte: r.productFilterMaxPrice
-        }
-    }
-    else if (r.productFilterMinPrice)
-        searchOptions.price = { $gte: r.productFilterMinPrice }
-    else if (r.productFilterMaxPrice)
-        searchOptions.price = { $lte: r.productFilterMaxPrice }
-
-
-    // ------------  DIMENSIONS  ------------------------------------
-    if (r.productFilterWidth)
-        searchOptions.width = r.productFilterWidth
-
-    if (r.productFilterWidth)
-        searchOptions.height = r.productFilterHeight
-
-    if (r.productFilterLength)
-        searchOptions.lenght = r.productFilterLenght
-
-    // ------------  STOCK  ------------------------------------
-    if (r.productFilterIsStock)
-        searchOptions.qty > 0
-
-    try {
-        const productList = await Product.find(searchOptions)
-        res.render('shop/index', {
-            productList: productList
-        })
-    } catch (e) {
-        res.send('erreur: ', e)
-    }
+    res.redirect('/shop')
 })
-
-router.get('/product/:id', async (req, res) => {
-
-    let infos = []
-    const productID = req.params.id
-    let productType = ""
-
-    Product.findOne({
-        _id: productID
-    }).then(
-        (productInfos) => {
-            productType = productInfos.type
-            infos.push(productInfos)
-            User.findOne({
-                _id: productInfos.creator
-            }).then(
-                (userInfos) => {
-                    infos.push(userInfos)
-                }).then(
-                    Product.find({ 'type': productType }).limit(4).then(
-                        (similarProducts) => {
-                            infos.push(similarProducts)
-                            res.render('shop/productInfos', {
-                                productInfos: infos[0],
-                                userInfos: infos[1],
-                                similarProducts: infos[2]
-                            })
-                        }
-                    )
-                )
-        })
-})
-
-
 module.exports = router

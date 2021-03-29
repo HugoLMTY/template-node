@@ -41,8 +41,8 @@
         posX = ((mouseX - offsetX) * ratioX) - (mouseW/2 * ratioX)
         posY = ((mouseY - offsetY) * ratioY) - (mouseH/2 * ratioY)
 
-        console.log('posX: ',posX)
-        console.log('posY: ',posY)
+        // console.log('posX: ',posX)
+        // console.log('posY: ',posY)
         
         targetImg.style.right = posX
         targetImg.style.top = -posY 
@@ -59,6 +59,30 @@
 
         target.style.display = 'none'
         targetZoom.style.display = 'none'
+    }
+
+    function setStars(id, rate) {
+        var i = 1
+        console.log(rate)
+
+        while (i <= rate) {
+            document.getElementById(id + '_star_' + i).classList.add('checked')
+            i++
+        }
+    }
+
+    function getInfos(item) {
+        console.log(item.classList)
+        console.log(item.id)
+
+        let stars = [
+            'star_rating_1', 
+            'star_rating_2',
+            'star_rating_3',
+            'star_rating_4',
+            'star_rating_5' ]
+
+        
     }
 </script>
 
@@ -170,10 +194,97 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="">
         <section id="details">
-            <h2>Plus d'info</h2>
-            <p>Information détaillée du produit ici</p>
+            <h2>Évaluations</h2>
+            <p>
+<!--                 
+                <span class="heading">User Rating</span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star checked"></span>
+                <span class="fa fa-star"></span>
+                <p>4.1 average based on 254 reviews.</p>
+                <hr style="border:3px solid #f1f1f1">
+                
+                <div class="row">
+                  <div class="side">
+                    <div>5 star</div>
+                  </div>
+                  <div class="middle">
+                    <div class="bar-container">
+                      <div class="bar-5"></div>
+                    </div>
+                  </div>
+                  <div class="side right">
+                    <div>150</div>
+                  </div>
+                  <div class="side">
+                    <div>4 star</div>
+                  </div>
+                  <div class="middle">
+                    <div class="bar-container">
+                      <div class="bar-4"></div>
+                    </div>
+                  </div>
+                  <div class="side right">
+                    <div>63</div>
+                  </div>
+                  <div class="side">
+                    <div>3 star</div>
+                  </div>
+                  <div class="middle">
+                    <div class="bar-container">
+                      <div class="bar-3"></div>
+                    </div>
+                  </div>
+                  <div class="side right">
+                    <div>15</div>
+                  </div>
+                  <div class="side">
+                    <div>2 star</div>
+                  </div>
+                  <div class="middle">
+                    <div class="bar-container">
+                      <div class="bar-2"></div>
+                    </div>
+                  </div>
+                  <div class="side right">
+                    <div>6</div>
+                  </div>
+                  <div class="side">
+                    <div>1 star</div>
+                  </div>
+                  <div class="middle">
+                    <div class="bar-container">
+                      <div class="bar-1"></div>
+                    </div>
+                  </div>
+                  <div class="side right">
+                    <div>20</div>
+                  </div>
+                </div> -->
+
+            </p> 
+            <div style="border: 1px solid #80dfff; border-radius: 10px; padding: 10px;">
+                <% reviewList.forEach(review => { %>
+                    <p> 
+                        <span id="<%= review._id %>_star_1" class="fa fa-star"></span>
+                        <span id="<%= review._id %>_star_2" class="fa fa-star"></span>
+                        <span id="<%= review._id %>_star_3" class="fa fa-star"></span>
+                        <span id="<%= review._id %>_star_4" class="fa fa-star"></span>
+                        <span id="<%= review._id %>_star_5" class="fa fa-star"></span>
+                        
+                        <br>
+                        <%= review.user.name %> 
+                        <script> setStars('<%= review._id %>', '<%= review.rating %>') </script>
+                    </p>
+                    <p> <%= review.comment %> </p>
+                    <span style="font-style: italic; color: gray; font-size: 0.8em;"> <%= review.date %> </span>
+                    <hr class="my-4">
+                <% }) %> 
+            </div>
         </section>
 
         <section id="characteristics">
@@ -216,6 +327,34 @@
                 <% }) %>
             </div>
         </aside>
+    </div>
+
+    <div class="row mt-5 mb-5">
+        <form method="POST" action="/shop/addReview" class="reviewHolder">
+                <input type="text" hidden name="productID" value="<%= productInfos._id %>" >
+                <div class="ratingHolder">
+
+                <style>
+                    .checked {
+                        color: #80dfff;
+                    }
+                </style>
+
+                <h2>Évaluation</h2>
+                <input type="number" hidden value="4" name="productRating">
+                <span id="star_rating_1" onclick="getInfos(this)" class="fa fa-star"></span>
+                <span id="star_rating_2" onclick="getInfos(this)" class="fa fa-star"></span>
+                <span id="star_rating_3" onclick="getInfos(this)" class="fa fa-star"></span>
+                <span id="star_rating_4" onclick="getInfos(this)" class="fa fa-star"></span>
+                <span id="star_rating_5" onclick="getInfos(this)" class="fa fa-star"></span>
+            </div>product<div class="commentHolder">
+                <textarea name="productComment" class="darkInput" 
+                cols="30" rows="10"></textarea>
+            </div>
+            <button type="submit" class="btn btn-context">
+                Envoyer la review
+            </button>
+        </form>
     </div>
 
     <!-- <div class="row mt-5 mb-5">

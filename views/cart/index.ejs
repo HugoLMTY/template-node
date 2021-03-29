@@ -1,3 +1,51 @@
+<!-- <style>
+
+    .text{
+
+        color: black;
+        background: whitesmoke;
+    }
+
+     .add{
+        height: 50px;
+        border-top-left-radius: 20px; 
+        border-bottom-right-radius: 20px; 
+        text-align: center;
+     }
+
+     .bio{
+         border-radius: 10px;
+         width: 90%;
+     }
+</style>
+
+
+<div class="w-25" style="background: gray; height: 150px;">
+
+    <div class="row" style="height: 75px;">
+        <div class="col-4">img</div>
+        <div class="col-8">
+            <div class="row">
+                <div class="col-8">nom prenom</div>
+                <div class="col-4">filière</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-4">
+            <p class="add text">Ajouter</p>
+        </div>
+        <div class="col-8 bio text">bio</div>
+    </div>
+
+</div>
+
+ -->
+
+
+
+
 <script>
     function affQtyValidation(id) {
         console.log(id)
@@ -82,7 +130,7 @@
                 <p>Total: 
                 <% var totalPrice = 0 %>
                 <% cartList.forEach(element => { totalPrice = totalPrice + element.totalPrice }) %> 
-                <%= totalPrice %>
+                <%= totalPrice %>€
                 </p>
 
                 <button class="btn btn-context col-6">Payer</button>

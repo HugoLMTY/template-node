@@ -5,19 +5,6 @@ const Product = require('../models/Product')
 const CartItem = require('../models/CartItem')
 const ShoppingCart = require('../models/ShoppingCart')
 
-function getDate() {
-
-    const date = new Date().toJSON().split('T')[0]
-    
-    let day = date.split('-')[2]
-    let month = date.split('-')[1]
-    let year = date.split('-')[0]
-
-    return(day + '-' + month + '-' + year)
-}
-
-
-
 router.get('/', async (req, res) => {
     const _uid = req.cookies['uid']
 
@@ -70,21 +57,44 @@ router.get('/', async (req, res) => {
 
 router.post('/addProduct', async (req, res) => {
     const _uid = req.cookies['uid']
+
+    const shoppingCart = await ShoppingCart.findOne({ user: _uid})
     const productInfos = await Product.findOne({ _id: req.body.productID })
+    let checkIfExists = {}
 
+    
+    checkIfExists = await CartItem.find({ idCart: shoppingCart._id, idProduct: productInfos._id })
+    
+    if (checkIfExists) {
 
-    ShoppingCart.findOne({ user: _uid}).then(
-        (result) => {
-            new CartItem ({
-                name: productInfos.name,
-                product: productInfos,
-                totalPrice: productInfos.price * req.body.cartQty,
-                // totalPrice: getCartTotalPrice(_uid, result),
-                qty: req.body.cartQty,
-                idCart: result._id,
-                idProduct: productInfos._id
-            }).save()
-        })
+        const updateQty = req.body.cartQty
+        const oldQty = checkIfExists[0].qty
+
+        const qty = parseInt(updateQty) + parseInt(oldQty)
+        const totalPrice = qty * checkIfExists[0].product.price
+
+        await CartItem.findOneAndUpdate({ 
+            idCart: shoppingCart._id, 
+            idProduct: productInfos._id }, 
+            { 
+                qty, 
+                totalPrice 
+            })
+
+    } else {
+        ShoppingCart.findOne({ user: _uid }).then(
+            (result) => {
+                new CartItem({
+                    name: productInfos.name,
+                    product: productInfos,
+                    totalPrice: productInfos.price * req.body.cartQty,
+                    // totalPrice: getCartTotalPrice(_uid, result),
+                    qty: req.body.cartQty,
+                    idCart: result._id,
+                    idProduct: productInfos._id
+                }).save()
+            })
+    }
     res.redirect('/cart')
 })
 
@@ -96,15 +106,22 @@ router.post('/cartAction', async (req, res) => {
     console.log('action: ', r.cartActionSubmit )
 
     const shoppingCart = await ShoppingCart.findOne({ user: _uid})
+    console.log(shoppingCart)
 
-    const item = await CartItem.findOne({ idCart: shoppingCart._id, idProduct: r.cartProductID})
 
     switch(req.body.cartActionSubmit) {
         case 'delete':
-            await CartItem.findByIdAndDelete(item._id);
+            await CartItem.findOneAndDelete({ _id: r.cartProductID })
+            break;
 
         case 'update':
-            await CartItem.updateOne({ _id: item._id }, { qty: r.newQty })
+            const product = await CartItem.findOne({ _id: r.cartProductID})
+            await CartItem.findOneAndUpdate(
+                { _id: r.cartProductID }, 
+                { 
+                    qty: r.newQty,
+                    totalPrice: r.newQty * product.product.price 
+                })
             break;
     }
     res.redirect('/cart')
