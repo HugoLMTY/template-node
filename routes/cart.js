@@ -65,7 +65,7 @@ router.post('/addProduct', async (req, res) => {
     
     checkIfExists = await CartItem.find({ idCart: shoppingCart._id, idProduct: productInfos._id })
     
-    if (checkIfExists) {
+    if (checkIfExists.length > 0) {
 
         const updateQty = req.body.cartQty
         const oldQty = checkIfExists[0].qty

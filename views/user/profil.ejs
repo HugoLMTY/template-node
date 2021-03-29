@@ -11,9 +11,13 @@
     <div class="row">
         <div class="col-4" id="profileTabListHolder">
             <div class="list-group" id="profile-list" role="tablist">
+
                 <a class="list-group-item list-group-item-action active" id="list-action" data-bs-toggle="list"
                 href="#list-action-tab" role="tab" aria-controls="action">Produits en ligne</a>
-
+            
+                <a class="list-group-item list-group-item-action" id="list-orders" data-bs-toggle="list"
+                href="#list-orders-tab" role="tab" aria-controls="orders">Commandes passéees</a>
+            
                 <a class="list-group-item list-group-item-action" id="list-settings" data-bs-toggle="list"
                 href="#list-settings-tab" role="tab" aria-controls="settings">Settings</a>
 
@@ -25,6 +29,10 @@
             <div class="tab-content" id="nav-tabContent">
                 <div class="tab-pane fade show active" id="list-action-tab" role="tabpanel" aria-labelledby="list-action">
                     <%- include('partials/productList.ejs') %>
+                </div>
+
+                <div class="tab-pane fade show" id="list-orders-tab" role="tabpanel" aria-labelledby="list-orders">
+                    <%- include('partials/previousCarts.ejs') %>
                 </div>
 
                 <div class="tab-pane fade show" id="list-settings-tab" role="tabpanel" aria-labelledby="list-settings">
