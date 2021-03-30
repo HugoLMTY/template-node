@@ -70,20 +70,6 @@
             i++
         }
     }
-
-    function getInfos(item) {
-        console.log(item.classList)
-        console.log(item.id)
-
-        let stars = [
-            'star_rating_1', 
-            'star_rating_2',
-            'star_rating_3',
-            'star_rating_4',
-            'star_rating_5' ]
-
-        
-    }
 </script>
 
 <div class="container">
@@ -333,15 +319,15 @@
 
     <div class="row mt-5 mb-5">
         <form method="POST" action="/shop/addReview" class="reviewHolder">
-                <input type="text" hidden name="productID" value="<%= productInfos._id %>" >
-                <div class="ratingHolder">
-
+            <input type="text" hidden name="productID" value="<%= productInfos._id %>">
+            <div class="ratingHolder">
+        
                 <style>
                     .checked {
                         color: #80dfff;
                     }
                 </style>
-
+        
                 <h2>Évaluation</h2>
                 <input type="number" hidden value="4" name="productRating">
                 <span id="star_rating_1" onclick="getInfos(this)" class="fa fa-star"></span>
@@ -349,9 +335,9 @@
                 <span id="star_rating_3" onclick="getInfos(this)" class="fa fa-star"></span>
                 <span id="star_rating_4" onclick="getInfos(this)" class="fa fa-star"></span>
                 <span id="star_rating_5" onclick="getInfos(this)" class="fa fa-star"></span>
-            </div>product<div class="commentHolder">
-                <textarea name="productComment" class="darkInput" 
-                cols="30" rows="10"></textarea>
+            </div>
+            <div class="commentHolder">
+                <textarea name="productComment" class="darkInput" cols="30" rows="10"></textarea>
             </div>
             <button type="submit" class="btn btn-context">
                 Envoyer la review
