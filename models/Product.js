@@ -22,6 +22,9 @@ const productSchema = new mongoose.Schema({
     type: {
         type: String
     },
+    rating: {
+        type: Number
+    },
     pathImg: {
         type: String
     },

@@ -1,6 +1,4 @@
-const { json } = require('body-parser')
 const express = require('express')
-const { estimatedDocumentCount } = require('../models/Product')
 const router = express.Router()
 const Product = require('../models/Product')
 
@@ -27,19 +25,32 @@ router.get('/', async (req, res) => {
 
     const bestseller = 
         await Product.find({})
+            .sort({'rating': -1})
             .limit(limit + 2)
+
     const lowstock = 
         await Product.find({ qty: { $gte: 1 } })
             .sort('qty')
             .limit(limit)
 
-    res.render('index', {
-        latest,
-        latest_2,
-        latest_3,
-        bestseller,
-        lowstock
-    })
+    if (req.cookies['uid'] != undefined) {
+        res.render('index', {
+            latest,
+            latest_2,
+            latest_3,
+            bestseller,
+            lowstock, 
+            isConnected: true
+        })
+    } else {
+        res.render('index', {
+            latest,
+            latest_2,
+            latest_3,
+            bestseller,
+            lowstock
+        })
+    }
 })
 
 module.exports = router 

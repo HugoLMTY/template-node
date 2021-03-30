@@ -6,16 +6,16 @@
     
 </style>
 
-<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" style="height: 710px;">
+<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" style="height: 1000px;">
     <div class="carousel-inner" class="carouselHolder">
       <div class="carousel-item active">
-        <img src="/img/samplePrint_1.jpg" class="d-block w-100" alt="...">
+        <img src="/img/samplePrint_1.jpg" class="d-block w-100" alt="..." style="height: 1000px;">
       </div>
       <div class="carousel-item">
-        <img src="/img/samplePrint_2.jpg" class="d-block w-100" alt="...">
+        <img src="/img/samplePrint_2.jpg" class="d-block w-100" alt="..." style="height: 1000px;">
       </div>
       <div class="carousel-item">
-        <img src="/img/samplePrint_3.jpg" class="d-block w-100" alt="...">
+        <img src="/img/samplePrint_3.jpg" class="d-block w-100" alt="..." style="height: 1000px;">
       </div>
     </div>
     <a class="carousel-control-prev" type="button" 
@@ -54,9 +54,11 @@
 </div> -->
 
 <div class="indexLatestProducts m-5">
-  <h3>Les dernières sorties</h3>
-  <div id="carouselLatest" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner container">
+  <a style="color: white; text-decoration: none;" href="/shop/?productFilterSort=by_upload">
+    <h3>Les dernières sorties</h3>
+  </a>
+  <div id="carouselLatest" class="carousel slide container d-flex justify-content-center" data-bs-ride="carousel">
+    <div class="carousel-inner w-75">
 
       <div class="carousel-item carousel-item-context active">
 
@@ -110,21 +112,6 @@
           <% }) %>
         </div>
       </div>
-
-      
-      <!-- <% latest.forEach(product => { %> 
-        <a href="/shop/product/<%= product._id %>" 
-          style="height: 250px;" class="col productHolder">
-
-          <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
-
-          <div class="productShadow">
-            <p class="productTip">Nouveau</p>
-            <p class="productTitle"> <%= product.name %> </p>
-            <p class="productPrice btn-context"><%= product.price %>€</p>
-          </div>
-        </a>
-      <% }) %> -->
         
         
       <a class="left carousel-control-prev" href="#carouselLatest"
@@ -141,13 +128,15 @@
 </div>
 
 <div class="indexBestSellersProducts m-4">
-  <h3>Les meilleures ventes ></h3>
+  <a style="color: white; text-decoration: none;" href="/shop/?productFilterSort=by_rate">
+    <h3>Les mieux notés</h3>
+  </a>
   <div class="row">
     <% bestseller.forEach(product => { %> 
         <a href="/shop/product/<%= product._id %>" class="col productHolder mb-4">
             <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
             <div class="productShadow">
-              <p class="productTip">Super cool</p>
+              <p class="productTip"><%= product.rating %></p>
               <p class="productTitle"> <%= product.name %> </p>
               <p class="productPrice btn-context"><%= product.price %>€</p>
             </div>
@@ -157,7 +146,9 @@
 </div>
 
 <div class="indexBestSellersProducts m-5">
-  <h3>Bientôt plus en stock ></h3>
+  <a style="color: white; text-decoration: none;" href="/shop/?productFilterSort=by_qty">
+    <h3>Bientôt plus en stock</h3>
+  </a>
   <div class="row">
     <div class="col">
 

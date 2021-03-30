@@ -151,7 +151,9 @@
                 <div class="col m-2 input-group">
                     <span class="input-group-text darkInput"><strong><%= productInfos.price %>&euro;</strong></span>
                     <span class="input-group-text darkInput">x</span>
-                    <input type="number" name="cartQty" min="1" class="form-control darkInput" placeholder="Qté" aria-label="Qté" aria-describedby="basic-addon1">
+                    <input type="number" name="cartQty" min="1" class="form-control darkInput" 
+                    required
+                    placeholder="Qté" aria-label="Qté" aria-describedby="basic-addon1">
                 </div>
                 <input type="text" hidden name="productID" value="<%= productInfos._id %>" >
                 <button class="col-4 m-2 btn btn-context" type="submit">
@@ -267,7 +269,8 @@
                 </div> -->
 
             </p> 
-            <div style="border: 1px solid #80dfff; border-radius: 10px; padding: 10px;">
+            <div style="padding: 10px;">
+            <!-- <div style="border: 1px solid #80dfff; border-radius: 10px; padding: 10px;"> -->
                 <% reviewList.forEach(review => { %>
                     <p> 
                         <span id="<%= review._id %>_star_1" class="fa fa-star"></span>
@@ -277,7 +280,6 @@
                         <span id="<%= review._id %>_star_5" class="fa fa-star"></span>
                         
                         <br>
-                        <%= review.user.name %> 
                         <script> setStars('<%= review._id %>', '<%= review.rating %>') </script>
                     </p>
                     <p> <%= review.comment %> </p>

@@ -5,63 +5,47 @@ const Product = require('../models/Product')
 const CartItem = require('../models/CartItem')
 const ShoppingCart = require('../models/ShoppingCart')
 
+function getDate() {
+
+    const date = new Date().toJSON().split('T')[0]
+
+    let day = date.split('-')[2]
+    let month = date.split('-')[1]
+    let year = date.split('-')[0]
+
+    return (day + '-' + month + '-' + year)
+}
+
 router.get('/', async (req, res) => {
     const _uid = req.cookies['uid']
 
     const shoppingCartInfos = await ShoppingCart.findOne({ user: _uid, state: 'current' })
 
-    const cartList = await CartItem.find({ idCart: shoppingCartInfos._id })
-
-    // const productInfos = await Product.find({ _id: { $in: itemList } })
-
-    // const cartInfos = ({
-    //     name: productInfos.name,
-    //     priceU: productInfos.price,
-    //     pathImg: productInfos.pathImg,
-        
-    // })
-    
-    res.render('cart/index', {
-        cartList
-    })
-    
-    // Create shoppingcart  //
-    // const productInfos = await ShoppingCart.findOne({ user: _uid }).then(
-    //     (result) => {
-    //         if (result.length < 1) 
-    //         {
-    //             new ShoppingCart({
-    //                 price: 0,
-    //                 user: _uid,
-    //                 cartDate: getDate(),
-    //                 state: 'created'
-    //             }).save()
-    //         }
-    //         else 
-    //         {
-    //             const productList = CartItem.find({ idCart: result._id}).then(
-    //                 (result) => {
-    //                     result.forEach(element => {        
-    //                         Product.findOne({ _id: element.idProduct }).then(
-    //                             (result) => {
-    //                                 itemList.push(result)
-    //                             })
-    //                     })
-    //                 })
-    //         }
-    //     })
-    //     res.render('cart/', { 
-    //         itemList: productList
-    //     })
+    if (shoppingCartInfos === null) {
+        new ShoppingCart({
+            user: _uid,
+            cartDate: getDate(),
+            state: 'current'
+        }).save()
+        res.render('cart/index', {
+            cartList: [],
+            isConnected: true
+        })
+    } else {
+        const cartList = await CartItem.find({ idCart: shoppingCartInfos._id })
+        res.render('cart/index', {
+            cartList,
+            isConnected: true
+        })
+    }
 })
 
 router.post('/addProduct', async (req, res) => {
     const _uid = req.cookies['uid']
 
-    const shoppingCart = await ShoppingCart.findOne({ user: _uid})
+    const shoppingCart = await ShoppingCart.findOne({ user: _uid, state: 'current'})
     const productInfos = await Product.findOne({ _id: req.body.productID })
     let checkIfExists = {}
-
     
     checkIfExists = await CartItem.find({ idCart: shoppingCart._id, idProduct: productInfos._id })
     
@@ -82,7 +66,7 @@ router.post('/addProduct', async (req, res) => {
             })
 
     } else {
-        ShoppingCart.findOne({ user: _uid }).then(
+        ShoppingCart.findOne({ user: _uid, state: 'current' }).then(
             (result) => {
                 new CartItem({
                     name: productInfos.name,
@@ -105,7 +89,7 @@ router.post('/cartAction', async (req, res) => {
     console.log('id: ', r.cartProductID)
     console.log('action: ', r.cartActionSubmit )
 
-    const shoppingCart = await ShoppingCart.findOne({ user: _uid})
+    const shoppingCart = await ShoppingCart.findOne({ user: _uid, state: 'current'})
     console.log(shoppingCart)
 
 
@@ -125,6 +109,21 @@ router.post('/cartAction', async (req, res) => {
             break;
     }
     res.redirect('/cart')
+})
+
+router.post('/cartPayment', async (req, res) => {
+    const _uid = req.cookies['uid']
+    
+    const cart = await ShoppingCart.findOneAndUpdate({
+        user: _uid,
+        state: 'current'
+    }, {
+        state: 'done'
+    })
+
+    console.log(cart)
+
+    res.redirect('/user/profil')
 })
 
 

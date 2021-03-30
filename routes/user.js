@@ -1,11 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const bcrypt = require('bcrypt')
 const User = require('../models/User')
 const Product = require('../models/Product')
+const ShoppingCart = require('../models/ShoppingCart')
+const CartItem = require('../models/CartItem')
 
 router.get('/login', (req, res) => {
-    clearCookies(res)
     res.render('user/login')
 })
 
@@ -48,23 +48,39 @@ router.post('/loginUser', async (req, res) => {
     }
 })
 
-router.get('/profil', async (req, res) => {
+router.get('/profil/', async (req, res) => {
     if (req.cookies['uid'] != undefined) {
 
         const _uid = req.cookies['uid']
 
         const productList = await Product.find({ creator: _uid })
+        const orderList = await ShoppingCart.find({ user: _uid, state: 'done' }).sort({'cartDate': -1})
+
+        let productOrderList = []
+
+        // orderList.forEach(order => {
+        //     productOrderList.push(
+        //         CartItem.find({ idCart: order._id }).then()
+        //     )
+        // })
+
+
+        console.log(productOrderList)
 
         userInfos = await User.findOne({
             _id: _uid
         })
         res.render('user/profil', {
-            userInfos: userInfos,
-            productList: productList
+            userInfos,
+            productList,
+            orderList,
+            productOrderList,
+            isConnected: true
         })
     }
-    else
+    else {
         res.redirect('/user/login')
+    }
 })
 
 router.get('/logout', (req, res) => {
@@ -77,4 +93,9 @@ function clearCookies(res) {
     res.clearCookie('uname')
 }
 
+
+async function getProductListByCartID(id) {
+    const list = await CartItem.find({ idCart: id })
+    return list
+}
 module.exports = router 

@@ -126,14 +126,14 @@
         </div>
 
         <div class="col-4">
-            <form class="container-fluid totalCart">
+            <form action="/cart/cartPayment" method="POST" class="container-fluid totalCart">
                 <p>Total: 
                 <% var totalPrice = 0 %>
                 <% cartList.forEach(element => { totalPrice = totalPrice + element.totalPrice }) %> 
                 <%= totalPrice %>€
                 </p>
 
-                <button class="btn btn-context col-6">Payer</button>
+                <button type="submit" class="btn btn-context col-6">Payer</button>
             </form>
         </div>
     

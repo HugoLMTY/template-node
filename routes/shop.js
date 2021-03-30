@@ -62,6 +62,14 @@ router.get('/', async (req, res) => {
         case 'by_qty_':
             sortOption = { 'qty': 1 }
             break
+
+        case 'by_rating':
+            sortOption = { 'rating': -1 }
+            break
+        
+        case 'by_rating':
+            sortOption = { 'rating': 1 }
+            break
     }
 
     // ------------  PRICE  ------------------------------------
@@ -78,7 +86,6 @@ router.get('/', async (req, res) => {
         searchOptions.price = { $lte: r.productFilterMaxPrice }
     }
 
-
     // ------------  DIMENSIONS  ------------------------------------
     if (r.productFilterWidth)
         searchOptions.width = r.productFilterWidth
@@ -94,16 +101,21 @@ router.get('/', async (req, res) => {
         searchOptions.qty > 0
 
 
-    const reviewList = await Review.find({})
-
-
-    Product.find(searchOptions).sort(sortOption).then(
-        (productList) => {
-            res.render('shop/index', {
-                productList,
-                currentOptions
-            })
+    const productList = await Product.find(searchOptions).sort(sortOption)
+    
+    if (req.cookies['uid'] != undefined) {
+        res.render('shop/index', {
+            productList,
+            currentOptions,
+            isConnected: true
         })
+    } else {
+        res.render('shop/index', {
+            productList,
+            currentOptions
+        })
+    }
+
 
 })
 
@@ -128,7 +140,7 @@ router.post('/new', (req, res) => {
     const _uid = req.cookies['uid']
     const r = req.body
 
-    const newProduct = new Product({
+    new Product({
         name: r.newProductName,
         price: r.newProductPrice,
         creator: _uid,
@@ -136,16 +148,14 @@ router.post('/new', (req, res) => {
         desc: r.newProductDesc,
         qty: r.newProductQty,
         type: 'item',
+        rating: 0.5,
         pathImg: r.pathImgProduct,
         width: r.newProductWidth,
         height: r.newProductHeight,
         lenght: r.newProducLength,
         weight: r.newProducWeight
-    })
-    res.send(newProduct)
-    // newProduct.save().then(
-    //     res.redirect('/shop/')
-    // )
+    }).save()
+    res.redirect('/shop/')
 })
 
 router.get('/product/:id', async (req, res) => {
@@ -157,12 +167,30 @@ router.get('/product/:id', async (req, res) => {
 
     const reviewList = await Review.find({ product: productInfos }).sort({ 'rating': -1 })
 
-    res.render('shop/productInfos', {
-        productInfos, 
-        userInfos,
-        similarProducts,
-        reviewList
-    })
+    
+    console.log(reviewList)
+
+    getRating(productInfos._id)
+
+    if (req.cookies['uid'] != undefined) {
+        res.render('shop/productInfos', {
+            productInfos, 
+            userInfos,
+            similarProducts,
+            reviewList,
+            isConnected: true
+        })
+    } else {
+        res.render('shop/productInfos', {
+            productInfos, 
+            userInfos,
+            similarProducts,
+            reviewList
+        })
+    }
+
+
+    
 
     // Product.findOne({
     //     _id: productID
@@ -195,8 +223,12 @@ router.post('/addReview', async (req, res) => {
     const _uid = req.cookies['uid']
     const r = req.body
 
-    const product = await Product.findOne({ _id: r.productID })
     const user = await User.findOne({ _id: _uid })
+    const product = await Product.findOne({ _id: r.productID })
+
+    await Product.findOneAndUpdate({ _id: r.productID}, {
+        rating: getRating(r.productID)
+    })
 
     new Review({
         product,
@@ -208,4 +240,19 @@ router.post('/addReview', async (req, res) => {
 
     res.redirect('/shop')
 })
+
+
+async function getRating(id) {
+    const product = await Product.findOne({ _id: id})
+    const reviews = await Review.find({ product })
+    var ratingCount = 0
+    var reviewsCount = 0
+
+    reviews.forEach(element => {
+        ratingCount = ratingCount + element.rating
+        reviewsCount++
+    })
+
+    return parseFloat(ratingCount / reviewsCount)
+}
 module.exports = router

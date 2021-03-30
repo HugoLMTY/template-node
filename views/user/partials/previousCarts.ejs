@@ -1,17 +1,20 @@
 <div class="accordion accordion-flush" id="previousOrdersAccordion">
     <div class="accordion-item">
-        <h2 class="accordion-header" id="testOrder_Header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" style="color: white;"
-                data-bs-target="#testOrder_" aria-expanded="false" aria-controls="testOrder_">
-                <div class="row">
-                    <div class="col">Commande {id}</div>
-                    <div class="col">Photo</div>
-                    <div class="col">Titre</div>
-                    <div class="col">Prix</div>
-                </div>
-            </button>
-        </h2>
+        
 
+        <% orderList.forEach(order =>{ %> 
+            <h2 class="accordion-header" id="<%= order._id %>Header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" style="color: white;"
+                    data-bs-target="#<%= order._id %>" aria-expanded="false" aria-controls="<%= order._id %>">
+                    <div class="row">
+                        <div class="col"><%= order._id %></div>
+                        <div class="col"><%= order.cartDate %></div>
+                        <div class="col"><%= order.state %></div>
+                        <div class="col"><%= order.price %></div>
+                    </div>
+                </button>
+            </h2>
+        <% }) %> 
         <div class="accordion-collapse collapse" id="testOrder_" aria-labelledby="testOrder_Header"
             data-bs-parent="#previousOrdersAccordion">
             <div class="row container">
@@ -34,75 +37,74 @@
         </div>
     </div>
 
-
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="testOrderHeader">
-            <button class="accordion-button collapsed" type="button" style="color: white;" data-bs-toggle="collapse"
-                data-bs-target="#testOrder" aria-expanded="false" aria-controls="testOrder">
-                <div class="row">
-                    <div class="col">Commande {id}</div>
-                    <div class="col">Date</div>
-                    <div class="col">Titre</div>
-                    <div class="col">Prix</div>
-                </div>
-            </button>
-        </h2>
-
-        <div class="accordion-collapse collapse" id="testOrder" aria-labelledby="testOrderHeader"
-            data-bs-parent="#previousOrdersAccordion">
-            <div class="row container">
-                <div class="row">
-                    <div class="col"> Photo </div>
-                    <div class="col"> Titre </div>
-                    <div class="col"> Qté </div>
-                    <div class="col"> Prix </div>
-                </div>
-                <div class="row">
-                    <div class="col"> Titre </div>
-                    <div class="col"> Qté </div>
-                    <div class="col"> Prix </div>
-                </div>
-                <div class="row">
-                    <div class="col"> Titre </div>
-                    <div class="col"> Qté </div>
-                    <div class="col"> Prix </div>
-                </div>
+</div>
+<!-- <div class="accordion-item">
+    <h2 class="accordion-header" id="testOrderHeader">
+        <button class="accordion-button collapsed" type="button" style="color: white;" data-bs-toggle="collapse"
+            data-bs-target="#testOrder" aria-expanded="false" aria-controls="testOrder">
+            <div class="row">
+                <div class="col">Commande {id}</div>
+                <div class="col">Date</div>
+                <div class="col">Titre</div>
+                <div class="col">Prix</div>
             </div>
-        </div>
-    </div>
+        </button>
+    </h2>
 
-    <div class="accordion-item">
-        <h2 class="accordion-header" id="testOrder__Header">
-            <button class="accordion-button collapsed" type="button" style="color: white;" data-bs-toggle="collapse"
-                data-bs-target="#testOrder__" aria-expanded="false" aria-controls="testOrder__">
-                <div class="row">
-                    <div class="col">Commande {id}</div>
-                    <div class="col">Date</div>
-                    <div class="col">Titre</div>
-                    <div class="col">Prix</div>
-                </div>
-            </button>
-        </h2>
-
-        <div class="accordion-collapse collapse" id="testOrder__" aria-labelledby="testOrder__Header"
-            data-bs-parent="#previousOrdersAccordion">
-            <div class="row container">
-                <div class="row">
-                    <div class="col"> Titre </div>
-                    <div class="col"> Qté </div>
-                    <div class="col"> Prix </div>
-                </div>
-                <div class="row">
-                    <div class="col"> Titre </div>
-                    <div class="col"> Qté </div>
-                    <div class="col"> Prix </div>
-                </div>
-                <div class="row">
-                    <div class="col"> Titre </div>
-                    <div class="col"> Qté </div>
-                    <div class="col"> Prix </div>
-                </div>
+    <div class="accordion-collapse collapse" id="testOrder" aria-labelledby="testOrderHeader"
+        data-bs-parent="#previousOrdersAccordion">
+        <div class="row container">
+            <div class="row">
+                <div class="col"> Photo </div>
+                <div class="col"> Titre </div>
+                <div class="col"> Qté </div>
+                <div class="col"> Prix </div>
+            </div>
+            <div class="row">
+                <div class="col"> Titre </div>
+                <div class="col"> Qté </div>
+                <div class="col"> Prix </div>
+            </div>
+            <div class="row">
+                <div class="col"> Titre </div>
+                <div class="col"> Qté </div>
+                <div class="col"> Prix </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="accordion-item">
+    <h2 class="accordion-header" id="testOrder__Header">
+        <button class="accordion-button collapsed" type="button" style="color: white;" data-bs-toggle="collapse"
+            data-bs-target="#testOrder__" aria-expanded="false" aria-controls="testOrder__">
+            <div class="row">
+                <div class="col">Commande {id}</div>
+                <div class="col">Date</div>
+                <div class="col">Titre</div>
+                <div class="col">Prix</div>
+            </div>
+        </button>
+    </h2>
+
+    <div class="accordion-collapse collapse" id="testOrder__" aria-labelledby="testOrder__Header"
+        data-bs-parent="#previousOrdersAccordion">
+        <div class="row container">
+            <div class="row">
+                <div class="col"> Titre </div>
+                <div class="col"> Qté </div>
+                <div class="col"> Prix </div>
+            </div>
+            <div class="row">
+                <div class="col"> Titre </div>
+                <div class="col"> Qté </div>
+                <div class="col"> Prix </div>
+            </div>
+            <div class="row">
+                <div class="col"> Titre </div>
+                <div class="col"> Qté </div>
+                <div class="col"> Prix </div>
+            </div>
+        </div>
+    </div>
+</div> -->
