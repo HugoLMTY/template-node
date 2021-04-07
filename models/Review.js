@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const ReviewSchema = new mongoose.Schema({
     product: {
-        type: Object
+        type: String
     },
     user: {
         type: Object 

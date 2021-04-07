@@ -11,20 +11,23 @@
     <!-- --------------------- SORT ------------------------------  -->
     <div class="form-floating col-5 p-1 mt-3">
         <select class="form-select darkSelect" name="productFilterSort" id="floatingFilterSort">
-            <option value="by_name">Nom ↓</option>
-            <option value="by_name_">Nom ↑</option>
 
-            <option value="by_price">Prix ↓</option>
-            <option value="by_price_">Prix ↑</option>
+            <option value="/">-</option>
+
+            <option value="by_name_desc">Nom ↓</option>
+            <option value="by_name_asc">Nom ↑</option>
+
+            <option value="by_price_desc">Prix ↓</option>
+            <option value="by_price_asc">Prix ↑</option>
             
-            <option value="by_upload">Mise en ligne ↓</option>
-            <option value="by_upload_">Mise en ligne ↑</option>
+            <option value="by_upload_desc">Mise en ligne ↓</option>
+            <option value="by_upload_asc">Mise en ligne ↑</option>
             
-            <option value="by_qty">Quantité restante ↓</option>
-            <option value="by_qty_">Quantité restante ↑</option>
+            <option value="by_qty_desc">Quantité restante ↓</option>
+            <option value="by_qty_asc">Quantité restante ↑</option>
             
-            <option value="by_rate">Note ↓</option>
-            <option value="by_rate_">Note ↑</option>
+            <option value="by_rating_desc">Note ↓</option>
+            <option value="by_rating_asc">Note ↑</option>
         </select>
 
         <label class="label-context darkLabel" for="floatingFilterSort">Trier par:</label>

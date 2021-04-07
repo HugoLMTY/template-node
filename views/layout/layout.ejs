@@ -35,8 +35,14 @@
         <!-- #endregion -->
     </head>
     <body>
+        <!-- MODALS -->
+        <%- include('../modals/user/_modal_login.ejs')%>
+        <%- include('../modals/user/_modal_register.ejs')%>
+        
+        
         <%- include('../partials/header.ejs')%>
-
+        
+        <!-- MESSAGES -->
         <%- include('../partials/errorMessage.ejs')%>
         <%- include('../partials/successMessage.ejs')%>
         

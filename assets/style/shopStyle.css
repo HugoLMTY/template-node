@@ -10,6 +10,8 @@
     height: 250px;
     padding: 25px;
     transition: 0.2s;
+    color: white;
+    text-decoration: none;
     /* overflow: hidden; */
 }
 /* 
@@ -60,6 +62,35 @@
     padding-top: 3px;
 }
 
+.productRating{
+  position: relative;
+  display: inline-block;
+
+  color: whitesmoke;
+  background: #2a2a2a;
+
+  width: 69px;
+  height: 50px;
+
+  border-radius: 21%;
+  
+  text-align: center;
+  padding-top: 10px;
+
+  font-weight: bold;
+  font-size: 1.1em;
+
+  bottom: 210px;
+  left: 83%;
+
+  box-shadow: inset 0px 0px 7px #80dfff;
+  
+}
+
+.productRatingStar{
+  color: #80dfff;
+}
+
 .productShadow{
     height: 100px;
     position: relative;
@@ -67,6 +98,14 @@
     border-radius: 5px;
     box-shadow: inset 0 -65px 35px -30px rgba(0,0,0,.8);
 }
+
+
+
+
+
+
+
+
 
 .form-check-input:checked {
     background-color: #30c4fc !important;

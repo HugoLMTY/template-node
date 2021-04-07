@@ -53,39 +53,34 @@ router.get('/profil/', async (req, res) => {
 
         const _uid = req.cookies['uid']
 
+        const userInfos = await User.findOne({ _id: _uid })
         const productList = await Product.find({ creator: _uid })
         const orderList = await ShoppingCart.find({ user: _uid, state: 'done' }).sort({'cartDate': -1})
 
+        // Get order items
         let productOrderList = []
+        
+        
+        const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
+        const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
 
-        // orderList.forEach(order => {
-        //     productOrderList.push(
-        //         CartItem.find({ idCart: order._id }).then()
-        //     )
-        // })
-
-
-        console.log(productOrderList)
-
-        userInfos = await User.findOne({
-            _id: _uid
-        })
         res.render('user/profil', {
             userInfos,
             productList,
             orderList,
             productOrderList,
-            isConnected: true
+            isConnected: true,
+            itemCount
         })
     }
     else {
-        res.redirect('/user/login')
+        res.redirect('/')
     }
 })
 
 router.get('/logout', (req, res) => {
     clearCookies(res)
-    res.redirect('/user/login')
+    res.redirect('/')
 })
 
 function clearCookies(res) {
@@ -98,4 +93,5 @@ async function getProductListByCartID(id) {
     const list = await CartItem.find({ idCart: id })
     return list
 }
+
 module.exports = router 

@@ -22,7 +22,7 @@ input[type=number] {
 }
 
 .label-context{
-    color: white;
+    color: gray;
 }
 
 .tooltip-context{
@@ -56,4 +56,8 @@ input[type=number] {
 .text-context:hover{
     color: #80dfff !important;
 
+}
+
+.badge-context{
+    background: #80dfff;
 }

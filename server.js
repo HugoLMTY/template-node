@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser')
 
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://localhost/ydays_db', {
-    useNewUrlParser: true  })
+    useNewUrlParser: true, useFindAndModify: false  })
 const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Mongoose OK'))

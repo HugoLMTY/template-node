@@ -1,15 +1,12 @@
 <script>
-
+    // IMG ZOOM
     function getState(pos) {
-
         target = document.getElementById('mousePos')
         targetZoom = document.getElementById('zoomHolder')
         targetImg = document.getElementById('productImgZoom')
         targetProductImg = document.getElementById('productImgjs')
 
-        var posX
-        var posY
-
+        // Position de la souris
         var mouseX = pos.clientX
         var mouseY = pos.clientY
         
@@ -23,6 +20,7 @@
         var zoomH = targetImg.getBoundingClientRect().height
         // console.log(zoomH, zoomW)
         
+        // Ration de zoom
         var ratioX = zoomW / imgW
         var ratioY = zoomH / imgH
 
@@ -36,10 +34,9 @@
         var mouseW = mousePos.getBoundingClientRect().width
         var mouseH = mousePos.getBoundingClientRect().height
 
-        // posX = ((mouseX * ratioX) + offsetX) / 2
-        // posY = (mouseY * ratioY) + offsetY
-        posX = ((mouseX - offsetX) * ratioX) - (mouseW/2 * ratioX)
-        posY = ((mouseY - offsetY) * ratioY) - (mouseH/2 * ratioY)
+        // Postion finale de la partie zoomée
+        var posX = ((mouseX - offsetX) * ratioX) - (mouseW/2 * ratioX)
+        var posY = ((mouseY - offsetY) * ratioY) - (mouseH/2 * ratioY)
 
         // console.log('posX: ',posX)
         // console.log('posY: ',posY)
@@ -52,7 +49,6 @@
         target.style.top = mouseY - 50
         targetZoom.style.display = 'block'
     }
-
     function mouseOut() {
         target = document.getElementById('mousePos')
         targetZoom = document.getElementById('zoomHolder')
@@ -61,23 +57,74 @@
         targetZoom.style.display = 'none'
     }
 
+    // SET STARS
     function setStars(id, rate) {
         var i = 1
-        console.log(rate)
 
         while (i <= rate) {
             document.getElementById(id + '_star_' + i).classList.add('checked')
             i++
         }
     }
+    function getInfos(id) {
+        target = document.getElementById('productRatingValue')
+        var min = 1
+        var max = 5
+        while (min <= id) {
+            document.getElementById('star_rating_' + min).classList.add('checked')
+            target.value = id
+            min++
+        }
+        while (max > id) {
+            document.getElementById('star_rating_' + max).classList.remove('checked')
+            target.value = id
+            max--
+        }
+    }
+    function getHoverInfos(id) {
+        target = document.getElementById('productRatingValue')
+        var min = 1
+        var max = 5  
+        while (min <= id) {
+            document.getElementById('star_rating_' + min).classList.add('hovered')
+            target.value = id
+            min++
+        }
+        while (max > id) {
+            document.getElementById('star_rating_' + max).classList.remove('hovered')
+            target.value = id
+            max--
+        }
+    }
+    function getOutInfos() {
+        var i = 1 
+        while (i <= 5) {
+            document.getElementById('star_rating_' + i).classList.remove('hovered')
+            i++
+        }
+    }
+
+    // SET REVIEWS MORE/LESS
+    function reviewSwitchSee() {
+        var target = document.getElementById('reviewMore')
+        var btn = document.getElementById('reviewSwitchBtn')
+
+        if (target.hidden == true) {
+            btn.textContent = 'Voir -'
+            target.hidden = false
+        } else {
+            btn.textContent = 'Voir +'
+            target.hidden = true
+        }
+    }
 </script>
 
 <div class="container">
-    <div class="row" style="min-height: 200px;">
+    <div id="product" class="row" style="min-height: 200px;">
 
+        <!-- Product Img -->
         <div class="col-4">
             <div class="cart">
-
                     <figure>
                         <img src="/img/<%= productInfos.pathImg %>"
                         onmousemove="getState(event)" onmouseout="mouseOut()"
@@ -88,20 +135,16 @@
                             <div id="mouseY"></div> -->
                         </div>
                     </figure>
-
-                    <!--<div id="thumbnails">
-                        <img src="image.png" alt="Product image 1" />
-                        <img src="image.png" alt="Product image 2" />
-                    </div>-->
-
             </div>
         </div>
 
+        <!-- Product infos -->
         <div class="col-5">
             <div id="zoomHolder">
                 <img src="/img/<%= productInfos.pathImg %>"
                 id="productImgZoom"/>
             </div>
+
             <hgroup>
                 <h1><%= productInfos.name %></h1>
                 <p>
@@ -111,7 +154,7 @@
                 </p>
             </hgroup>
 
-            <section id="info">
+            <section id="infos">
                 <p>
                     <%= productInfos.desc %>
                     <br>
@@ -120,11 +163,7 @@
                     quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
                 </p>
 
-                <div class="social">
-                    <!-- Boutons de partage-->
-                </div>
-
-                <article class="comment">
+                <article id="about">
                     <h6>Créateur: <%= userInfos.name %></h6>
                     <p>Mise en ligne:   <%= productInfos.uploadDate %></p>
                 </article>
@@ -132,238 +171,196 @@
             </section>
         </div>
 
+        <!-- Product price/qty + socials -->
         <div class="col-3">
             <form action="/cart/addProduct" class="row" method="POST">
                 <div class="col m-2 input-group">
-                    <span class="input-group-text darkInput"><strong><%= productInfos.price %>&euro;</strong></span>
+                    <span class="input-group-text darkInput">
+                        <strong>
+                            <%= productInfos.price %>&euro;
+                        </strong>
+                    </span>
+
                     <span class="input-group-text darkInput">x</span>
-                    <input type="number" name="cartQty" min="1" class="form-control darkInput" 
-                    required
-                    placeholder="Qté" aria-label="Qté" aria-describedby="basic-addon1">
+
+                    <input type="number" name="cartQty" min="1" class="form-control darkInput" required placeholder="Qté"
+                        aria-label="Qté" aria-describedby="basic-addon1">
                 </div>
-                <input type="text" hidden name="productID" value="<%= productInfos._id %>" >
+
+                <input type="text" hidden name="productID" value="<%= productInfos._id %>">
                 <button class="col-4 m-2 btn btn-context" type="submit">
                     Ajouter au panier
                 </button>
             </form>
-
-                    <!-- <div class="form-floating">
-                        <input type="number" class="form-control" placeholder="qty" name="addCartQty" id="floatingQty">
-                        <label for="floatingQty">Qté</label>
-                    </div>
-                    <label>Prix final: <p id="finalPrice"><%= productInfos.price %></p></label> -->
-
-                <!-- Partager réseaux pouloulou-->
-                <div class="d-flex justify-content-center">
-                    <a class="m-2" target="blank" href="https://www.facebook.com/sharer.php?u=http://localhost:3000/shop/product/60369395a7d2d8552ce942e2"
+        
+            <!-- Partager réseaux pouloulou-->
+            <div class="d-flex justify-content-center">
+                <a class="m-2" target="blank"
+                    href="https://www.facebook.com/sharer.php?u=http://localhost:3000/shop/product/60369395a7d2d8552ce942e2"
                     onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;">
-                        <img src="/img/medias/fb.png" width="42px" alt="Facebook"/></a>
-
-                    <a class="m-2" target="_blank" title="Twitter"
-                    href="https://twitter.com/share?url=#" rel="nofollow">
-                        <img src="/img/medias/twitter.png" width="42px" alt="Twitter"/></a>
-
-                    <a class="m-2" target="_blank" title="Google +"
-                    href="https://plus.google.com/share?url=#" rel="nofollow"
+                    <img src="/img/medias/fb.png" width="42px" alt="Facebook" /></a>
+        
+                <a class="m-2" target="_blank" title="Twitter" href="https://twitter.com/share?url=#" rel="nofollow">
+                    <img src="/img/medias/twitter.png" width="42px" alt="Twitter" /></a>
+        
+                <a class="m-2" target="_blank" title="Google +" href="https://plus.google.com/share?url=#" rel="nofollow"
                     onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;">
-                        <img src="/img/medias/g+.png" width="40px" alt="Google Plus" /></a>
-
-                    <a class="m-2" target="_blank" title="Linkedin"
-                    href="https://www.linkedin.com/shareArticle?mini=true&amp;url=#" rel="nofollow"
+                    <img src="/img/medias/g+.png" width="40px" alt="Google Plus" /></a>
+        
+                <a class="m-2" target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=#"
+                    rel="nofollow"
                     onclick="javascript:window.open(this.href, '','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;">
-                        <img src="/img/medias/lkdn.svg" width="42px" alt="Linkedin" /></a>
-
-                    <a class="m-2" target="_blank" title="Envoyer par mail"
-                    href="mailto:?Subject=Regarde ça c'est cool !&amp;Body=regarde%20cet%20article%20c'est%20super !%20 #" rel="nofollow">
-                        <img src="/img/medias/mail.png" width="42px" alt="email" /></a>
-
-                </div>
-
+                    <img src="/img/medias/lkdn.svg" width="42px" alt="Linkedin" /></a>
+        
+                <a class="m-2" target="_blank" title="Envoyer par mail"
+                    href="mailto:?Subject=Regarde ça c'est cool !&amp;Body=regarde%20cet%20article%20c'est%20super !%20 #"
+                    rel="nofollow">
+                    <img src="/img/medias/mail.png" width="42px" alt="email" /></a>
+        
+            </div>
+        
         </div>
     </div>
 
-    <div class="">
-        <section id="details">
+    <section id="characteristics">
+        <h2>Caractéristiques</h2>
+        <table id="productTable" class="table">
+            <tr>
+                <th scope="col"> Largeur </th>
+                <th scope="col"> Hauteur </th>
+                <th scope="col"> Longeur </th>
+                <th scope="col"> Poids </th>
+                <th scope="col"> Matière </th>
+            </tr>
+
+            <tr>
+                <td>
+                    <%= productInfos.width %>cm
+                </td>
+                <td>
+                    <%= productInfos.height %>cm
+                </td>
+                <td>
+                    <%= productInfos.lenght %>cm
+                </td>
+                <td> 420g </td>
+                <td> PLA </td>
+            </tr>
+        </table>
+    </section>
+
+    <!-- Similar products -->
+    <section id="similar">
+        <div class="row mt-5 mb-5">
+            <aside id="related">
+                <h2>Produits similaires</h2>
+                <div class="col-12 row">
+                    <% similarProducts.forEach(product=> { %>
+                        <a href="/shop/product/<%= product._id %>" class="col-3 productHolder mb-4">
+                            <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+                            <div class="productShadow">
+                                <p class="productTitle">
+                                    <%= product.name %>
+                                </p>
+                                <p class="productPrice btn-context">
+                                    <%= product.price %>€
+                                </p>
+                            </div>
+                        </a>
+                        <% }) %>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- Ratings -->
+    <section id="ratings">
+        <div class="mb-5 mt-5">
+
             <h2>Évaluations</h2>
-            <p>
-<!--                 
-                <span class="heading">User Rating</span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star checked"></span>
-                <span class="fa fa-star"></span>
-                <p>4.1 average based on 254 reviews.</p>
-                <hr style="border:3px solid #f1f1f1">
-                
-                <div class="row">
-                  <div class="side">
-                    <div>5 star</div>
-                  </div>
-                  <div class="middle">
-                    <div class="bar-container">
-                      <div class="bar-5"></div>
-                    </div>
-                  </div>
-                  <div class="side right">
-                    <div>150</div>
-                  </div>
-                  <div class="side">
-                    <div>4 star</div>
-                  </div>
-                  <div class="middle">
-                    <div class="bar-container">
-                      <div class="bar-4"></div>
-                    </div>
-                  </div>
-                  <div class="side right">
-                    <div>63</div>
-                  </div>
-                  <div class="side">
-                    <div>3 star</div>
-                  </div>
-                  <div class="middle">
-                    <div class="bar-container">
-                      <div class="bar-3"></div>
-                    </div>
-                  </div>
-                  <div class="side right">
-                    <div>15</div>
-                  </div>
-                  <div class="side">
-                    <div>2 star</div>
-                  </div>
-                  <div class="middle">
-                    <div class="bar-container">
-                      <div class="bar-2"></div>
-                    </div>
-                  </div>
-                  <div class="side right">
-                    <div>6</div>
-                  </div>
-                  <div class="side">
-                    <div>1 star</div>
-                  </div>
-                  <div class="middle">
-                    <div class="bar-container">
-                      <div class="bar-1"></div>
-                    </div>
-                  </div>
-                  <div class="side right">
-                    <div>20</div>
-                  </div>
-                </div> -->
-
-            </p> 
             <div style="padding: 10px;">
-            <!-- <div style="border: 1px solid #80dfff; border-radius: 10px; padding: 10px;"> -->
-                <% reviewList.forEach(review => { %>
-                    <p> 
-                        <span id="<%= review._id %>_star_1" class="fa fa-star"></span>
-                        <span id="<%= review._id %>_star_2" class="fa fa-star"></span>
-                        <span id="<%= review._id %>_star_3" class="fa fa-star"></span>
-                        <span id="<%= review._id %>_star_4" class="fa fa-star"></span>
-                        <span id="<%= review._id %>_star_5" class="fa fa-star"></span>
-                        
-                        <br>
-                        <script> setStars('<%= review._id %>', '<%= review.rating %>') </script>
-                    </p>
-                    <p> <%= review.comment %> </p>
-                    <span style="font-style: italic; color: gray; font-size: 0.8em;"> <%= review.date %> </span>
-                    <hr class="my-4">
-                <% }) %> 
+            
+                <% if (reviewList.length > 0) { %> 
+
+                <div id="reviewLess">
+                    <% reviewList.forEach(review => { %>
+                        <p> 
+                            <span id="<%= review._id %>_star_1" class="fa fa-star"></span>
+                            <span id="<%= review._id %>_star_2" class="fa fa-star"></span>
+                            <span id="<%= review._id %>_star_3" class="fa fa-star"></span>
+                            <span id="<%= review._id %>_star_4" class="fa fa-star"></span>
+                            <span id="<%= review._id %>_star_5" class="fa fa-star"></span>
+                            
+                            <br>
+                            <script> setStars('<%= review._id %>', '<%= review.rating %>') </script>
+                        </p>
+                        <p> <%= review.comment %> </p>
+                        <span style="font-style: italic; color: gray; font-size: 0.8em;"> <%= review.date %> </span>
+                        <hr class="my-4">
+                    <% }) %> 
+                </div>
+
+                <div id="reviewMore" hidden>
+                    <% reviewListMore.forEach(review => { %>
+                        <p> 
+                            <span id="<%= review._id %>_star_1" class="fa fa-star"></span>
+                            <span id="<%= review._id %>_star_2" class="fa fa-star"></span>
+                            <span id="<%= review._id %>_star_3" class="fa fa-star"></span>
+                            <span id="<%= review._id %>_star_4" class="fa fa-star"></span>
+                            <span id="<%= review._id %>_star_5" class="fa fa-star"></span>
+                            
+                            <br>
+                            <script> setStars('<%= review._id %>', '<%= review.rating %>') </script>
+                        </p>
+                        <p> <%= review.comment %> </p>
+                        <span style="font-style: italic; color: gray; font-size: 0.8em;"> <%= review.date %> </span>
+                        <hr class="my-4">
+                    <% }) %> 
+                </div>
+                
+                <% if (locals.reviewListMore.length >= 1) {%> 
+                <span onclick="reviewSwitchSee()" id="reviewSwitchBtn" style="color: whitesmoke;">Voir +</span>
+                <% }  %> 
+
+                <% } else { %> 
+                    <p class="mt-3 mb-5" style="text-align: center; font-size: 1.3em; font-style: italic; color: gray;">Aucune évaluation pour ce produit</p>
+                <% } %> 
             </div>
-        </section>
+        </div>
+    </section>
 
-        <section id="characteristics">
-            <h2>Caractéristiques</h2>
+    <!-- leave revieww-->
+    <% if (locals.isConnected) { %>
+        <div class="row mt-5 mb-5">
+            <form method="POST" action="/shop/addReview" class="reviewHolder">
+                <input type="text" hidden name="productID" value="<%= productInfos._id %>">
+                <div class="ratingHolder">
+    
+                    <style>
+                        .checked {
+                            color: #80dfff !important;
+                        }
 
-
-            <table id="productTable" class="table">
-                <tr>
-                    <th scope="col"> Largeur </th>
-                    <th scope="col"> Hauteur </th>
-                    <th scope="col"> Longeur </th>
-                    <th scope="col"> Poids </th>
-                    <th scope="col"> Matière </th>
-                </tr>
-
-                <tr>
-                    <td><%= productInfos.width %>cm</td>
-                    <td><%= productInfos.height %>cm</td>
-                    <td><%= productInfos.lenght %>cm</td>
-                    <td> 420g </td>
-                    <td> PLA </td>
-                </tr>
-            </table>
-        </section>
-    </div>
-
-    <div class="row mt-5 mb-5">
-        <aside id="related">
-            <h2>Produits similaires</h2>
-
-            <div class="col-12 row">
-                <% similarProducts.forEach(product => { %>
-                    <a href="/shop/product/<%= product._id %>" class="col-3 productHolder mb-4">
-                        <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
-                        <div class="productShadow">
-                            <p class="productTitle"> <%= product.name %> </p>
-                            <p class="productPrice btn-context"><%= product.price %>€</p>
-                        </div>
-                    </a>
-                <% }) %>
-            </div>
-        </aside>
-    </div>
-
-    <div class="row mt-5 mb-5">
-        <form method="POST" action="/shop/addReview" class="reviewHolder">
-            <input type="text" hidden name="productID" value="<%= productInfos._id %>">
-            <div class="ratingHolder">
-        
-                <style>
-                    .checked {
-                        color: #80dfff;
-                    }
-                </style>
-        
-                <h2>Évaluation</h2>
-                <input type="number" hidden value="4" name="productRating">
-                <span id="star_rating_1" onclick="getInfos(this)" class="fa fa-star"></span>
-                <span id="star_rating_2" onclick="getInfos(this)" class="fa fa-star"></span>
-                <span id="star_rating_3" onclick="getInfos(this)" class="fa fa-star"></span>
-                <span id="star_rating_4" onclick="getInfos(this)" class="fa fa-star"></span>
-                <span id="star_rating_5" onclick="getInfos(this)" class="fa fa-star"></span>
-            </div>
-            <div class="commentHolder">
-                <textarea name="productComment" class="darkInput" cols="30" rows="10"></textarea>
-            </div>
-            <button type="submit" class="btn btn-context">
-                Envoyer la review
-            </button>
-        </form>
-    </div>
-
-    <!-- <div class="row mt-5 mb-5">
-        <section id="comments">
-
-            <article class="comment">
-                <h2>Pseudo</h2>
-                <time datetime="2012-4-27T14:42+01:00">Publié le 08 avril 14:42</time>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-            </article>
-
-            <article class="comment">
-                <h2>Pseudo</h2>
-                <time datetime="2012-4-27T15:42+01:00">Publié le 22 avril 15:42</time>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua.
-                </p>
-            </article>
-
-        </section>
-    </div> -->
+                        .hovered {
+                            color: #c8effc
+                        }
+                    </style>
+    
+                    <h2>Évaluation</h2>
+                    <input id="productRatingValue" type="number" hidden required name="productRating">
+                    <span id="star_rating_1" onclick="getInfos(1)" onmouseover="getHoverInfos(1)" onmouseout="getOutInfos()" class="fa fa-star"></span>
+                    <span id="star_rating_2" onclick="getInfos(2)" onmouseover="getHoverInfos(2)" onmouseout="getOutInfos()" class="fa fa-star"></span>
+                    <span id="star_rating_3" onclick="getInfos(3)" onmouseover="getHoverInfos(3)" onmouseout="getOutInfos()" class="fa fa-star"></span>
+                    <span id="star_rating_4" onclick="getInfos(4)" onmouseover="getHoverInfos(4)" onmouseout="getOutInfos()" class="fa fa-star"></span>
+                    <span id="star_rating_5" onclick="getInfos(5)" onmouseover="getHoverInfos(5)" onmouseout="getOutInfos()" class="fa fa-star"></span>
+                </div>
+                <div class="commentHolder">
+                    <textarea name="productComment" class="darkInput" cols="30" rows="10"></textarea>
+                </div>
+                <button type="submit" class="btn btn-context">
+                    Envoyer la review
+                </button>
+            </form>
+        </div>
+    <% } %>
 </div>

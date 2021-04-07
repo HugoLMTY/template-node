@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const Product = require('../models/Product')
+const ShoppingCart = require('../models/ShoppingCart')
+const CartItem = require('../models/CartItem')
 
 router.get('/', async (req, res) => { 
 
@@ -34,13 +36,20 @@ router.get('/', async (req, res) => {
             .limit(limit)
 
     if (req.cookies['uid'] != undefined) {
+
+        const _uid = req.cookies['uid']
+        
+        const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
+        const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
+
         res.render('index', {
             latest,
             latest_2,
             latest_3,
             bestseller,
             lowstock, 
-            isConnected: true
+            isConnected: true,
+            itemCount
         })
     } else {
         res.render('index', {

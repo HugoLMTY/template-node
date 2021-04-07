@@ -33,9 +33,14 @@ router.get('/', async (req, res) => {
         })
     } else {
         const cartList = await CartItem.find({ idCart: shoppingCartInfos._id })
+        
+        const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
+        const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
+
         res.render('cart/index', {
             cartList,
-            isConnected: true
+            isConnected: true,
+            itemCount
         })
     }
 })

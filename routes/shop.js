@@ -3,6 +3,8 @@ const router = express.Router()
 const Product = require('../models/Product')
 const User = require('../models/User')
 const Review = require('../models/Review')
+const ShoppingCart = require('../models/ShoppingCart')
+const CartItem = require('../models/CartItem')
 
 function getDate() {
 
@@ -16,10 +18,11 @@ function getDate() {
 }
 
 router.get('/', async (req, res) => {
+    const _uid = req.cookies['uid']
     const r = req.query
 
     let currentOptions = r
-
+    console.log(currentOptions)
     let searchOptions = {}
     let sortOption = {}
 
@@ -31,44 +34,49 @@ router.get('/', async (req, res) => {
     // ------------ SORT ---------------------------------------
 
     switch (r.productFilterSort) {
-        case 'by_name':
+
+        case '/':
+            sortOption =  {}
+            break
+
+        case 'by_name_asc':
             sortOption = { 'name': -1 }
             break
 
-        case 'by_name_':
+        case 'by_name_desc':
             sortOption = { 'name': 1 }
             break
 
-        case 'by_price':
-            sortOption = { 'price': -1 }
-            break
-
-        case 'by_price_':
+        case 'by_price_asc':
             sortOption = { 'price': 1 }
             break
 
-        case 'by_upload':
-            sortOption = { 'uploadDate': -1 }
+        case 'by_price_desc':
+            sortOption = { 'price': -1 }
             break
 
-        case 'by_upload_':
+        case 'by_upload_asc':
+            sortOption = { 'uploadDate': 1 }
+            break
+
+        case 'by_upload_desc':
             sortOption = { 'uploadDate': 1 }
             break
             
-        case 'by_qty':
+        case 'by_qty_asc':
             sortOption = { 'qty': -1 }
             break
 
-        case 'by_qty_':
+        case 'by_qty_desc':
             sortOption = { 'qty': 1 }
             break
 
-        case 'by_rating':
-            sortOption = { 'rating': -1 }
+        case 'by_rating_asc':
+            sortOption = { 'rating': 1 }
             break
         
-        case 'by_rating':
-            sortOption = { 'rating': 1 }
+        case 'by_rating_desc':
+            sortOption = { 'rating': -1 }
             break
     }
 
@@ -103,11 +111,17 @@ router.get('/', async (req, res) => {
 
     const productList = await Product.find(searchOptions).sort(sortOption)
     
+    // console.log(productList)
+
     if (req.cookies['uid'] != undefined) {
+        const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
+        const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
+
         res.render('shop/index', {
             productList,
             currentOptions,
-            isConnected: true
+            isConnected: true,
+            itemCount
         })
     } else {
         res.render('shop/index', {
@@ -119,17 +133,23 @@ router.get('/', async (req, res) => {
 
 })
 
-router.get('/addProduct', (req, res) => {
+router.get('/addProduct', async (req, res) => {
 
     const _uid = req.cookies['uid']
+
     try {
-        User.findOne({ '_id': _uid }).then(
-            (userInfos) => {
-                res.render('shop/newProduct', {
-                    userInfos,
-                    date: getDate()
-                })
-            })
+
+        const userInfos = await User.findOne({ _id: _uid})
+
+        const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
+        const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
+
+        res.render('shop/newProduct', {
+            userInfos, 
+            date: getDate(),
+            isConnected: true,
+            itemCount
+        })
     } catch {
         res.redirect('/shop/')
     }
@@ -165,20 +185,24 @@ router.get('/product/:id', async (req, res) => {
     const userInfos = await User.findOne({ _id: productInfos.creator })
     const similarProducts = await Product.find({ type: productInfos.type }).limit(4)
 
-    const reviewList = await Review.find({ product: productInfos }).sort({ 'rating': -1 })
-
-    
-    console.log(reviewList)
-
-    getRating(productInfos._id)
+    const reviewList = await Review.find({ product: productInfos._id }).sort({ 'rating': -1 }).limit(3)
+    const reviewListMore = await Review.find({ product: productInfos._id }).sort({ 'rating': -1 }).skip(3)
 
     if (req.cookies['uid'] != undefined) {
+
+        const _uid = req.cookies['uid']
+        
+        const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
+        const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
+
         res.render('shop/productInfos', {
             productInfos, 
             userInfos,
             similarProducts,
             reviewList,
-            isConnected: true
+            reviewListMore,
+            isConnected: true, 
+            itemCount
         })
     } else {
         res.render('shop/productInfos', {
@@ -188,34 +212,6 @@ router.get('/product/:id', async (req, res) => {
             reviewList
         })
     }
-
-
-    
-
-    // Product.findOne({
-    //     _id: productID
-    // }).then(
-    //     (productInfos) => {
-    //         productType = productInfos.type
-    //         infos.push(productInfos)
-    //         User.findOne({
-    //             _id: productInfos.creator
-    //         }).then(
-    //             (userInfos) => {
-    //                 infos.push(userInfos)
-    //             }).then(
-    //                 Product.find({ 'type': productType }).limit(4).then(
-    //                     (similarProducts) => {
-    //                         infos.push(similarProducts)
-    //                         res.render('shop/productInfos', {
-    //                             productInfos: infos[0],
-    //                             userInfos: infos[1],
-    //                             similarProducts: infos[2]
-    //                         })
-    //                     }
-    //                 )
-    //             )
-    //     })
 })
 
 router.post('/addReview', async (req, res) => {
@@ -223,27 +219,24 @@ router.post('/addReview', async (req, res) => {
     const _uid = req.cookies['uid']
     const r = req.body
 
-    const user = await User.findOne({ _id: _uid })
-    const product = await Product.findOne({ _id: r.productID })
+    console.log(r)
 
-    await Product.findOneAndUpdate({ _id: r.productID}, {
-        rating: getRating(r.productID)
-    })
+    const user = await User.findOne({ _id: _uid })
 
     new Review({
-        product,
+        product: r.productID,
         user, 
-        rating: r.productRating,
+        rating: parseInt(r.productRating),
         comment: r.productComment,
         date: getDate()
     }).save()
 
-    res.redirect('/shop')
+    setRating(r.productID)
+
+    res.redirect('/shop/product/' + r.productID)
 })
 
-
-async function getRating(id) {
-    const product = await Product.findOne({ _id: id})
+async function setRating(product) {
     const reviews = await Review.find({ product })
     var ratingCount = 0
     var reviewsCount = 0
@@ -252,7 +245,9 @@ async function getRating(id) {
         ratingCount = ratingCount + element.rating
         reviewsCount++
     })
-
-    return parseFloat(ratingCount / reviewsCount)
+    
+    await Product.findOneAndUpdate({ _id: product }, { rating: Math.round(parseInt(ratingCount / reviewsCount))})
 }
+
+
 module.exports = router

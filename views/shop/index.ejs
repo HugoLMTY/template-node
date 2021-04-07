@@ -1,6 +1,6 @@
 <h1 class="title-context">La boutique</h1>
 
-<div class="row justify-content-center">
+<div class="row container-fluid justify-content-center">
 
     <% if (locals.isConnected) {%> 
         <form action="/shop/new" method="POST">
@@ -19,13 +19,15 @@
 
     <div class="col-9 row row-cols-4">
         <% productList.forEach(product => { %> 
-            <a href="/shop/product/<%= product._id %>" class="col productHolder mb-4">
+            <a href="/shop/product/<%= product._id %>" class="col productHolder mb-5">
                 <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
                 <div class="productShadow">
                     <p class="productTitle"> <%= product.name %> </p>
                     <p class="productPrice btn-context"><%= product.price %>€</p>
+                    <p class="productRating"> <%= product.rating %> <span class="fa fa-star productRatingStar"></span> </p>
                 </div>
             </a>
         <% }) %>
+        
     </div>
 </div>
