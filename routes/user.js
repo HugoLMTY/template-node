@@ -5,6 +5,17 @@ const Product = require('../models/Product')
 const ShoppingCart = require('../models/ShoppingCart')
 const CartItem = require('../models/CartItem')
 
+function getDate() {
+
+    const date = new Date().toJSON().split('T')[0]
+
+    let day = date.split('-')[2]
+    let month = date.split('-')[1]
+    let year = date.split('-')[0]
+
+    return (day + '-' + month + '-' + year)
+}
+
 router.get('/login', (req, res) => {
     res.render('user/login')
 })
@@ -14,7 +25,7 @@ router.get('/register', (req, res) => {
 })
 
 router.post('/registerUser', (req, res) => {
-    const newUser = new User({
+    new User({
         name: req.body.registerName,
         mail: req.body.registerMail,
         password: req.body.registerPassword,
@@ -22,10 +33,20 @@ router.post('/registerUser', (req, res) => {
         tel: req.body.registerTel,
         address: req.body.registerAddress,
         sex: req.body.registerSex
-    })
-    newUser.save().then(
-        res.redirect('login')
+    }).save().then(
+        user => {
+            new ShoppingCart({
+                user: user._id,
+                date: getDate(),
+                state: 'current'
+
+            })
+        }
     )
+    
+
+    
+    res.redirect('login')
 })
 
 router.post('/loginUser', async (req, res) => {

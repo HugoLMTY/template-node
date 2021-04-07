@@ -136,7 +136,6 @@ router.get('/', async (req, res) => {
 router.get('/addProduct', async (req, res) => {
 
     const _uid = req.cookies['uid']
-
     try {
 
         const userInfos = await User.findOne({ _id: _uid})

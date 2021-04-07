@@ -21,28 +21,27 @@ router.get('/', async (req, res) => {
 
     const shoppingCartInfos = await ShoppingCart.findOne({ user: _uid, state: 'current' })
 
-    if (shoppingCartInfos === null) {
-        new ShoppingCart({
-            user: _uid,
-            cartDate: getDate(),
-            state: 'current'
-        }).save()
-        res.render('cart/index', {
-            cartList: [],
-            isConnected: true
-        })
-    } else {
-        const cartList = await CartItem.find({ idCart: shoppingCartInfos._id })
-        
-        const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
-        const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
+    // if (shoppingCartInfos.length < 1) {
+    //     new ShoppingCart({
+    //         user: _uid,
+    //         cartDate: getDate(),
+    //         state: 'current'
+    //     }).save()
+    //     res.render('cart/index', {
+    //         cartList: [],
+    //         isConnected: true
+    //     })
+    // } else {
+    const cartList = await CartItem.find({ idCart: shoppingCartInfos._id })
 
-        res.render('cart/index', {
-            cartList,
-            isConnected: true,
-            itemCount
-        })
-    }
+    const cart = await ShoppingCart.findOne({ user: _uid, state: 'current' })
+    const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
+
+    res.render('cart/index', {
+        cartList,
+        isConnected: true,
+        itemCount
+    })
 })
 
 router.post('/addProduct', async (req, res) => {
@@ -119,14 +118,16 @@ router.post('/cartAction', async (req, res) => {
 router.post('/cartPayment', async (req, res) => {
     const _uid = req.cookies['uid']
     
-    const cart = await ShoppingCart.findOneAndUpdate({
-        user: _uid,
-        state: 'current'
-    }, {
+    await ShoppingCart.findOneAndUpdate({ user: _uid, state: 'current' }, 
+    {
         state: 'done'
     })
 
-    console.log(cart)
+    new ShoppingCart({
+        user: _uid,
+        date: getDate(),
+        state: 'current'
+    }).save()
 
     res.redirect('/user/profil')
 })
