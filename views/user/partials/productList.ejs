@@ -1,4 +1,10 @@
-<div class="col-12 row">
+
+<% if (locals.isUser) { %> 
+    <div class="col-12 row">
+<% } else { %> 
+    <div class="col-12 w-75 row">
+<% } %> 
+    <% if (productList.length > 0) {%> 
     <% productList.forEach(product => { %> 
         <a href="/shop/product/<%= product._id %>" class="col-4 productHolder mb-4">
             <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
@@ -8,4 +14,7 @@
             </div>
         </a>
     <% }) %>
+    <% } else { %> 
+        aucun produit
+    <% } %> 
 </div>

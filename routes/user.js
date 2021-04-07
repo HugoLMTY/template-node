@@ -25,32 +25,39 @@ router.get('/register', (req, res) => {
 })
 
 router.post('/registerUser', (req, res) => {
-    new User({
+    const newUser = new User({
+        username: req.body.registerUsername,
         name: req.body.registerName,
-        mail: req.body.registerMail,
-        password: req.body.registerPassword,
-        group: req.body.registerGroup,
-        tel: req.body.registerTel,
+        lastname: req.body.registerLastname,
         address: req.body.registerAddress,
-        sex: req.body.registerSex
-    }).save().then(
-        user => {
-            new ShoppingCart({
-                user: user._id,
-                date: getDate(),
-                state: 'current'
+        sex: req.body.registerSex,
+        password: req.body.registerPassword,
 
-            })
-        }
-    )
-    
+        bio: '', 
 
+        mail: req.body.registerMail,
+        tel: req.body.registerTel,
+
+        isSeller: false,
+        isVerified: false,
+        group: '',
+
+    })
     
-    res.redirect('login')
+    newUser.save()
+
+    new ShoppingCart({
+            user: newUser._id,
+            date: getDate(),
+            state: 'current'
+        }).save()
+
+    res.cookie('uid', newUser._id, {expires: new Date(2069,0,1)})
+    res.cookie('uname', newUser.username, {expires: new Date(2069,0,1)})
+    res.redirect('/user/profil')
 })
 
 router.post('/loginUser', async (req, res) => {
-    
     let loginInfos = {
         mail: req.body.loginMail
     }
@@ -62,40 +69,115 @@ router.post('/loginUser', async (req, res) => {
             errorMessage: 'Aucun utilisateur correspondant'
         })
     } else {
-        console.log(toLogin._id)
         res.cookie('uid', toLogin._id, {expires: new Date(2069,0,1)})
-        res.cookie('uname', toLogin.name, {expires: new Date(2069,0,1)})
+        res.cookie('uname', toLogin.username, {expires: new Date(2069,0,1)})
         res.redirect('/user/profil')
     }
 })
 
 router.get('/profil/', async (req, res) => {
-    if (req.cookies['uid'] != undefined) {
+    const _uid = req.cookies['uid']
 
-        const _uid = req.cookies['uid']
+    const user = await User.findOne({ _id: _uid})
 
-        const userInfos = await User.findOne({ _id: _uid })
-        const productList = await Product.find({ creator: _uid })
-        const orderList = await ShoppingCart.find({ user: _uid, state: 'done' }).sort({'cartDate': -1})
+    res.redirect('/user/profil/' + user.username)
+})
 
-        // Get order items
-        let productOrderList = []
+// router.get('/profil/', async (req, res) => {
+//     if (req.cookies['uid'] != undefined) {
+
+//         const _uid = req.cookies['uid']
+
+//         const userInfos = await User.findOne({ _id: _uid })
+//         const productList = await Product.find({ creator: _uid })
+//         const orderList = await ShoppingCart.find({ user: _uid, state: 'done' }).sort({'cartDate': -1})
+
+//         // Get order items
+//         let productOrderList = []
         
         
+//         const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
+//         const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
+
+//         res.render('user/profil', {
+//             userInfos,
+//             productList,
+//             orderList,
+//             productOrderList,
+//             isConnected: true,
+//             itemCount,
+//             isUser: true
+//         })
+//     }
+//     else {
+//         res.redirect('/')
+//     }
+// })
+
+router.get('/profil/:id', async (req, res) => {
+    const _uid = req.cookies['uid']
+    const username = req.params.id
+
+    const userInfos = await User.findOne({ username })
+
+    console.log(_uid)
+    console.log(userInfos._id)
+
+    const productList = await Product.find({ creator: userInfos._id })
+
+    if (_uid != undefined) {
+
         const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
         const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
 
+        if (userInfos._id == _uid) {
+
+            const orderList = await ShoppingCart.find({ user: _uid, state: 'done' })
+                .sort({'cartDate': -1})
+
+            let productOrderList = []
+
+            if (userInfos.isAdmin) {
+
+                const pendingAccounts = await User.find({ isPending: true })
+
+                res.render('user/profil', {
+                    userInfos, 
+                    productList, 
+                    orderList,
+                    productOrderList, 
+                    pendingAccounts,
+                    isConnected: true, 
+                    itemCount, 
+                    isUser: true,
+                    isAdmin: true,
+                })
+            } else {
+                res.render('user/profil', {
+                    userInfos, 
+                    productList, 
+                    orderList,
+                    productOrderList, 
+                    isConnected: true, 
+                    itemCount, 
+                    isUser: true
+                })
+            }
+            
+        } else {
+            res.render('user/profil', {
+                userInfos, 
+                productList, 
+                isConnected: true, 
+                itemCount
+            })
+        }
+
+    } else {
         res.render('user/profil', {
-            userInfos,
-            productList,
-            orderList,
-            productOrderList,
-            isConnected: true,
-            itemCount
+            userInfos, 
+            productList
         })
-    }
-    else {
-        res.redirect('/')
     }
 })
 

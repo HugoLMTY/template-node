@@ -1,3 +1,11 @@
+<% if (locals.registerModalOpen) { %> 
+    <script type="text/javascript">
+        $(window).on('load', function() {
+            $('#registerModal').modal('show');
+        });
+    </script>
+<% } %> 
+
 <form class="container" action="/user/registerUser" method="POST">
     <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" style="color: black;"
         aria-labelledby="registerModalTitle" aria-hidden="true">
@@ -12,12 +20,14 @@
                 </div>
 
                 <div class="modal-body">
+                    <%- include('../messages/errorMessage') %>
+                    <%- include('../messages/successMessage') %>
                     <%- include('../../user/forms/_forms_register') %>
                 </div>
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-                    <button type="submit" class="btn btn-context">S'inscrire</button>
+                    <button type="submit" class="btn btn-context" disabled id="registerConfirmBtn">S'inscrire</button>
                 </div>
             </div>
         </div>

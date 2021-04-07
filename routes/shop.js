@@ -194,15 +194,29 @@ router.get('/product/:id', async (req, res) => {
         const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
         const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
 
-        res.render('shop/productInfos', {
-            productInfos, 
-            userInfos,
-            similarProducts,
-            reviewList,
-            reviewListMore,
-            isConnected: true, 
-            itemCount
-        })
+        if (_uid == userInfos._id) {
+            res.render('shop/productInfos', {
+                productInfos, 
+                userInfos,
+                similarProducts,
+                reviewList,
+                reviewListMore,
+                isConnected: true, 
+                itemCount,
+                isCreator: true,
+            })
+        } else {
+            res.render('shop/productInfos', {
+                productInfos, 
+                userInfos,
+                similarProducts,
+                reviewList,
+                reviewListMore,
+                isConnected: true, 
+                itemCount
+            })
+        }
+
     } else {
         res.render('shop/productInfos', {
             productInfos, 

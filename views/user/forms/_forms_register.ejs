@@ -1,5 +1,20 @@
-<div class="row justify-content-center">
+<script>
+    function checkMatch() {
+        target = document.getElementById('floatingRegisterPassword')
+        targetMatch = document.getElementById('floatingRegisterConfirmPassword')
+        btn = document.getElementById('registerConfirmBtn')
 
+        console.log(target.value, targetMatch.value)
+
+        if (target.value === targetMatch.value) {
+            btn.disabled = false
+        } else {
+            btn.disabled = true
+        }
+    }
+</script>
+
+<div class="row justify-content-center">
     <!-- NAME -->
     <div class="form-floating col-5 p-1 m-3">
         <input type="text" name="registerName" class="form-control" 
@@ -7,42 +22,46 @@
         <label class="label-context" for="floatingRegisterName">Nom</label>
         <br> 
     </div>
-    
-    <!-- MAIL -->
+
+    <!-- LASTNAME -->
     <div class="form-floating col-5 p-1 m-3">
+        <input type="text" name="registerLastName" class="form-control"
+        id="floatingRegisterLastname" placeholder="nom de famille" required>
+        <label class="label-context" for="floatingRegisterLastname">Nom de famille</label>
+    </div>
+
+    <!-- USERNAME -->
+    <div class="form-floating col-4 p-1 m-3">
+        <input type="text" name="registerUsername" class="form-control"
+        id="floatingRegisterUsername" placeholder="Pseudo" required>
+        <label class="label-context" for="floatingRegisterUsername">Pseudo</label>
+    </div>
+
+
+    <!-- MAIL -->
+    <div class="form-floating col-6 p-1 m-3">
         <input type="text" name="registerMail" class="form-control" 
         id="floatingRegisterMail" placeholder="Mail" required>
         <label class="label-context" for="floatingRegisterMail">Mail</label>
         <br> 
     </div>
-
+    
+    <!-- ADDRESS -->
+    <div class="form-floating col-11 p-1 m-3">
+        <input type="text" name="registerAddress" class="form-control"
+        id="floatingRegisterAddress" placeholder="Address" required>
+        <label class="label-context" for="floatingRegisterAddress">Adresse</label>
+    </div>
+    
     <!-- TEL -->
-    <div class="form-floating col-5 p-1 m-3">
+    <div class="form-floating col-7 p-1 m-3">
         <input type="text" name="registerTel" class="form-control"
         id="floatingRegisterTel" placeholder="Tel" required>
         <label class="label-context" for="floatingRegisterTel">Téléphone</label>
     </div>
 
-    <!-- ADDRESS -->
-    <div class="form-floating col-5 p-1 m-3">
-        <input type="text" name="registerAddress" class="form-control"
-        id="floatingRegisterAddress" placeholder="Address" required>
-        <label class="label-context" for="floatingRegisterAddress">Adresse</label>
-    </div>
-
-    <!-- GROUP -->
-    <div class="form-floating col-5 p-1 m-3">
-        <select class="form-select" name="registerGroup" id="floatingRegisterGroup">
-            <option value="grp1">/</option>
-            <option value="grp1">Groupe 1</option>
-            <option value="grp2">Groupe 2</option>
-            <option value="grp3">Groupe 3</option>
-        </select>
-        <label class="label-context" for="floatingRegisterGroup">Groupe</label>
-    </div>
-
-    <!-- GROUP -->
-    <div class="form-floating col-5 p-1 m-3">
+    <!-- SEKS -->
+    <div class="form-floating col-3 p-1 m-3">
         <select class="form-select" name="registerSex" id="floatingRegisterSex">
             <option value="sex_m">Homme</option>
             <option value="sex_f">Femme</option>
@@ -54,7 +73,8 @@
     <!-- PASSWORD -->
     <div class="form-floating col-5 p-1 m-3">
         <input type="password" name="registerPassword" class="form-control" 
-        id="floatingRegisterPassword" placeholder="Password" required>
+        id="floatingRegisterPassword" placeholder="Password" required
+        onkeyup="checkMatch()">
         <label class="label-context" for="floatingRegisterPassword">Mot de passe</label>
         <br> 
     </div>
@@ -62,7 +82,8 @@
     <!-- CONFIRM PASSWORD -->
     <div class="form-floating col-5 p-1 m-3">
         <input type="password" name="registerConfirmPassword" class="form-control" 
-        id="floatingRegisterConfirmPassword" placeholder="Confirm Password" required>
+        id="floatingRegisterConfirmPassword" placeholder="Confirm Password" required
+        onkeyup="checkMatch()">
         <label class="label-context" for="floatingRegisterConfirmPassword">Confirmation</label>
         <br> 
     </div>

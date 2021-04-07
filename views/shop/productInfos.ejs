@@ -146,7 +146,14 @@
             </div>
 
             <hgroup>
-                <h1><%= productInfos.name %></h1>
+                <h1>
+                    <%= productInfos.name %>
+
+                    <% if (locals.isCreator) { %>
+                        <i style="font-weight: normal;" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <% } %> 
+
+                </h1>
                 <p>
                     <%= productInfos.width %> x
                     <%= productInfos.height %> x
@@ -164,7 +171,9 @@
                 </p>
 
                 <article id="about">
-                    <h6>Créateur: <%= userInfos.name %></h6>
+                    <h6>Créateur: 
+                        <a style="text-decoration: none; color: whitesmoke" href="/user/profil/<%= userInfos.username %>"><%= userInfos.name %></a>
+                    </h6>
                     <p>Mise en ligne:   <%= productInfos.uploadDate %></p>
                 </article>
 
