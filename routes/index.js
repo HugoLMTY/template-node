@@ -3,6 +3,7 @@ const router = express.Router()
 const Product = require('../models/Product')
 const ShoppingCart = require('../models/ShoppingCart')
 const CartItem = require('../models/CartItem')
+const User = require('../models/User')
 
 router.get('/', async (req, res) => { 
 

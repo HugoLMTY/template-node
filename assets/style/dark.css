@@ -1,0 +1,24 @@
+body{
+    background: #121212;
+    color: white;
+}
+
+.darkInput, .darkSwitch, .darkSelect{
+    background: #1a1a1a;
+    border: gray;
+}
+
+.darkLabel, .darkSelect, .darkInput{
+    color: white ;
+}
+
+.darkInput:active ~ .darkLabel, .darkInput:placeholder-shown ~ .darkLabel{
+    color: white !important;
+}
+
+#productTable tr{
+    color: white;
+}
+.label-context{
+    color: white;
+}
