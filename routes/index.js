@@ -34,32 +34,19 @@ router.get('/', async (req, res) => {
         await Product.find({ qty: { $gte: 1 } })
             .sort('qty')
             .limit(limit)
+   
+    var infos = { latest, latest_2, latest_3, bestseller, lowstock }
 
     if (req.cookies['uid'] != undefined) {
-
         const _uid = req.cookies['uid']
-        
-        const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
+
+        const cart = await ShoppingCart.findOne({ user: _uid, state: 'current' })
         const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
 
-        res.render('index', {
-            latest,
-            latest_2,
-            latest_3,
-            bestseller,
-            lowstock, 
-            isConnected: true,
-            itemCount
-        })
-    } else {
-        res.render('index', {
-            latest,
-            latest_2,
-            latest_3,
-            bestseller,
-            lowstock
-        })
+        infos = {...infos, isConnected:true, itemCount}
     }
+
+    res.render('index', infos)
 })
 
 module.exports = router 

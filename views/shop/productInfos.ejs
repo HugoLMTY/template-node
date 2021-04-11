@@ -87,12 +87,10 @@
         var max = 5  
         while (min <= id) {
             document.getElementById('star_rating_' + min).classList.add('hovered')
-            target.value = id
             min++
         }
         while (max > id) {
             document.getElementById('star_rating_' + max).classList.remove('hovered')
-            target.value = id
             max--
         }
     }
@@ -339,37 +337,35 @@
     </section>
 
     <!-- leave revieww-->
-    <% if (locals.isConnected) { %>
-        <div class="row mt-5 mb-5">
-            <form method="POST" action="/shop/addReview" class="reviewHolder">
-                <input type="text" hidden name="productID" value="<%= productInfos._id %>">
-                <div class="ratingHolder">
-    
-                    <style>
-                        .checked {
-                            color: #80dfff !important;
-                        }
+ 
+    <div class="row mt-2">
+        <h2>Évaluation</h2>
 
-                        .hovered {
-                            color: #c8effc
-                        }
-                    </style>
-    
-                    <h2>Évaluation</h2>
-                    <input id="productRatingValue" type="number" hidden required name="productRating">
+        <% if (locals.isConnected && locals.canReview && !locals.hasReviewed) { %> 
+            <form method="POST" action="/shop/addReview" class="row reviewHolder">
+                <div class="ratingHolder m-2 mt-3">
                     <span id="star_rating_1" onclick="getInfos(1)" onmouseover="getHoverInfos(1)" onmouseout="getOutInfos()" class="fa fa-star"></span>
                     <span id="star_rating_2" onclick="getInfos(2)" onmouseover="getHoverInfos(2)" onmouseout="getOutInfos()" class="fa fa-star"></span>
                     <span id="star_rating_3" onclick="getInfos(3)" onmouseover="getHoverInfos(3)" onmouseout="getOutInfos()" class="fa fa-star"></span>
                     <span id="star_rating_4" onclick="getInfos(4)" onmouseover="getHoverInfos(4)" onmouseout="getOutInfos()" class="fa fa-star"></span>
                     <span id="star_rating_5" onclick="getInfos(5)" onmouseover="getHoverInfos(5)" onmouseout="getOutInfos()" class="fa fa-star"></span>
                 </div>
-                <div class="commentHolder">
-                    <textarea name="productComment" class="darkInput" cols="30" rows="10"></textarea>
-                </div>
-                <button type="submit" class="btn btn-context">
-                    Envoyer la review
-                </button>
+        
+                <input id="productRatingValue" hidden type="number" required name="productRating" value="">
+                <input type="text" hidden name="productID" value="<%= productInfos._id %>">
+
+                <textarea name="productComment" placeholder="Votre évaluation du produit.." required class="darkInput productRatingCommentHolder" rows="1"></textarea>
+                <button type="submit" class="col-3 btn btn-context"> Envoyer la review </button>
             </form>
-        </div>
-    <% } %>
+        <% } else if (locals.isCreator) { %> 
+            <textarea name="productComment" placeholder="Vous ne pouvez pas noter votre propre produit" disabled class="darkInput productRatingCommentHolder" rows="1"></textarea>
+        <% } else if (locals.hasReviewed) { %> 
+            <textarea name="productComment" placeholder="Vous avec déjà noté le produit" disabled class="darkInput productRatingCommentHolder" rows="1"></textarea>
+        <% } else if (locals.isConnected && !locals.canReview) { %> 
+            <textarea name="productComment" placeholder="Vous devez acheter le produit avant de pouvoir le noter" disabled class="darkInput productRatingCommentHolder" rows="1"></textarea>
+        <% } else { %> 
+            <textarea name="productComment" placeholder="Vous devez être connecté pour noter le produit" disabled class="darkInput productRatingCommentHolder" rows="1"></textarea>
+        <% } %> 
+
+    </div>
 </div>

@@ -2,7 +2,7 @@
 
     <!-- --------------------- NAME ------------------------------  -->
     <div class="form-floating col-7 p-1 mt-3">
-        <input type="text" class="form-control darkInput" min="0" value="<%= currentOptions.name %>"
+        <input type="text" class="form-control darkInput" min="0" value="<%= currentOptions.productFilterName %>"
         id="floatingProductName" placeholder="0" name="productFilterName">
 
         <label class="label-context darkLabel" for="floatingProductName">Nom</label>
@@ -14,10 +14,16 @@
 
             <option value="/">-</option>
 
-            <option value="by_name_desc">Nom ↓</option>
-            <option value="by_name_asc">Nom ↑</option>
+            <% sortValues.forEach(sort => { %> 
+                <% if (sort[1].value == currentOptions.productFilterSort) { %>
+                    <option selected value="<%= sort[1].value %>"><%= sort[0].name %></option>
+                <% } else { %>
+                    <option value="<%= sort[1].value %>"><%= sort[0].name %></option>
+                <% } %>
+           <% }) %> 
 
-            <option value="by_price_desc">Prix ↓</option>
+
+            <!-- <option value="by_price_desc">Prix ↓</option>
             <option value="by_price_asc">Prix ↑</option>
             
             <option value="by_upload_desc">Mise en ligne ↓</option>
@@ -27,7 +33,7 @@
             <option value="by_qty_asc">Quantité restante ↑</option>
             
             <option value="by_rating_desc">Note ↓</option>
-            <option value="by_rating_asc">Note ↑</option>
+            <option value="by_rating_asc">Note ↑</option> -->
         </select>
 
         <label class="label-context darkLabel" for="floatingFilterSort">Trier par:</label>
@@ -35,14 +41,14 @@
 
     <!-- --------------------- PRICE ------------------------------  -->
     <div class="form-floating col-6 p-1 mt-3">
-        <input type="number" class="form-control darkInput" min="0" value="<%= currentOptions.minPrice %>"
+        <input type="number" class="form-control darkInput" min="0" value="<%= currentOptions.productFilterMinPrice %>"
         id="floatingMinPrice" placeholder="0" name="productFilterMinPrice">
 
         <label class="label-context darkLabel" for="floatingMinPrice">Prix min</label>
     </div>
 
     <div class="form-floating col-6 p-1 mt-3">
-        <input type="number" class="form-control darkInput" min="0" value="<%= currentOptions.maxPrice %>"
+        <input type="number" class="form-control darkInput" min="0" value="<%= currentOptions.productFilterMaxPrice %>"
         id="floatingMaxPrice" placeholder="0" name="productFilterMaxPrice">
 
         <label class="label-context darkLabel" for="floatingMaxPrice">Prix max</label>
@@ -50,21 +56,21 @@
 
     <!-- --------------------- DIMENSIONS ------------------------------  -->
     <div class="form-floating col-4 p-1 mt-3">
-        <input type="number" class="form-control darkInput" min="0" value="<%= currentOptions.height %>"
+        <input type="number" class="form-control darkInput" min="0" value="<%= currentOptions.productFilterHeight %>"
         id="floatingHeight" placeholder="0" name="productFilterHeight">
 
         <label class="label-context darkLabel" for="floatingHeight">Hauteur</label>
     </div>
 
     <div class="form-floating col-4 p-1 mt-3">
-        <input type="number" class="form-control darkInput" min="0" value="<%= currentOptions.width %>"
+        <input type="number" class="form-control darkInput" min="0" value="<%= currentOptions.floatingFilterWidth %>"
         id="floatingWidth" placeholder="0" name="floatingFilterWidth">
 
         <label class="label-context darkLabel" for="floatingWidth">Largeur</label>
     </div>
 
     <div class="form-floating col-4 p-1 mt-3">
-        <input type="number" class="form-control darkInput" min="0" value="<%= currentOptions.lenght %>"
+        <input type="number" class="form-control darkInput" min="0" value="<%= currentOptions.floatingFilterLenght %>"
         id="floatingLenght" placeholder="0" name="floatingFilterLenght">
 
         <label class="label-context darkLabel" for="floatingLenght">Longueur</label>
@@ -72,8 +78,14 @@
     
     <div class="container m-3">
         <div class="col-12 form-check form-switch">
-            <input type="checkbox" name="productFilterIsStock"
-            id="productIsStock" class="form-check-input" >
+
+            <% if (currentOptions.productFilterIsStock == 'on') { %> 
+                <input type="checkbox" checked name="productFilterIsStock"
+                id="productIsStock" class="form-check-input" >
+            <% } else { %> 
+                <input type="checkbox" name="productFilterIsStock"
+                id="productIsStock" class="form-check-input" >
+            <% } %>             
             <label class="form-check-label" 
             for="productIsStock">En stock uniquement</label>
         </div>

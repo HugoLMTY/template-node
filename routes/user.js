@@ -25,6 +25,7 @@ router.get('/register', (req, res) => {
 })
 
 router.post('/registerUser', (req, res) => {
+
     const newUser = new User({
         username: req.body.registerUsername,
         name: req.body.registerName,
@@ -119,66 +120,29 @@ router.get('/profil/:id', async (req, res) => {
     const username = req.params.id
 
     const userInfos = await User.findOne({ username })
-
-    console.log(_uid)
-    console.log(userInfos._id)
-
     const productList = await Product.find({ creator: userInfos._id })
 
-    if (_uid != undefined) {
+    var infos = { userInfos, productList }
 
+    if (_uid != undefined) {
         const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
         const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
 
-        if (userInfos._id == _uid) {
+        infos = { ...infos, isConnected: true, itemCount}
 
+        if (userInfos._id == _uid) {
             const orderList = await ShoppingCart.find({ user: _uid, state: 'done' })
                 .sort({'cartDate': -1})
-
             let productOrderList = []
+            infos = { ...infos, isUser: true, orderList, productOrderList}
 
             if (userInfos.isAdmin) {
-
                 const pendingAccounts = await User.find({ isPending: true })
-
-                res.render('user/profil', {
-                    userInfos, 
-                    productList, 
-                    orderList,
-                    productOrderList, 
-                    pendingAccounts,
-                    isConnected: true, 
-                    itemCount, 
-                    isUser: true,
-                    isAdmin: true,
-                })
-            } else {
-                res.render('user/profil', {
-                    userInfos, 
-                    productList, 
-                    orderList,
-                    productOrderList, 
-                    isConnected: true, 
-                    itemCount, 
-                    isUser: true
-                })
-            }
-            
-        } else {
-            res.render('user/profil', {
-                userInfos, 
-                productList, 
-                isConnected: true, 
-                itemCount
-            })
-        }
-
-    } else {
-        res.render('user/profil', {
-            userInfos, 
-            productList
-        })
+                infos = { ...infos, isAdmin: true, pendingAccounts}
+            }            
+        } 
     }
+    res.render('user/profil', infos )
 })
 
 router.get('/logout', (req, res) => {
