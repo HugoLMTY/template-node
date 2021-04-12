@@ -20,28 +20,16 @@ router.get('/', async (req, res) => {
     const _uid = req.cookies['uid']
 
     const shoppingCartInfos = await ShoppingCart.findOne({ user: _uid, state: 'current' })
-
-    // if (shoppingCartInfos.length < 1) {
-    //     new ShoppingCart({
-    //         user: _uid,
-    //         cartDate: getDate(),
-    //         state: 'current'
-    //     }).save()
-    //     res.render('cart/index', {
-    //         cartList: [],
-    //         isConnected: true
-    //     })
-    // } else {
     const cartList = await CartItem.find({ idCart: shoppingCartInfos._id })
 
     const cart = await ShoppingCart.findOne({ user: _uid, state: 'current' })
     const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
 
-    res.render('cart/index', {
-        cartList,
-        isConnected: true,
-        itemCount
-    })
+    const title = "Panier"
+
+    const infos = { title, cartList, isConnected: true, itemCount}
+
+    res.render('cart/index', infos)
 })
 
 router.post('/addProduct', async (req, res) => {

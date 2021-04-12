@@ -7,10 +7,20 @@
             <%= userInfos.name %> 
         <% } %> 
 
+        <% if (userInfos.isVerified) { %> 
+            <i style="color: #80DFFF; font-size: 0.69em;" class="fa fa-check-circle"></i>
+        <% } else { %> 
+            <i style="opacity: 0.21; font-size: 0.69em;" class="fa fa-check-circle"></i>
+        <% } %> 
+
+
     </h1>
     <p class="lead">
-        Blah blah blah blah
+        <% if (userInfos.bio) { %> 
         <%= userInfos.bio %> 
+        <% } else { %> 
+            <p style="font-style: italic; opacity: 0.69;">Aucune bio</p>
+        <% } %> 
     </p>
     
     <hr class="my-4">
@@ -63,7 +73,9 @@
         </div>
     <% } else { %> 
         <h1>Produits en vente</h1>
-        <%- include('partials/productList.ejs') %>
+        <div class="d-flex justify-content-center">
+            <%- include('partials/productList.ejs') %>
+        </div>
     <% } %> 
     
 </div>

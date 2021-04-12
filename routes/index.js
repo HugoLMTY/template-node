@@ -7,6 +7,8 @@ const User = require('../models/User')
 
 router.get('/', async (req, res) => { 
 
+    const title = 'Accueil'
+
     const limit = 3
 
     const latest = 
@@ -36,7 +38,7 @@ router.get('/', async (req, res) => {
             .sort('qty')
             .limit(limit)
    
-    var infos = { latest, latest_2, latest_3, bestseller, lowstock }
+    var infos = { title, latest, latest_2, latest_3, bestseller, lowstock }
 
     if (req.cookies['uid'] != undefined) {
         const _uid = req.cookies['uid']
@@ -44,7 +46,7 @@ router.get('/', async (req, res) => {
         const cart = await ShoppingCart.findOne({ user: _uid, state: 'current' })
         const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
 
-        infos = {...infos, isConnected:true, itemCount}
+        infos = { ...infos, isConnected:true, itemCount }
     }
 
     res.render('index', infos)

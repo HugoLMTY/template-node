@@ -43,7 +43,7 @@
           <% latest.forEach(product=> { %>
             <a href="/shop/product/<%= product._id %>" style="height: 250px;" class="col productHolder">
       
-              <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+              <img class="productImg" src="<%= product.productImgPath %>" alt="product_1">
       
               <div class="productShadow">
                 <p class="productTip"> Nouveau </p>
@@ -61,7 +61,7 @@
           <% latest_2.forEach(product=> { %>
             <a href="/shop/product/<%= product._id %>" style="height: 250px;" class="col productHolder">
       
-              <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+              <img class="productImg" src="<%= product.productImgPath %>" alt="product_1">
       
               <div class="productShadow">
                 <p class="productTip"> Nouveau </p>
@@ -78,7 +78,7 @@
           <% latest_3.forEach(product=> { %>
             <a href="/shop/product/<%= product._id %>" style="height: 250px;" class="col productHolder">
       
-              <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+              <img class="productImg" src="<%= product.productImgPath %>" alt="product_1">
       
               <div class="productShadow">
                 <p class="productTip"> Nouveau </p>
@@ -111,7 +111,7 @@
   <div class="row">
     <% bestseller.forEach(product => { %> 
         <a href="/shop/product/<%= product._id %>" class="col productHolder mb-4">
-            <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+            <img class="productImg" src="<%= product.productImgPath %>" alt="product_1">
             <div class="productShadow">
               <p class="productTip"><%= product.rating %></p>
               <p class="productTitle"> <%= product.name %> </p>
@@ -132,7 +132,7 @@
     </div>
     <% lowstock.forEach(product => { %> 
         <a href="/shop/product/<%= product._id %>" class="col productHolder mb-4">
-            <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+            <img class="productImg" src="<%= product.productImgPath %>" alt="product_1">
             <div class="productShadow">
               <p class="productTip">Plus que <%= product.qty %></p>
               <p class="productTitle"> <%= product.name %> </p>

@@ -21,7 +21,7 @@
     <div class="col-9 row row-cols-4">
         <% productList.forEach(product => { %> 
             <a href="/shop/product/<%= product._id %>" class="col productHolder mb-5">
-                <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+                <img class="productImg" src="<%= product.productImgPath %>" alt="<%= product.pathImg %>">
                 <div class="productShadow">
                     <p class="productTitle"> <%= product.name %> </p>
                     <p class="productPrice btn-context"><%= product.price %>€</p>

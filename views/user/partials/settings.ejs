@@ -5,7 +5,12 @@
     <div class="form-check form-switch">
         <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>
         <label class="form-check-label" for="flexSwitchCheckChecked">Thème sombre</label>
-      </div>
+    </div>
+    
+    <form class="row" action="/verifRequest" method="POST">
+        <button class="col m-3 btn btn-context" value="verify">Vérifier le compte</button>
+        <button class="col m-3 btn btn-context" value="seller">Devenir vendeur</button>
+    </form>
 
     <form action="/deleteAccount" method="POST">
         <input type="text" hidden value="<%= userInfos._id %>">

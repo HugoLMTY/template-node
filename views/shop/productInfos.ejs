@@ -264,7 +264,7 @@
                 <div class="col-12 row">
                     <% similarProducts.forEach(product=> { %>
                         <a href="/shop/product/<%= product._id %>" class="col-3 productHolder mb-4">
-                            <img class="productImg" src="/img/<%= product.pathImg %>" alt="product_1">
+                            <img class="productImg" src="<%= product.productImgPath %>" alt="product_1">
                             <div class="productShadow">
                                 <p class="productTitle">
                                     <%= product.name %>

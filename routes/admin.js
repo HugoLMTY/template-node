@@ -11,4 +11,11 @@ router.post('/validateSeller', async (req, res) => {
     await User.findOneAndUpdate({ _id: idUser}, { isPending: false, isSeller: true })
 })
 
+
+router.post('/validateUser', async (req, res) => {
+    const idUser = req.body.idUser
+    await User.findOneAndUpdate({ _id: idUser}, { isPending: false, isVerified: true})
+})
+
+
 module.exports = router

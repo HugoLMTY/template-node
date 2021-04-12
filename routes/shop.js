@@ -5,7 +5,19 @@ const User = require('../models/User')
 const Review = require('../models/Review')
 const ShoppingCart = require('../models/ShoppingCart')
 const CartItem = require('../models/CartItem')
-const { count } = require('../models/Product')
+
+const multer = require('multer')
+const path = require('path')
+const uploadPath = path.join('assets/img', Product.imgPath)
+
+const imgType = ['image/jpeg', 'image/png', 'image/jpg']
+
+const upload = multer({
+    dest: uploadPath,
+    fileFilter: (req, file, callback) => {
+        callback(null, imgType.includes(file.mimetype))
+    }
+})
 
 function getDate() {
 
@@ -127,11 +139,9 @@ router.get('/', async (req, res) => {
 
     const productList = await Product.find(searchOptions).sort(sortOption)
 
-    // sortValues.forEach(element => {
-    //     console.log(element[1].value)
-    // })
+    const title = "Boutique"
 
-    var infos = { sortValues, productList, currentOptions }
+    var infos = { title, sortValues, productList, currentOptions }
 
     if (req.cookies['uid'] != undefined) {
         const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
@@ -151,38 +161,47 @@ router.get('/addProduct', async (req, res) => {
         const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
         const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
 
-        res.render('shop/newProduct', {
-            userInfos, 
-            date: getDate(),
-            isConnected: true,
-            itemCount
-        })
+        const title = "Nouveau produit"
+
+        const infos = { title, userInfos, date: getDate(), isConnected: true, itemCount}
+
+        res.render('shop/newProduct', infos)
     } catch {
         res.redirect('/shop/')
     }
 })
 
-router.post('/new', (req, res) => {
+router.post('/new', upload.single('pathImgProduct'), (req, res) => {
 
     const _uid = req.cookies['uid']
     const r = req.body
 
-    new Product({
+    const filename = req.file != null ? req.file.filename : null
+
+    const newProduct = new Product({
         name: r.newProductName,
         price: r.newProductPrice,
-        creator: _uid,
-        uploadDate: getDate(),
         desc: r.newProductDesc,
+        
+        pathImg: filename,
+        
+        uploadDate: getDate(),
         qty: r.newProductQty,
+        rating: 0,
+        creator: _uid,
+        
         type: 'item',
-        rating: 0.5,
-        pathImg: r.pathImgProduct,
+        
         width: r.newProductWidth,
         height: r.newProductHeight,
         lenght: r.newProducLength,
+        
         weight: r.newProducWeight
-    }).save()
-    res.redirect('/shop/')
+    })
+
+    newProduct.save()
+
+    res.redirect('/shop')
 })
 
 router.get('/product/:id', async (req, res) => {
@@ -195,7 +214,9 @@ router.get('/product/:id', async (req, res) => {
     const reviewList = await Review.find({ product: productInfos._id }).sort({ 'rating': -1 }).limit(3)
     const reviewListMore = await Review.find({ product: productInfos._id }).sort({ 'rating': -1 }).skip(3)
 
-    var infos = { productInfos, userInfos, similarProducts, reviewList, reviewListMore } 
+    const title = productInfos.name
+
+    var infos = { title, productInfos, userInfos, similarProducts, reviewList, reviewListMore } 
 
     if (req.cookies['uid'] != undefined) {
 

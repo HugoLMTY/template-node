@@ -1,0 +1,11 @@
+
+# NODE
+/node_modules
+package-lock.json
+
+# IMG
+/assets/img/products
+
+# OTHER
+/doc
+

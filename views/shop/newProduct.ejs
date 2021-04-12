@@ -1,67 +1,55 @@
-<form action="/shop/new" method="POST" class="container">
+<form action="/shop/new" method="POST" class="container" enctype="multipart/form-data">
     <div class="row" style="min-height: 200px;">
 
+        <!-- IMG -->
         <div class="col-4">
-            <div class="cart">
-
-                <figure>
-                    <div class="form-group">
-                        <input class="form-control darkInput" type="file" id="formFile" name="pathImgProduct" required>
-                    </div>
-                </figure>
-
-                <!--<div id="thumbnails">
-                        <img src="image.png" alt="Product image 1" />
-                        <img src="image.png" alt="Product image 2" />
-                    </div>-->
-
+            <div class="cart form-group">
+                <input class="form-control darkInput" type="file" name="pathImgProduct">
             </div>
         </div>
 
+        <!-- INFOS (Name, desc, creator) -->
         <div class="col-5">
+
             <hgroup>
                 <div class="form-floating">
-                    <input class="form-control darkInput" type="text" id="newProductName" name="newProductName"
-                        required>
+                    <input class="form-control darkInput" type="text" id="newProductName" name="newProductName">
                     <label for="addProductname" class="darkLabel">Nom du produit</label>
                 </div>
             </hgroup>
+
             <br>
+
             <section id="info">
+
                 <div class="form-floating">
-                    <textarea class="form-control darkInput" style="min-height: 150px;" type="text" id="newProductDesc"
-                        name="newProductDesc" required></textarea>
+                    <textarea class="form-control darkInput" style="min-height: 150px;" type="text" id="newProductDesc" name="newProductDesc"></textarea>
                     <label for="newProductDesc" class="darkLabel">Description du produit</label>
                 </div>
 
-                <div class="social">
-                    <!-- Boutons de partage-->
-                </div>
-
                 <article class="comment">
-                    <h6>Créateur: <%= userInfos.name %>
-                    </h6>
-                    <p>Mise en ligne: <%= date %>
-                    </p>
+                    <h6>Créateur: <%= userInfos.name %> </h6>
+                    <p>Mise en ligne: <%= date %> </p>
                 </article>
 
             </section>
         </div>
 
+        <!-- INFOS (price, qty) -->
         <div class="col-3">
-                <div class="col m-2 input-group">                  
-                    <input type="number" min="1" class="form-control darkInput" name="newProductPrice"
-                    placeholder="Prix" aria-label="Prix">
-                    <span class="input-group-text darkInput">x</span>
-                    <input type="number" min="1" class="form-control darkInput" name="newProductQty"
-                    placeholder="Qté" aria-label="Qty">
-                </div>
-                <button class="col-4 m-2 btn btn-context" type="submit">
-                    Mettre en ligne
-                </button>
+            <div class="col m-2 input-group">
+                <input type="number" min="1" class="form-control darkInput" name="newProductPrice" placeholder="Prix" aria-label="Prix">
+                <span class="input-group-text darkInput">x</span>
+                <input type="number" min="1" class="form-control darkInput" name="newProductQty" placeholder="Qté" aria-label="Qty">
+            </div>
+
+            <button class="col-4 m-2 btn btn-context" type="submit">
+                Mettre en ligne
+            </button>
         </div>
     </div>
 
+    <!-- SPECS -->
     <div class="row">
         <section id="details">
             <h2>Plus d'info</h2>
@@ -81,25 +69,17 @@
                 </tr>
 
                 <tr>
-                    <td>
-                        <input type="number" class="form-control w-25 darkInput" name="newProductWidth"
-                            placeholder="(cm)" required>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control w-25 darkInput" name="newProductHeight"
-                            placeholder="(cm)" required>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control w-25 darkInput" name="newProducLength"
-                            placeholder="(cm)" required>
-                    </td>
-                    <td>
-                        <input type="number" class="form-control w-25 darkInput" name="newProducWeight"
-                            placeholder="(g)" required>
-                    </td>
+                    <td> <input type="number" class="form-control w-25 darkInput" name="newProductWidth"
+                            placeholder="(cm)"> </td>
+                    <td> <input type="number" class="form-control w-25 darkInput" name="newProductHeight"
+                            placeholder="(cm)"> </td>
+                    <td> <input type="number" class="form-control w-25 darkInput" name="newProducLength"
+                            placeholder="(cm)"> </td>
+                    <td> <input type="number" class="form-control w-25 darkInput" name="newProducWeight"
+                            placeholder="(g)"> </td>
 
                     <td>
-                        <select class="darkSelect" name="" id="" required>
+                        <select class="darkSelect" name="" id="">
                             <option value="pla">PLA</option>
                             <option value="abs">ABS</option>
                             <option value="pva">PVA / HIPS</option>

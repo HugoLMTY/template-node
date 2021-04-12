@@ -2,13 +2,16 @@ const mongoose = require('mongoose')
 
 const userSchema = new mongoose.Schema({
 
-    // PERSONNAL INFOS
+    // USER INFOS
     username: { type: String },
     name: { type: String },
     lastname: { type: String },
+    password: { type: String },
+
+
+    // PERSONNAL INFOS
     address: { type: String },
     sex: { type: String },
-    password: { type: String },
 
     bio: { type: String },
     
@@ -18,8 +21,8 @@ const userSchema = new mongoose.Schema({
     
     // SELLER INFOS
     isSeller: { type: Boolean },
-    isPending: { type: Boolean },
     isVerified: { type: Boolean },
+    isPending: { type: Boolean },
     group: { type: String },
 
     // OTHER
