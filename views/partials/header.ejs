@@ -11,10 +11,6 @@
         <img src="/img/logo.png" width="120px" alt="">
 
         <% if (locals.isConnected) {%> 
-
-          <li class="nav-item">
-            <a class="nav-link text-context" href="/user/profil">Profil</a>
-          </li>
   
           <li class="nav-item">
             <a class="nav-link text-context" href="/cart/">
@@ -25,7 +21,11 @@
             </a>
           </li>
 
-        <% } else {%> 
+          <li class="nav-item">
+            <a class="nav-link text-context" href="/user/profil">Profil</a>
+          </li>
+
+        <% } else { %> 
 
           <li class="nav-item">
             <a class="nav-link text-context" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">

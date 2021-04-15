@@ -23,6 +23,7 @@ const userSchema = new mongoose.Schema({
     isSeller: { type: Boolean },
     isVerified: { type: Boolean },
     isPending: { type: Boolean },
+    pendingDate: { type: Date },
     group: { type: String },
 
     // OTHER

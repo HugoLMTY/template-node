@@ -1,10 +1,23 @@
+<script>
+    function checkCollection(id) {
+        const target = id.value
+        const input = document.getElementById('collInput')
+        const btn = document.getElementById('newProductSubmit')
+
+        target == "placeholder" ? btn.disabled = true : btn.disabled = false
+        
+        target == "newCollection" ? input.hidden = false : input.hidden = true
+    }
+</script>
+
 <form action="/shop/new" method="POST" class="container" enctype="multipart/form-data">
     <div class="row" style="min-height: 200px;">
 
         <!-- IMG -->
         <div class="col-4">
             <div class="cart form-group">
-                <input class="form-control darkInput" type="file" name="pathImgProduct">
+                <input class="form-control darkInput" type="file"  name="pathImgProduct" required
+                accept="image/png, image/jpeg">
             </div>
         </div>
 
@@ -13,14 +26,32 @@
 
             <hgroup>
                 <div class="form-floating">
-                    <input class="form-control darkInput" type="text" id="newProductName" name="newProductName">
+                    <input class="form-control darkInput" type="text" id="newProductName" name="newProductName" required>
                     <label for="addProductname" class="darkLabel">Nom du produit</label>
                 </div>
             </hgroup>
-
+ 
             <br>
-
+ 
             <section id="info">
+
+                <div class="d-flex mb-3">
+
+                    <select class="form-select darkSelect" name="newProductCollection" onchange="checkCollection(this)" id="">
+                        <option class="label-context" selected value="placeholder">Sélectionner une collection</option>
+                        <% collections.forEach(element => { %>
+                            <option class="label-context" value=""> <%= element.name %> </option>
+                            <% }) %>
+                            
+                            <option class="label-context" value="/">Pas de collection</option>
+                        <option class="label-context" value="newCollection">Créer une nouvelle collection</option>
+                    </select>
+
+                    <div class="form-floating" hidden id="collInput">
+                        <input type="text" id="createCollectionInput" class="form-control darkInput"></input>
+                        <label for="createCollectionInput" class="darkLabel">Nom de collection</label>
+                    </div>
+                </div>
 
                 <div class="form-floating">
                     <textarea class="form-control darkInput" style="min-height: 150px;" type="text" id="newProductDesc" name="newProductDesc"></textarea>
@@ -38,12 +69,12 @@
         <!-- INFOS (price, qty) -->
         <div class="col-3">
             <div class="col m-2 input-group">
-                <input type="number" min="1" class="form-control darkInput" name="newProductPrice" placeholder="Prix" aria-label="Prix">
+                <input type="number" min="1" class="form-control darkInput" name="newProductPrice" placeholder="Prix" aria-label="Prix" required>
                 <span class="input-group-text darkInput">x</span>
-                <input type="number" min="1" class="form-control darkInput" name="newProductQty" placeholder="Qté" aria-label="Qty">
+                <input type="number" min="1" class="form-control darkInput" name="newProductQty" placeholder="Qté" aria-label="Qty" required>
             </div>
 
-            <button class="col-4 m-2 btn btn-context" type="submit">
+            <button class="col-4 m-2 btn btn-context" disabled id="newProductSubmit" type="submit">
                 Mettre en ligne
             </button>
         </div>
@@ -51,10 +82,10 @@
 
     <!-- SPECS -->
     <div class="row">
-        <section id="details">
+        <!-- <section id="details">
             <h2>Plus d'info</h2>
             <p>Information détaillée du produit ici</p>
-        </section>
+        </section> -->
 
         <section id="characteristics">
             <h2>Caractéristiques</h2>
@@ -69,13 +100,13 @@
                 </tr>
 
                 <tr>
-                    <td> <input type="number" class="form-control w-25 darkInput" name="newProductWidth"
+                    <td> <input type="number" class="form-control w-25 darkInput" name="newProductWidth" required
                             placeholder="(cm)"> </td>
-                    <td> <input type="number" class="form-control w-25 darkInput" name="newProductHeight"
+                    <td> <input type="number" class="form-control w-25 darkInput" name="newProductHeight" required
                             placeholder="(cm)"> </td>
-                    <td> <input type="number" class="form-control w-25 darkInput" name="newProducLength"
+                    <td> <input type="number" class="form-control w-25 darkInput" name="newProducLength" required
                             placeholder="(cm)"> </td>
-                    <td> <input type="number" class="form-control w-25 darkInput" name="newProducWeight"
+                    <td> <input type="number" class="form-control w-25 darkInput" name="newProducWeight" required
                             placeholder="(g)"> </td>
 
                     <td>

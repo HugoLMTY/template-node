@@ -17,7 +17,8 @@ const productSchema = new mongoose.Schema({
     uploadDate: { type: String },
     qty: { type: Number },
     rating: { type: Number },
-    creator: { type: String },     
+    creator: { type: String },    
+    isActive: { type: Boolean }, 
 
     // PRODUCTS SPECS
     type: { type: String },

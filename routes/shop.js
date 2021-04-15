@@ -5,6 +5,7 @@ const User = require('../models/User')
 const Review = require('../models/Review')
 const ShoppingCart = require('../models/ShoppingCart')
 const CartItem = require('../models/CartItem')
+const Collection = require('../models/Collection')
 
 const multer = require('multer')
 const path = require('path')
@@ -144,10 +145,16 @@ router.get('/', async (req, res) => {
     var infos = { title, sortValues, productList, currentOptions }
 
     if (req.cookies['uid'] != undefined) {
+
+        const userInfos = await User.findOne({ _id: _uid })
+
         const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
         const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
 
         infos = { ...infos, isConnected: true, itemCount}
+        
+        if (userInfos.isSeller) 
+            infos = { ...infos, isSeller: true}
     }
     res.render('shop/index', infos)
 })
@@ -161,9 +168,11 @@ router.get('/addProduct', async (req, res) => {
         const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
         const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
 
+        const collections = await Collection.find({ state: 'open' })
+
         const title = "Nouveau produit"
 
-        const infos = { title, userInfos, date: getDate(), isConnected: true, itemCount}
+        const infos = { title, userInfos, collections, date: getDate(), isConnected: true, itemCount}
 
         res.render('shop/newProduct', infos)
     } catch {
@@ -189,6 +198,7 @@ router.post('/new', upload.single('pathImgProduct'), (req, res) => {
         qty: r.newProductQty,
         rating: 0,
         creator: _uid,
+        isActive: true,
         
         type: 'item',
         

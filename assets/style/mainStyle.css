@@ -25,6 +25,16 @@ input[type=number] {
     color: gray;
 }
 
+.link-context{
+    color: whitesmoke;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.link-context:hover{
+    color: #80dfff;
+}
+
 .tooltip-context{
     color: gray;
     font-size: 0.8em;

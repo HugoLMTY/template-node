@@ -2,7 +2,7 @@
 
 <div class="row container-fluid justify-content-center">
 
-    <% if (locals.isConnected) {%> 
+    <% if (locals.isConnected && locals.isSeller) {%> 
         <form action="/shop/new" method="POST">
             <a href="/shop/addProduct" class="btn btn-context" style="position: relative; left: 80%; transform: scale(1.2);" type="submit" >Ajouter un produit</a>
         </form>
@@ -20,6 +20,7 @@
 
     <div class="col-9 row row-cols-4">
         <% productList.forEach(product => { %> 
+            <% if (product.isActive) {%> 
             <a href="/shop/product/<%= product._id %>" class="col productHolder mb-5">
                 <img class="productImg" src="<%= product.productImgPath %>" alt="<%= product.pathImg %>">
                 <div class="productShadow">
@@ -28,6 +29,7 @@
                     <p class="productRating"> <%= product.rating %> <span class="fa fa-star productRatingStar"></span> </p>
                 </div>
             </a>
+            <% } %> 
         <% }) %>
         
     </div>

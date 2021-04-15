@@ -20,6 +20,7 @@ const adminRouter = require('./routes/admin')
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/views')
 app.set('layout', 'layout/layout')
+
 app.use(expressLayout)
 app.use(express.static('assets'))
 app.use(bodyParser.urlencoded({ limit: '10mb', extended: false }))

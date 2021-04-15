@@ -16,20 +16,12 @@ function getDate() {
     return (day + '-' + month + '-' + year)
 }
 
-router.get('/login', (req, res) => {
-    res.render('user/login')
-})
-
-router.get('/register', (req, res) => {
-    res.render('user/register')
-})
-
 router.post('/registerUser', (req, res) => {
 
     const newUser = new User({
         username: req.body.registerUsername,
         name: req.body.registerName,
-        lastname: req.body.registerLastname,
+        lastname: req.body.registerLastName,
         password: req.body.registerPassword,
 
         address: req.body.registerAddress,
@@ -42,7 +34,8 @@ router.post('/registerUser', (req, res) => {
 
         isSeller: false,
         isVerified: false,
-        isPending: false,
+        isPending: true,
+        pendingDate: new Date(),
         group: '',
 
         isAdmin: false
@@ -85,7 +78,7 @@ router.get('/profil/', async (req, res) => {
 
     if (_uid != undefined) {
         const user = await User.findOne({ _id: _uid})
-        res.redirect('/user/profil/' + user.username)
+        res.redirect('/user/' + user.username)
     } else {
         res.redirect('/')
     }
@@ -125,16 +118,30 @@ router.get('/profil/', async (req, res) => {
 // })
 //#endregion
 
-router.get('/profil/:id', async (req, res) => {
+router.get('/action/logout', (req, res) => {
+    clearCookies(res)
+    res.redirect('/')
+})
+
+router.get('/:id', async (req, res) => {
+
+    
     const _uid = req.cookies['uid']
     const username = req.params.id
-
+    
     const userInfos = await User.findOne({ username })
-    const productList = await Product.find({ creator: userInfos._id })
+    
+    if (userInfos) {
+        const title = "Profil de " + userInfos.username
+        const productList = await Product.find({ creator: userInfos._id })
+        var infos = { title, userInfos, productList }
+    } else {
+        const title = "Erreur 404"
+        var infos = { title, userInfos }
+    }
 
-    const title = "Profil de " + userInfos.username
 
-    var infos = { title, userInfos, productList }
+
 
     if (_uid != undefined) {
         const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
@@ -142,7 +149,7 @@ router.get('/profil/:id', async (req, res) => {
 
         infos = { ...infos, isConnected: true, itemCount}
 
-        if (userInfos._id == _uid) {
+        if (userInfos && userInfos._id == _uid) {
             const orderList = await ShoppingCart.find({ user: _uid, state: 'done' })
                 .sort({'cartDate': -1})
             let productOrderList = []
@@ -155,11 +162,6 @@ router.get('/profil/:id', async (req, res) => {
         } 
     }
     res.render('user/profil', infos )
-})
-
-router.get('/logout', (req, res) => {
-    clearCookies(res)
-    res.redirect('/')
 })
 
 function clearCookies(res) {

@@ -124,7 +124,7 @@
         <div class="col-4">
             <div class="cart">
                     <figure>
-                        <img src="/img/<%= productInfos.pathImg %>"
+                        <img src="<%= productInfos.productImgPath %>"
                         onmousemove="getState(event)" onmouseout="mouseOut()"
                         class="img-thumbnail" id="productImgjs" alt="<%= productInfos.name %>" />
                         <!--<figcaption>Légende de l'image</figcaption>-->
@@ -139,7 +139,7 @@
         <!-- Product infos -->
         <div class="col-5">
             <div id="zoomHolder">
-                <img src="/img/<%= productInfos.pathImg %>"
+                <img src="<%= productInfos.productImgPath %>"
                 id="productImgZoom"/>
             </div>
 
@@ -163,14 +163,11 @@
                 <p>
                     <%= productInfos.desc %>
                     <br>
-                    Description courte : Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo.
                 </p>
 
                 <article id="about">
                     <h6>Créateur: 
-                        <a style="text-decoration: none; color: whitesmoke" href="/user/profil/<%= userInfos.username %>"><%= userInfos.name %></a>
+                        <a style="text-decoration: none; color: whitesmoke" href="/user/<%= userInfos.username %>"><%= userInfos.name %></a>
                     </h6>
                     <p>Mise en ligne:   <%= productInfos.uploadDate %></p>
                 </article>
@@ -180,6 +177,7 @@
 
         <!-- Product price/qty + socials -->
         <div class="col-3">
+            <% if (locals.isConnected) { %> 
             <form action="/cart/addProduct" class="row" method="POST">
                 <div class="col m-2 input-group">
                     <span class="input-group-text darkInput">
@@ -199,7 +197,27 @@
                     Ajouter au panier
                 </button>
             </form>
-        
+            <% } else { %> 
+                <div class="row">
+                    <div class="col m-2 input-group">
+                        <span class="input-group-text darkInput">
+                            <strong>
+                                <%= productInfos.price %>&euro;
+                            </strong>
+                        </span>
+    
+                        <span class="input-group-text darkInput">x</span>
+    
+                        <input type="number" name="cartQty" min="1" class="form-control darkInput" required placeholder="Qté"
+                            aria-label="Qté" aria-describedby="basic-addon1">
+                    </div>
+    
+                    <input type="text" hidden name="productID" value="<%= productInfos._id %>">
+                    <button disabled class="col-4 m-2 btn btn-context" type="submit">
+                        Ajouter au panier
+                    </button>
+                </div>
+            <% }  %> 
             <!-- Partager réseaux pouloulou-->
             <div class="d-flex justify-content-center">
                 <a class="m-2" target="blank"
