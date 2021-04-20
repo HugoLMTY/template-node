@@ -187,18 +187,39 @@ router.post('/new', upload.single('pathImgProduct'), (req, res) => {
 
     const filename = req.file != null ? req.file.filename : null
 
+    if (r.newProductCollection === 'newCollection') {
+
+        const newCollection = new Collection({
+            name: r.newProductCollectionName,
+            date: getDate(),
+            status: 'open'
+        })
+        var activation = false
+        var validation = true
+        newCollection.save()
+
+        var collection = r.newProductCollectionName
+    }
+    else 
+        var collection = r.newProductCollection
+
     const newProduct = new Product({
         name: r.newProductName,
         price: r.newProductPrice,
         desc: r.newProductDesc,
         
+        collec: collection || 'noCollection',
+
         pathImg: filename,
         
         uploadDate: getDate(),
         qty: r.newProductQty,
         rating: 0,
         creator: _uid,
-        isActive: true,
+
+        toValidate: true,
+        isAccepted: false,
+        isActive: false,
         
         type: 'item',
         
@@ -208,14 +229,16 @@ router.post('/new', upload.single('pathImgProduct'), (req, res) => {
         
         weight: r.newProducWeight
     })
-
-    newProduct.save()
+    console.log(newProduct)
+    // newProduct.save()
 
     res.redirect('/shop')
 })
 
 router.get('/product/:id', async (req, res) => {
     const productID = req.params.id
+
+    
 
     const productInfos = await Product.findOne({ _id: productID })
     const userInfos = await User.findOne({ _id: productInfos.creator })
@@ -226,17 +249,28 @@ router.get('/product/:id', async (req, res) => {
 
     const title = productInfos.name
 
+    if (productInfos.toValidate && productInfos.creator != _uid)
+        res.redirect('/shop/')
+
     var infos = { title, productInfos, userInfos, similarProducts, reviewList, reviewListMore } 
+
+    if (productInfos.isAccepted && productInfos.isActive)
+        infos = { ...infos, isActive: true }
 
     if (req.cookies['uid'] != undefined) {
 
         const _uid = req.cookies['uid']
-        
+
+        const currentUser = await User.findOne({ _id: _uid })        
         const cart = await ShoppingCart.findOne({user: _uid, state: 'current'})
         const itemCount = (await CartItem.distinct('name', { idCart: cart._id })).length
         
+        if (currentUser.isAdmin)
+            infos = { ...infos, isAdmin: true }
+        
         if (_uid == userInfos._id) {
-            infos = { ...infos, isConnected: true, itemCount, isCreator: true }     
+            infos = { ...infos, isConnected: true, itemCount, isCreator: true } 
+        
 
         } else {
             const previousCarts = await ShoppingCart.find({ user: _uid, state: 'done' })

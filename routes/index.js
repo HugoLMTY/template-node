@@ -12,29 +12,34 @@ router.get('/', async (req, res) => {
     const limit = 3
 
     const latest = 
-        await Product.find({})
-            .sort({'uploadDate': -1})
+        await Product
+            .find({ isActive: true })
+            .sort({ 'uploadDate': -1 })
             .limit(limit)
             
     const latest_2 = 
-        await Product.find({})
+        await Product
+            .find({ isActive: true })
             .sort({'uploadDate': -1})
             .limit(limit)
             .skip(limit)
     
     const latest_3 = 
-        await Product.find({})
+        await Product
+            .find({ isActive: true })
             .sort({'uploadDate': -1})
             .limit(limit)
             .skip(limit * 2)
 
     const bestseller = 
-        await Product.find({})
+        await Product
+            .find({ isActive: true })
             .sort({'rating': -1})
             .limit(limit + 2)
 
     const lowstock = 
-        await Product.find({ qty: { $gte: 1 } })
+        await Product
+            .find({ qty: { $gte: 1 }, isActive: true })
             .sort('qty')
             .limit(limit)
    

@@ -77,7 +77,7 @@ router.get('/profil/', async (req, res) => {
     const _uid = req.cookies['uid']
 
     if (_uid != undefined) {
-        const user = await User.findOne({ _id: _uid})
+        const user = await User.findOne({ _id: _uid })
         res.redirect('/user/' + user.username)
     } else {
         res.redirect('/')

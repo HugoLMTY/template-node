@@ -20,7 +20,7 @@
             <% if (userInfos.bio) { %> 
             <%= userInfos.bio %> 
             <% } else { %> 
-                <p style="font-style: italic; opacity: 0.69;">Aucune bio</p>
+                <p class="empty-context">Aucune bio</p>
             <% } %> 
         </p>
         
@@ -36,7 +36,7 @@
                         href="#list-action-tab" role="tab" aria-controls="action">Produits en ligne</a>
                     
                         <a class="list-group-item list-group-item-action" id="list-orders" data-bs-toggle="list"
-                        href="#list-orders-tab" role="tab" aria-controls="orders">Commandes passéees</a>
+                        href="#list-orders-tab" role="tab" aria-controls="orders">Commandes passées</a>
                     
                         <a class="list-group-item list-group-item-action" id="list-settings" data-bs-toggle="list"
                         href="#list-settings-tab" role="tab" aria-controls="settings">Préférences</a>

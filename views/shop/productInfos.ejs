@@ -116,274 +116,302 @@
         }
     }
 </script>
+<% if ( locals.isActive && loca || locals.isCreator ||  !locals.isAdmin ) { %> 
+    <div class="container mt-4">
+        <div id="product" class="row mb-4" style="min-height: 200px;">
 
-<div class="container">
-    <div id="product" class="row" style="min-height: 200px;">
-
-        <!-- Product Img -->
-        <div class="col-4">
-            <div class="cart">
-                    <figure>
-                        <img src="<%= productInfos.productImgPath %>"
-                        onmousemove="getState(event)" onmouseout="mouseOut()"
-                        class="img-thumbnail" id="productImgjs" alt="<%= productInfos.name %>" />
-                        <!--<figcaption>Légende de l'image</figcaption>-->
-                        <div id="mousePos">
-                            <!-- <div id="mouseX"></div>
-                            <div id="mouseY"></div> -->
-                        </div>
-                    </figure>
-            </div>
-        </div>
-
-        <!-- Product infos -->
-        <div class="col-5">
-            <div id="zoomHolder">
-                <img src="<%= productInfos.productImgPath %>"
-                id="productImgZoom"/>
+            <!-- Product Img -->
+            <div class="col-4">
+                <div class="cart">
+                        <figure>
+                            <img src="<%= productInfos.productImgPath %>"
+                            onmousemove="getState(event)" onmouseout="mouseOut()"
+                            class="img-thumbnail" id="productImgjs" alt="<%= productInfos.name %>" />
+                            <!--<figcaption>Légende de l'image</figcaption>-->
+                            <div id="mousePos">
+                                <!-- <div id="mouseX"></div>
+                                <div id="mouseY"></div> -->
+                            </div>
+                        </figure>
+                </div>
             </div>
 
-            <hgroup>
-                <h1>
-                    <%= productInfos.name %>
-
-                    <% if (locals.isCreator) { %>
-                        <i style="font-weight: normal;" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    <% } %> 
-
-                </h1>
-                <p>
-                    <%= productInfos.width %> x
-                    <%= productInfos.height %> x
-                    <%= productInfos.lenght %>
-                </p>
-            </hgroup>
-
-            <section id="infos">
-                <p>
-                    <%= productInfos.desc %>
-                    <br>
-                </p>
-
-                <article id="about">
-                    <h6>Créateur: 
-                        <a style="text-decoration: none; color: whitesmoke" href="/user/<%= userInfos.username %>"><%= userInfos.name %></a>
-                    </h6>
-                    <p>Mise en ligne:   <%= productInfos.uploadDate %></p>
-                </article>
-
-            </section>
-        </div>
-
-        <!-- Product price/qty + socials -->
-        <div class="col-3">
-            <% if (locals.isConnected) { %> 
-            <form action="/cart/addProduct" class="row" method="POST">
-                <div class="col m-2 input-group">
-                    <span class="input-group-text darkInput">
-                        <strong>
-                            <%= productInfos.price %>&euro;
-                        </strong>
-                    </span>
-
-                    <span class="input-group-text darkInput">x</span>
-
-                    <input type="number" name="cartQty" min="1" class="form-control darkInput" required placeholder="Qté"
-                        aria-label="Qté" aria-describedby="basic-addon1">
+            <!-- Product infos -->
+            <div class="col-5">
+                <div id="zoomHolder">
+                    <img src="<%= productInfos.productImgPath %>"
+                    id="productImgZoom"/>
                 </div>
 
-                <input type="text" hidden name="productID" value="<%= productInfos._id %>">
-                <button class="col-4 m-2 btn btn-context" type="submit">
-                    Ajouter au panier
-                </button>
-            </form>
-            <% } else { %> 
-                <div class="row">
+                <hgroup>
+                    <h1>
+                        <%= productInfos.name %>
+
+                        <% if (locals.isCreator) { %>
+                            <i style="font-weight: normal;" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <% } %> 
+
+                    </h1>
+                    <p>
+                        <%= productInfos.width %> x
+                        <%= productInfos.height %> x
+                        <%= productInfos.lenght %>
+                    </p>
+                </hgroup>
+
+                <section id="infos">
+                    <p>
+                        <%= productInfos.desc %>
+                        <br>
+                    </p>
+
+                    <article id="about">
+                        <h6>Créateur: 
+                            <a class="link-context" href="/user/<%= userInfos.username %>"><%= userInfos.name %></a>
+                        </h6>
+                        <p>Mise en ligne:   <%= productInfos.uploadDate %></p>
+                    </article>
+
+                </section>
+            </div>
+
+            <!-- Product price/qty + socials -->
+            <div class="col-3">
+                <% if (locals.isConnected) { %> 
+                <form action="/cart/addProduct" class="row" method="POST">
                     <div class="col m-2 input-group">
                         <span class="input-group-text darkInput">
                             <strong>
                                 <%= productInfos.price %>&euro;
                             </strong>
                         </span>
-    
+
                         <span class="input-group-text darkInput">x</span>
-    
+
                         <input type="number" name="cartQty" min="1" class="form-control darkInput" required placeholder="Qté"
                             aria-label="Qté" aria-describedby="basic-addon1">
                     </div>
-    
+
                     <input type="text" hidden name="productID" value="<%= productInfos._id %>">
-                    <button disabled class="col-4 m-2 btn btn-context" type="submit">
+                    <button class="col-4 m-2 btn btn-context" type="submit">
                         Ajouter au panier
                     </button>
-                </div>
-            <% }  %> 
-            <!-- Partager réseaux pouloulou-->
-            <div class="d-flex justify-content-center">
-                <a class="m-2" target="blank"
-                    href="https://www.facebook.com/sharer.php?u=http://localhost:3000/shop/product/60369395a7d2d8552ce942e2"
-                    onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;">
-                    <img src="/img/medias/fb.png" width="42px" alt="Facebook" /></a>
-        
-                <a class="m-2" target="_blank" title="Twitter" href="https://twitter.com/share?url=#" rel="nofollow">
-                    <img src="/img/medias/twitter.png" width="42px" alt="Twitter" /></a>
-        
-                <a class="m-2" target="_blank" title="Google +" href="https://plus.google.com/share?url=#" rel="nofollow"
-                    onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;">
-                    <img src="/img/medias/g+.png" width="40px" alt="Google Plus" /></a>
-        
-                <a class="m-2" target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=#"
-                    rel="nofollow"
-                    onclick="javascript:window.open(this.href, '','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;">
-                    <img src="/img/medias/lkdn.svg" width="42px" alt="Linkedin" /></a>
-        
-                <a class="m-2" target="_blank" title="Envoyer par mail"
-                    href="mailto:?Subject=Regarde ça c'est cool !&amp;Body=regarde%20cet%20article%20c'est%20super !%20 #"
-                    rel="nofollow">
-                    <img src="/img/medias/mail.png" width="42px" alt="email" /></a>
-        
-            </div>
-        
-        </div>
-    </div>
-
-    <section id="characteristics">
-        <h2>Caractéristiques</h2>
-        <table id="productTable" class="table">
-            <tr>
-                <th scope="col"> Largeur </th>
-                <th scope="col"> Hauteur </th>
-                <th scope="col"> Longeur </th>
-                <th scope="col"> Poids </th>
-                <th scope="col"> Matière </th>
-            </tr>
-
-            <tr>
-                <td>
-                    <%= productInfos.width %>cm
-                </td>
-                <td>
-                    <%= productInfos.height %>cm
-                </td>
-                <td>
-                    <%= productInfos.lenght %>cm
-                </td>
-                <td> 420g </td>
-                <td> PLA </td>
-            </tr>
-        </table>
-    </section>
-
-    <!-- Similar products -->
-    <section id="similar">
-        <div class="row mt-5 mb-5">
-            <aside id="related">
-                <h2>Produits similaires</h2>
-                <div class="col-12 row">
-                    <% similarProducts.forEach(product=> { %>
-                        <a href="/shop/product/<%= product._id %>" class="col-3 productHolder mb-4">
-                            <img class="productImg" src="<%= product.productImgPath %>" alt="product_1">
-                            <div class="productShadow">
-                                <p class="productTitle">
-                                    <%= product.name %>
-                                </p>
-                                <p class="productPrice btn-context">
-                                    <%= product.price %>€
-                                </p>
-                            </div>
-                        </a>
-                        <% }) %>
-                </div>
-            </aside>
-        </div>
-    </section>
-
-    <!-- Ratings -->
-    <section id="ratings">
-        <div class="mb-5 mt-5">
-
-            <h2>Évaluations</h2>
-            <div style="padding: 10px;">
-            
-                <% if (reviewList.length > 0) { %> 
-
-                <div id="reviewLess">
-                    <% reviewList.forEach(review => { %>
-                        <p> 
-                            <span id="<%= review._id %>_star_1" class="fa fa-star"></span>
-                            <span id="<%= review._id %>_star_2" class="fa fa-star"></span>
-                            <span id="<%= review._id %>_star_3" class="fa fa-star"></span>
-                            <span id="<%= review._id %>_star_4" class="fa fa-star"></span>
-                            <span id="<%= review._id %>_star_5" class="fa fa-star"></span>
-                            
-                            <br>
-                            <script> setStars('<%= review._id %>', '<%= review.rating %>') </script>
-                        </p>
-                        <p> <%= review.comment %> </p>
-                        <span style="font-style: italic; color: gray; font-size: 0.8em;"> <%= review.date %> </span>
-                        <hr class="my-4">
-                    <% }) %> 
-                </div>
-
-                <div id="reviewMore" hidden>
-                    <% reviewListMore.forEach(review => { %>
-                        <p> 
-                            <span id="<%= review._id %>_star_1" class="fa fa-star"></span>
-                            <span id="<%= review._id %>_star_2" class="fa fa-star"></span>
-                            <span id="<%= review._id %>_star_3" class="fa fa-star"></span>
-                            <span id="<%= review._id %>_star_4" class="fa fa-star"></span>
-                            <span id="<%= review._id %>_star_5" class="fa fa-star"></span>
-                            
-                            <br>
-                            <script> setStars('<%= review._id %>', '<%= review.rating %>') </script>
-                        </p>
-                        <p> <%= review.comment %> </p>
-                        <span style="font-style: italic; color: gray; font-size: 0.8em;"> <%= review.date %> </span>
-                        <hr class="my-4">
-                    <% }) %> 
-                </div>
-                
-                <% if (locals.reviewListMore.length >= 1) {%> 
-                <span onclick="reviewSwitchSee()" id="reviewSwitchBtn" style="color: whitesmoke;">Voir +</span>
-                <% }  %> 
-
+                </form>
                 <% } else { %> 
-                    <p class="mt-3 mb-5" style="text-align: center; font-size: 1.3em; font-style: italic; color: gray;">Aucune évaluation pour ce produit</p>
-                <% } %> 
+                    <div class="row">
+                        <div class="col m-2 input-group">
+                            <span class="input-group-text darkInput">
+                                <strong>
+                                    <%= productInfos.price %>&euro;
+                                </strong>
+                            </span>
+        
+                            <span class="input-group-text darkInput">x</span>
+        
+                            <input type="number" name="cartQty" min="1" class="form-control darkInput" required placeholder="Qté"
+                                aria-label="Qté" aria-describedby="basic-addon1">
+                        </div>
+        
+                        <input type="text" hidden name="productID" value="<%= productInfos._id %>">
+                        <button disabled class="col-4 m-2 btn btn-context" type="submit">
+                            Ajouter au panier
+                        </button>
+                    </div>
+                <% }  %> 
+                <!-- Partager réseaux pouloulou-->
+                <div class="d-flex justify-content-center">
+                    <a class="m-2" target="blank"
+                        href="https://www.facebook.com/sharer.php?u=http://localhost:3000/shop/product/60369395a7d2d8552ce942e2"
+                        onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=700');return false;">
+                        <img src="/img/medias/fb.png" width="42px" alt="Facebook" /></a>
+            
+                    <a class="m-2" target="_blank" title="Twitter" href="https://twitter.com/share?url=#" rel="nofollow">
+                        <img src="/img/medias/twitter.png" width="42px" alt="Twitter" /></a>
+            
+                    <a class="m-2" target="_blank" title="Google +" href="https://plus.google.com/share?url=#" rel="nofollow"
+                        onclick="javascript:window.open(this.href, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;">
+                        <img src="/img/medias/g+.png" width="40px" alt="Google Plus" /></a>
+            
+                    <a class="m-2" target="_blank" title="Linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=#"
+                        rel="nofollow"
+                        onclick="javascript:window.open(this.href, '','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=450,width=650');return false;">
+                        <img src="/img/medias/lkdn.svg" width="42px" alt="Linkedin" /></a>
+            
+                    <a class="m-2" target="_blank" title="Envoyer par mail"
+                        href="mailto:?Subject=Regarde ça c'est cool !&amp;Body=regarde%20cet%20article%20c'est%20super !%20 #"
+                        rel="nofollow">
+                        <img src="/img/medias/mail.png" width="42px" alt="email" /></a>
+            
+                </div>
+            
             </div>
         </div>
-    </section>
 
-    <!-- leave revieww-->
- 
-    <div class="row mt-2">
-        <h2>Évaluation</h2>
+        <section id="characteristics" class="mb-4">
+            <h2>Caractéristiques</h2>
+            <table id="productTable" class="table">
+                <tr>
+                    <th scope="col"> Largeur </th>
+                    <th scope="col"> Hauteur </th>
+                    <th scope="col"> Longeur </th>
+                    <th scope="col"> Poids </th>
+                    <th scope="col"> Matière </th>
+                </tr>
 
-        <% if (locals.isConnected && locals.canReview && !locals.hasReviewed) { %> 
-            <form method="POST" action="/shop/addReview" class="row reviewHolder">
-                <div class="ratingHolder m-2 mt-3">
-                    <span id="star_rating_1" onclick="getInfos(1)" onmouseover="getHoverInfos(1)" onmouseout="getOutInfos()" class="fa fa-star"></span>
-                    <span id="star_rating_2" onclick="getInfos(2)" onmouseover="getHoverInfos(2)" onmouseout="getOutInfos()" class="fa fa-star"></span>
-                    <span id="star_rating_3" onclick="getInfos(3)" onmouseover="getHoverInfos(3)" onmouseout="getOutInfos()" class="fa fa-star"></span>
-                    <span id="star_rating_4" onclick="getInfos(4)" onmouseover="getHoverInfos(4)" onmouseout="getOutInfos()" class="fa fa-star"></span>
-                    <span id="star_rating_5" onclick="getInfos(5)" onmouseover="getHoverInfos(5)" onmouseout="getOutInfos()" class="fa fa-star"></span>
+                <tr>
+                    <td>
+                        <%= productInfos.width %>cm
+                    </td>
+                    <td>
+                        <%= productInfos.height %>cm
+                    </td>
+                    <td>
+                        <%= productInfos.lenght %>cm
+                    </td>
+                    <td> 420g </td>
+                    <td> PLA </td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- Similar products -->
+        <section id="similar">
+            <div class="row mt-5 mb-5">
+                <aside id="related">
+                    <h2>Produits similaires</h2>
+                    <div class="col-12 row">
+                        <% similarProducts.forEach(product=> { %>
+                            <a href="/shop/product/<%= product._id %>" class="col-3 productHolder mb-4">
+                                <img class="productImg" src="<%= product.productImgPath %>" alt="product_1">
+                                <div class="productShadow">
+                                    <p class="productTitle">
+                                        <%= product.name %>
+                                    </p>
+                                    <p class="productPrice btn-context">
+                                        <%= product.price %>€
+                                    </p>
+                                </div>
+                            </a>
+                            <% }) %>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- Ratings -->
+        <section id="ratings">
+            <div class="mb-5 mt-5">
+
+                <h2>Évaluations</h2>
+                <div style="padding: 10px;">
+                
+                    <% if (reviewList.length > 0) { %> 
+
+                    <div id="reviewLess">
+                        <% reviewList.forEach(review => { %>
+                            <p> 
+                                <span id="<%= review._id %>_star_1" class="fa fa-star"></span>
+                                <span id="<%= review._id %>_star_2" class="fa fa-star"></span>
+                                <span id="<%= review._id %>_star_3" class="fa fa-star"></span>
+                                <span id="<%= review._id %>_star_4" class="fa fa-star"></span>
+                                <span id="<%= review._id %>_star_5" class="fa fa-star"></span>
+                                
+                                <br>
+                                <script> setStars('<%= review._id %>', '<%= review.rating %>') </script>
+                            </p>
+                            <p> <%= review.comment %> </p>
+                            <span style="font-style: italic; color: gray; font-size: 0.8em;"> <%= review.date %> </span>
+                            <hr class="my-4">
+                        <% }) %> 
+                    </div>
+
+                    <div id="reviewMore" hidden>
+                        <% reviewListMore.forEach(review => { %>
+                            <p> 
+                                <span id="<%= review._id %>_star_1" class="fa fa-star"></span>
+                                <span id="<%= review._id %>_star_2" class="fa fa-star"></span>
+                                <span id="<%= review._id %>_star_3" class="fa fa-star"></span>
+                                <span id="<%= review._id %>_star_4" class="fa fa-star"></span>
+                                <span id="<%= review._id %>_star_5" class="fa fa-star"></span>
+                                
+                                <br>
+                                <script> setStars('<%= review._id %>', '<%= review.rating %>') </script>
+                            </p>
+                            <p> <%= review.comment %> </p>
+                            <span style="font-style: italic; color: gray; font-size: 0.8em;"> <%= review.date %> </span>
+                            <hr class="my-4">
+                        <% }) %> 
+                    </div>
+                    
+                    <% if (locals.reviewListMore.length >= 1) {%> 
+                    <span onclick="reviewSwitchSee()" id="reviewSwitchBtn" style="color: whitesmoke;">Voir +</span>
+                    <% }  %> 
+
+                    <% } else { %> 
+                        <p class="mt-3 mb-5" style="text-align: center; font-size: 1.3em; font-style: italic; color: gray;">Aucune évaluation pour ce produit</p>
+                    <% } %> 
                 </div>
-        
-                <input id="productRatingValue" hidden type="number" required name="productRating" value="">
-                <input type="text" hidden name="productID" value="<%= productInfos._id %>">
+            </div>
+        </section>
 
-                <textarea name="productComment" placeholder="Votre évaluation du produit.." required class="darkInput productRatingCommentHolder" rows="1"></textarea>
-                <button type="submit" class="col-3 btn btn-context"> Envoyer la review </button>
-            </form>
-        <% } else if (locals.isCreator) { %> 
-            <textarea name="productComment" placeholder="Vous ne pouvez pas noter votre propre produit" disabled class="darkInput productRatingCommentHolder" rows="1"></textarea>
-        <% } else if (locals.hasReviewed) { %> 
-            <textarea name="productComment" placeholder="Vous avec déjà noté le produit" disabled class="darkInput productRatingCommentHolder" rows="1"></textarea>
-        <% } else if (locals.isConnected && !locals.canReview) { %> 
-            <textarea name="productComment" placeholder="Vous devez acheter le produit avant de pouvoir le noter" disabled class="darkInput productRatingCommentHolder" rows="1"></textarea>
-        <% } else { %> 
-            <textarea name="productComment" placeholder="Vous devez être connecté pour noter le produit" disabled class="darkInput productRatingCommentHolder" rows="1"></textarea>
-        <% } %> 
+        <!-- leave revieww-->
+    
+        <div class="row mt-2">
+            <h2>Évaluation</h2>
 
+            <% if (locals.isConnected && locals.canReview && !locals.hasReviewed) { %> 
+                <form method="POST" action="/shop/addReview" class="row reviewHolder">
+                    <div class="ratingHolder m-2 mt-3">
+                        <span id="star_rating_1" onclick="getInfos(1)" onmouseover="getHoverInfos(1)" onmouseout="getOutInfos()" class="fa fa-star"></span>
+                        <span id="star_rating_2" onclick="getInfos(2)" onmouseover="getHoverInfos(2)" onmouseout="getOutInfos()" class="fa fa-star"></span>
+                        <span id="star_rating_3" onclick="getInfos(3)" onmouseover="getHoverInfos(3)" onmouseout="getOutInfos()" class="fa fa-star"></span>
+                        <span id="star_rating_4" onclick="getInfos(4)" onmouseover="getHoverInfos(4)" onmouseout="getOutInfos()" class="fa fa-star"></span>
+                        <span id="star_rating_5" onclick="getInfos(5)" onmouseover="getHoverInfos(5)" onmouseout="getOutInfos()" class="fa fa-star"></span>
+                    </div>
+            
+                    <input id="productRatingValue" hidden type="number" required name="productRating" value="">
+                    <input type="text" hidden name="productID" value="<%= productInfos._id %>">
+
+                    <textarea name="productComment" placeholder="Votre évaluation du produit.." required class="darkInput productRatingCommentHolder" rows="1"></textarea>
+                    <button type="submit" class="col-3 btn btn-context"> Envoyer la review </button>
+                </form>
+            <% } else if (locals.isCreator) { %> 
+                <textarea name="productComment" placeholder="Vous ne pouvez pas noter votre propre produit" disabled class="darkInput productRatingCommentHolder" rows="1"></textarea>
+            <% } else if (locals.hasReviewed) { %> 
+                <textarea name="productComment" placeholder="Vous avec déjà noté le produit" disabled class="darkInput productRatingCommentHolder" rows="1"></textarea>
+            <% } else if (locals.isConnected && !locals.canReview) { %> 
+                <textarea name="productComment" placeholder="Vous devez acheter le produit avant de pouvoir le noter" disabled class="darkInput productRatingCommentHolder" rows="1"></textarea>
+            <% } else { %> 
+                <textarea name="productComment" placeholder="Vous devez être connecté pour noter le produit" disabled class="darkInput productRatingCommentHolder" rows="1"></textarea>
+            <% } %> 
+
+        </div>
     </div>
-</div>
+        
+<% } else if ( locals.toValidate && locals.isCreator) { %> 
+
+    <div class="container mt-5">
+        <p class="empty-context">
+            Ce produit est en cours de validation
+            <br><a href="/" class="link-context" style="text-align: center; font-size: 0.8em;">Revenir parmis nous</a>
+        </p>
+    </div> 
+        
+<% } else if ( !locals.toValidate && !locals.isAccepted && locals.isCreator) { %> 
+
+    <div class="container mt-5">
+        <p class="empty-context">
+            Ce produit est en cours de validation
+            <br><a href="/" class="link-context" style="text-align: center; font-size: 0.8em;">Revenir parmis nous</a>
+        </p>
+    </div>
+<% } else { %> 
+
+    <div class="container mt-5">
+        <p class="empty-context">
+            Ce produit n'est pas disponible
+            <br><a href="/" class="link-context" style="text-align: center; font-size: 0.8em;">Revenir parmis nous</a>
+        </p>
+    </div>
+
+<% } %> 

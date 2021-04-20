@@ -5,8 +5,9 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/ydays_db', {
-    useNewUrlParser: true, useFindAndModify: false  })
+mongoose.connect('mongodb+srv://dev_:vlQYnzfKOgXlzU3u@ydaysdb.9qj8b.mongodb.net/ydays?retryWrites=true&w=majority', {
+// mongoose.connect('mongodb://localhost/ydays_db', {
+    useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology: true  })
 const db = mongoose.connection
 db.on('error', error => console.error(error))
 db.once('open', () => console.log('Mongoose OK'))

@@ -38,17 +38,16 @@
                 <div class="d-flex mb-3">
 
                     <select class="form-select darkSelect" name="newProductCollection" onchange="checkCollection(this)" id="">
-                        <option class="label-context" selected value="placeholder">Sélectionner une collection</option>
+                        <option class="label-context" selected value="noCollection">Pas de collection</option>
                         <% collections.forEach(element => { %>
-                            <option class="label-context" value=""> <%= element.name %> </option>
+                            <option class="label-context" value="<%= element.name %> "> <%= element.name %> </option>
                             <% }) %>
                             
-                            <option class="label-context" value="/">Pas de collection</option>
                         <option class="label-context" value="newCollection">Créer une nouvelle collection</option>
                     </select>
 
                     <div class="form-floating" hidden id="collInput">
-                        <input type="text" id="createCollectionInput" class="form-control darkInput"></input>
+                        <input type="text" id="createCollectionInput" name="newProductCollectionName" class="form-control darkInput"></input>
                         <label for="createCollectionInput" class="darkLabel">Nom de collection</label>
                     </div>
                 </div>

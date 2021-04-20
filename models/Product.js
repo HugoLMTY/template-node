@@ -10,6 +10,8 @@ const productSchema = new mongoose.Schema({
     name: { type: String },
     price: { type: Number },
     desc: { type: String },
+
+    collec: { type: String },
     
     pathImg: { type: String },
 
@@ -18,6 +20,10 @@ const productSchema = new mongoose.Schema({
     qty: { type: Number },
     rating: { type: Number },
     creator: { type: String },    
+    
+    // PRODUCT STATE
+    isAccepted: { type: Boolean }, 
+    toValidate: { type: Boolean },
     isActive: { type: Boolean }, 
 
     // PRODUCTS SPECS

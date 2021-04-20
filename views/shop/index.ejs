@@ -19,18 +19,21 @@
     </div>
 
     <div class="col-9 row row-cols-4">
-        <% productList.forEach(product => { %> 
+        <% if (productList.length > 0) { productList.forEach(product => { %> 
             <% if (product.isActive) {%> 
             <a href="/shop/product/<%= product._id %>" class="col productHolder mb-5">
                 <img class="productImg" src="<%= product.productImgPath %>" alt="<%= product.pathImg %>">
                 <div class="productShadow">
-                    <p class="productTitle"> <%= product.name %> </p>
+                    <p class="productTitle" style="width: 50%;"> <%= product.name %> </p>
                     <p class="productPrice btn-context"><%= product.price %>€</p>
                     <p class="productRating"> <%= product.rating %> <span class="fa fa-star productRatingStar"></span> </p>
                 </div>
             </a>
             <% } %> 
         <% }) %>
+        <% } else { %> 
+            <p class="empty-context">Aucun article</p>
+        <% } %> 
         
     </div>
 </div>

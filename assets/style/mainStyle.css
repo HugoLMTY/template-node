@@ -26,13 +26,14 @@ input[type=number] {
 }
 
 .link-context{
-    color: whitesmoke;
+    color: #80dfff !important;
     text-decoration: none;
     transition: 0.2s;
+    font-weight: 420;
 }
 
 .link-context:hover{
-    color: #80dfff;
+    color: #5fc9f0 !important;
 }
 
 .tooltip-context{
@@ -40,6 +41,12 @@ input[type=number] {
     font-size: 0.8em;
 }
 
+.empty-context {
+    text-align: center;
+    font-style: italic;
+    font-size: 2em;
+    opacity: 0.69;
+}
 
 .list-group-item.active, 
 .list-group-item.active:hover, 
@@ -70,4 +77,10 @@ input[type=number] {
 
 .badge-context{
     background: #80dfff;
+}
+
+
+/* NAV */
+.nav li {
+    margin-top: 42px;
 }
